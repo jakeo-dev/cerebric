@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Cerebric - Memorization Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
+
+    <div id="bigBox">
+
+        <div id="box">
+
+            <div id="enterMemDiv">
+                <input id="memInput" type="text" placeholder="Enter text to memorize"></input>
+                <h3 id="warning" class="subtext"></h3>
+            </div>
+
+            <div id="tryMemDiv">
+                <h1 id="directions"></h1>
+                <h2 id="memText"></h2>
+
+                <button id="speakMemText" onclick="speak();">Speak <i class="fa-solid fa-volume-high"></i></button>
+
+                <div id="fullEnterTryMem">
+                    <input id="tryMemInput" type="text" placeholder="Type the text again" oninput="start();"></input>
+                    <button id="enterTry" onclick="enterTry();">Enter</button>
+                    <button id="resetTime" onclick="reset();">Reset <i
+                            class="fa-solid fa-arrow-rotate-right"></i></button>
+                </div>
+
+                <h3 id="time" class="subtext"></h3>
+                <h3 id="status" class="subtext"></h3>
+            </div>
+
+            <div id="nextStepDiv">
+                <button id="nextStep" onclick="nextStep();">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+        </div>
+
+        <div id="timesBox">
+
+            <div id="timesTitleDiv">
+                <h2 id="timesTitle">Records <i class="fa-solid fa-scroll"></i></h2>
+            </div>
+
+            <div id="timesSubtextDiv">
+                <h2 id="timesSubtext"></h2>
+            </div>
+
+            <div id="listDiv">
+                <ul id="timesList">
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+    let memText;
+    let step = 1;
+    let time = 0;
+    var interval;
+    let txt;
+    let ret;
+    let listItems;
+
+    console.log("step 1");
+
+    function nextStep() {
+        if (step == 1) {
+            if (document.getElementById("memInput").value == "") {
+                document.getElementById("warning").innerText = "Enter something to memorize!";
+                document.getElementById("warning").style.color = "#873636";
+
+            } else {
+                memText = document.getElementById("memInput").value;
+                document.getElementById("memText").innerText = memText;
+
+                document.getElementById("directions").innerText = "First, read the text and type it.";
+
+                document.getElementById("enterMemDiv").style.display = "none";
+                document.getElementById("tryMemDiv").style.display = "block";
+
+                document.getElementById("nextStepDiv").style.display = "none";
+
+                step++;
+
+                console.log("step 2");
+
+            }
+
+        } else if (step == 2) {
+            document.getElementById("fullEnterTryMem").style.display = "none";
+
+            document.getElementById("speakMemText").style.display = "block";
+
+            document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+            console.log("step 3");
+
+        } else if (step == 3) {
+            document.getElementById("fullEnterTryMem").style.display = "block";
+
+            document.getElementById("tryMemInput").value = "";
+            document.getElementById("memText").style.display = "none";
+
+            document.getElementById("speakMemText").style.display = "none";
+
+            document.getElementById("directions").innerText = "Now, type the text without reading it.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+            console.log("step 4");
+
+        } else if (step == 4) {
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+            console.log("step 5");
+
+        } else if (step == 5) {
+            // Math.round(((time * 10) / 10) - 0.1)
+            // time.toFixed(1)
+
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+            document.getElementById("timesBox").style.display = "block";
+
+            /* add time to list */
+
+            var li = document.createElement("li");
+            if (time.toFixed(1) - 0.1 == 1) {
+                var inputValue = `${time.toFixed(1)} second`;
+            } else {
+                var inputValue = `${time.toFixed(1)} seconds`;
+
+            }
+            var text = document.createTextNode(inputValue);
+            li.appendChild(text);
+
+            document.getElementById("timesList").appendChild(li);
+
+            /* */
+
+            document.getElementById("time").innerText = "";
+
+            time = 0;
+
+            start = function () {
+                if (step == 5 || step == 6) {
+                    start = function () { };
+                    interval = setInterval(function () {
+                        if (time.toFixed(1) == 1) {
+                            document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                        } else {
+                            document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+
+                        }
+                        // rounds number to tenth place, hundredth is too fast
+
+                        time += 0.1;
+
+                    }, 100);
+                }
+            };
+
+            step++;
+
+            console.log("step 6");
+
+        }
+    }
+
+    function start() {
+        if (step == 5 || step == 6) {
+            start = function () { };
+            interval = setInterval(function () {
+                if (time.toFixed(1) == 1) {
+                    document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                } else {
+                    document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+
+                }
+                // rounds number to tenth place, hundredth is too fast
+
+                time += 0.1;
+
+            }, 100);
+        }
+    };
+
+    function reset() {
+        document.getElementById("tryMemInput").value = "";
+        document.getElementById("time").innerText = "";
+        document.getElementById("status").innerText = "";
+
+        document.getElementById("enterTry").style.display = "initial";
+        document.getElementById("resetTime").style.display = "none";
+
+        time = 0;
+
+        start = function () {
+            if (step == 5 || step == 6) {
+                start = function () { };
+                interval = setInterval(function () {
+                    if (time.toFixed(1) == 1) {
+                        document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                    } else {
+                        document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+
+                    }
+                    // rounds number to tenth place, hundredth is too fast
+
+                    if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                        document.getElementById("status").innerText = "";
+                    }
+
+                    time += 0.1;
+
+                }, 100);
+            }
+        };
+
+        clearInterval(interval); // stops timer
+    }
+
+    function enterTry() {
+        if (document.getElementById("tryMemInput").value.toString().toLowerCase() == memText.toString().toLowerCase()) {
+            document.getElementById("status").innerText = "Correct!";
+            document.getElementById("status").style.color = "#438736";
+
+            if (step == 5) {
+                if (time.toFixed(1) == 1) {
+                    document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                } else {
+                    document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+
+                }
+
+                clearInterval(interval); // stops timer
+
+
+                document.getElementById("nextStepDiv").style.display = "block";
+
+            } else if (step == 6) {
+                /* add time to list */
+
+                li = document.createElement("li");
+                if (time.toFixed(1) - 0.1 == 1) {
+                    inputValue = `${time.toFixed(1) - 0.1} second`;
+                } else {
+                    inputValue = `${time.toFixed(1) - 0.1} seconds`;
+
+                }
+                text = document.createTextNode(inputValue);
+                li.appendChild(text);
+
+                document.getElementById("timesList").appendChild(li);
+
+                /* */
+
+                listToArray();
+
+                var j;
+                var fasterThanAll = 0;;
+
+                for (var i = 0; i < ret.length; i++) {
+                    j = ret[i];
+
+                    if (time.toFixed(1) - 0.1 <= j) { /* current time less than or equal to time looked at in array */
+                        fasterThanAll++; // should increase every time it sees the time is less than another time
+                    }
+                }
+
+                if (fasterThanAll == ret.length) { // should be equal to length of array if all other times are greater, probably ------ get rid of word "seconds" in first time put into list to fix it not looking at all times in list
+                    document.getElementById("status").innerText = "New record!";
+                    document.getElementById("status").style.color = "#d14848";
+
+                    if (time.toFixed(1) - 0.1 == 1) {
+                        document.getElementById("timesSubtext").innerText = `${time.toFixed(1) - 0.1} second`;
+                    } else {
+                        document.getElementById("timesSubtext").innerText = `${time.toFixed(1) - 0.1} seconds`;
+                    }
+                }
+
+                clearInterval(interval); // stops timer
+
+                document.getElementById("enterTry").style.display = "none";
+                document.getElementById("resetTime").style.display = "initial";
+
+
+            } else {
+                document.getElementById("nextStepDiv").style.display = "block";
+            }
+
+        } else if (step == 6 && document.getElementById("tryMemInput").value == "") {
+            document.getElementById("status").innerText = "Enter text to beat your record!";
+            document.getElementById("status").style.color = "#873636";
+
+        } else {
+            document.getElementById("status").innerText = "Incorrect!";
+            document.getElementById("status").style.color = "#873636";
+
+        }
+    }
+
+    /* this converts list to array (ret) somehow */
+
+    function listToArray() {
+        listItems = document.getElementById('timesList').getElementsByTagName('li'),
+
+            myArray = map(listItems, getText);
+    }
+
+    function map(arrayLike, fn) {
+        ret = [];
+        i = -1;
+        len = arrayLike.length;
+        while (++i < len) ret[i] = fn(arrayLike[i]);
+
+        return ret;
+    }
+
+    function getText(node) {
+        if (node.nodeType === 3) return node.data;
+        txt = '';
+        if (node = node.firstChild) do {
+            txt += getText(node);
+
+        } while (node = node.nextSibling);
+
+        txt = txt.replace('seconds', '').replace('second', ''); //replaces the word "second" to compare the times
+
+        return txt;
+    }
+
+    /* */
+
+    function speak() {
+        document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
+
+        var msg = new SpeechSynthesisUtterance();
+        msg.text = memText;
+        window.speechSynthesis.speak(msg);
+
+        document.getElementById("nextStepDiv").style.display = "block";
+    }
+
+</script>
+
+</html>
