@@ -10,7 +10,10 @@
 
 <body>
 
-    <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
+    <div id="titleDiv">
+        <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
+        <h1 id="subtitle">Compete against yourself in a fun memorization game to quickly memorize text</h1>
+    </div>
 
     <div id="bigBox">
 
@@ -32,6 +35,7 @@
                     <button id="enterTry" onclick="enterTry();">Enter</button>
                     <button id="resetTime" onclick="reset();">Reset <i
                             class="fa-solid fa-arrow-rotate-right"></i></button>
+                    <button id="showText" onclick="showText();">Show Text</button>
                 </div>
 
                 <h3 id="time" class="subtext"></h3>
@@ -67,6 +71,9 @@
 
 <script>
 
+    console.log("v1.0.1");
+    console.log("whats new: \n Clicking return in text boxes enters text \n \"Show text\" button appears after incorrectly entering twice \n Better support for smaller screens");
+
     let memText;
     let step = 1;
     let time = 0;
@@ -74,8 +81,9 @@
     let txt;
     let ret;
     let listItems;
+    let incorrect = 0;
 
-    console.log("step 1");
+    // console.log("step 1");
 
     function nextStep() {
         if (step == 1) {
@@ -96,7 +104,7 @@
 
                 step++;
 
-                console.log("step 2");
+                // console.log("step 2");
 
             }
 
@@ -113,10 +121,10 @@
 
             step++;
 
-            console.log("step 3");
+            // console.log("step 3");
 
         } else if (step == 3) {
-            document.getElementById("fullEnterTryMem").style.display = "block";
+            document.getElementById("fullEnterTryMem").style.display = "flex";
 
             document.getElementById("tryMemInput").value = "";
             document.getElementById("memText").style.display = "none";
@@ -131,7 +139,7 @@
 
             step++;
 
-            console.log("step 4");
+            // console.log("step 4");
 
         } else if (step == 4) {
             document.getElementById("tryMemInput").value = "";
@@ -144,7 +152,7 @@
 
             step++;
 
-            console.log("step 5");
+            // console.log("step 5");
 
         } else if (step == 5) {
             // Math.round(((time * 10) / 10) - 0.1)
@@ -199,8 +207,16 @@
 
             step++;
 
-            console.log("step 6");
+            // console.log("step 6");
 
+        }
+
+        document.getElementById("tryMemInput").disabled = false;
+
+        if (document.getElementById("showText").innerText == "Hide Text") {
+            document.getElementById("memText").style.display = "none";
+            document.getElementById("showText").style.display = "none";
+            document.getElementById("showText").innerText = "Show Text";
         }
     }
 
@@ -229,6 +245,12 @@
 
         document.getElementById("enterTry").style.display = "initial";
         document.getElementById("resetTime").style.display = "none";
+
+        document.getElementById("tryMemInput").disabled = false;
+
+        document.getElementById("memText").style.display = "none";
+        document.getElementById("showText").style.display = "none";
+        document.getElementById("showText").innerText = "Show Text";
 
         time = 0;
 
@@ -261,6 +283,8 @@
         if (document.getElementById("tryMemInput").value.toString().toLowerCase() == memText.toString().toLowerCase()) {
             document.getElementById("status").innerText = "Correct!";
             document.getElementById("status").style.color = "#438736";
+
+            incorrect = 0;
 
             if (step == 5) {
                 if (time.toFixed(1) == 1) {
@@ -326,6 +350,8 @@
                 document.getElementById("nextStepDiv").style.display = "block";
             }
 
+            document.getElementById("tryMemInput").disabled = true;
+
         } else if (step == 6 && document.getElementById("tryMemInput").value == "") {
             document.getElementById("status").innerText = "Enter text to beat your record!";
             document.getElementById("status").style.color = "#873636";
@@ -333,6 +359,15 @@
         } else {
             document.getElementById("status").innerText = "Incorrect!";
             document.getElementById("status").style.color = "#873636";
+
+            incorrect++;
+
+            if (step == 4 || step == 5 || step == 6) {
+                if (incorrect >= 2) {
+                    document.getElementById("showText").style.display = "initial";
+
+                }
+            }
 
         }
     }
@@ -377,6 +412,23 @@
         window.speechSynthesis.speak(msg);
 
         document.getElementById("nextStepDiv").style.display = "block";
+    }
+
+    function showText() {
+        if (document.getElementById("showText").innerText == "Show Text") {
+            document.getElementById("memText").style.display = "block";
+            document.getElementById("showText").innerText = "Hide Text";
+        } else {
+            document.getElementById("memText").style.display = "none";
+            document.getElementById("showText").innerText = "Show Text";
+        }
+
+    }
+
+    document.getElementById("tryMemInput").onkeyup = function (event) {
+        if (event.keyCode == 13) {
+            document.getElementById("enterTry").click();
+        }
     }
 
 </script>
