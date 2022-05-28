@@ -10,14 +10,14 @@
 
 <body>
 
-    <div id="titleDiv">
+    <div id="titleBox" class="box">
         <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
-        <h1 id="subtitle">Compete against yourself in a fun memorization game to quickly memorize text</h1>
+        <h1 id="subtitle">Compete against yourself in a memorization game to quickly memorize text</h1>
     </div>
 
-    <div id="bigBox">
+    <div id="bigGameBox">
 
-        <div id="box">
+        <div id="gameBox" class="box">
 
             <div id="enterMemDiv">
                 <input id="memInput" type="text" placeholder="Enter text to memorize"></input>
@@ -48,7 +48,7 @@
 
         </div>
 
-        <div id="timesBox">
+        <div id="timesBox" class="box">
 
             <div id="timesTitleDiv">
                 <h2 id="timesTitle">Records <i class="fa-solid fa-scroll"></i></h2>
@@ -71,8 +71,8 @@
 
 <script>
 
-    console.log("v1.0.1");
-    console.log("whats new: \n Clicking return in text boxes enters text \n \"Show text\" button appears after incorrectly entering twice \n Better support for smaller screens");
+    console.log("v1.0.2");
+    console.log("whats new: \n Minor improvements");
 
     let memText;
     let step = 1;
@@ -89,7 +89,9 @@
         if (step == 1) {
             if (document.getElementById("memInput").value == "") {
                 document.getElementById("warning").innerText = "Enter something to memorize!";
-                document.getElementById("warning").style.color = "#873636";
+                document.getElementById("warning").style.color = "#ad4337";
+
+                document.getElementById("memInput").select();
 
             } else {
                 memText = document.getElementById("memInput").value;
@@ -218,6 +220,8 @@
             document.getElementById("showText").style.display = "none";
             document.getElementById("showText").innerText = "Show Text";
         }
+
+        document.getElementById("tryMemInput").select();
     }
 
     function start() {
@@ -251,6 +255,8 @@
         document.getElementById("memText").style.display = "none";
         document.getElementById("showText").style.display = "none";
         document.getElementById("showText").innerText = "Show Text";
+
+        document.getElementById("tryMemInput").select();
 
         time = 0;
 
@@ -354,11 +360,11 @@
 
         } else if (step == 6 && document.getElementById("tryMemInput").value == "") {
             document.getElementById("status").innerText = "Enter text to beat your record!";
-            document.getElementById("status").style.color = "#873636";
+            document.getElementById("status").style.color = "#ad4337";
 
         } else {
             document.getElementById("status").innerText = "Incorrect!";
-            document.getElementById("status").style.color = "#873636";
+            document.getElementById("status").style.color = "#ad4337";
 
             incorrect++;
 

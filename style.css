@@ -4,15 +4,18 @@ body {
   background-color: #d14848;
 }
 
-#titleDiv {
+#titleBox {
   border: 3px solid #b9b848;
+  background-color: #dfdc54;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  margin-bottom: 30px;
+}
+
+.box {
   border-radius: 4px;
   box-shadow: 5px 5px 2px #8f313173;
-  background-color: #dfdc54;
-  padding: 35px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  margin-bottom: 20px;
+  padding: 45px;
 }
 
 #title {
@@ -42,15 +45,13 @@ body {
   font-family: righteous;
 }
 
-#bigBox {
+#bigGameBox {
   display: flex;
 }
 
-#box {
+#gameBox {
   border: 3px solid #5ca3b4;
   border-radius: 4px;
-  padding: 35px;
-  box-shadow: 5px 5px 2px #8f313173;
   background-color: #70c3d8;
   flex: 5;
 }
@@ -156,9 +157,6 @@ h2,
 
 #timesBox {
   border: 3px solid #5ca3b4;
-  border-radius: 4px;
-  padding: 35px;
-  box-shadow: 5px 5px 2px #8f313173;
   background-color: #70c3d8;
   margin-left: 20px;
   flex: 1;
@@ -210,7 +208,7 @@ ul li {
 }
 
 /* 1150px and down */
-@media only screen and (max-width: 1150px) {
+@media only screen and (max-width: 1180px) {
   body {
     padding: 80px;
   }
@@ -226,6 +224,15 @@ ul li {
   input,
   button {
     font-size: 22px;
+  }
+
+  #bigGameBox {
+    display: block;
+  }
+
+  #timesBox {
+    margin-top: 30px;
+    margin-left: 0px;
   }
 }
 
