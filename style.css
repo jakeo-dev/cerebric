@@ -4,12 +4,21 @@ body {
   background-color: #d14848;
 }
 
+::selection {
+  background: #dfdd548f;
+}
+
+::-moz-selection {
+  /* Firefox */
+  background: #dfdd548f;
+}
+
 #titleBox {
   border: 3px solid #b9b848;
   background-color: #dfdc54;
   padding-top: 35px;
   padding-bottom: 35px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .box {
@@ -93,17 +102,20 @@ button {
   border: 3px solid #5ca3b4;
   border-radius: 4px;
   padding: 12px 20px;
+  font-family: alata;
+}
+
+button {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
-  font-family: alata;
 }
 
-input:hover,
-button:hover {
+input:hover:enabled,
+button:hover:enabled {
   background-color: #96cbd8;
   border: 3px solid #5596a7;
 }
@@ -158,7 +170,7 @@ h2,
 #timesBox {
   border: 3px solid #5ca3b4;
   background-color: #70c3d8;
-  margin-left: 20px;
+  margin-left: 25px;
   flex: 1;
   display: none;
 }
