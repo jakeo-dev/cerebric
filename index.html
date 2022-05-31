@@ -10,6 +10,14 @@
 
 <body>
 
+    <div id="fullOptionsDiv">
+        <div id="optionsDiv">
+            <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();">Ignore Punctuation: Off</button>
+            <button class="options setting" id="incorrectLimit" onclick="changeIncLim();">Incorrect Limit: 2</button>
+        </div>
+        <button class="options" id="showOptions">Options</button>
+    </div>
+
     <div id="titleBox" class="box">
         <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
         <h1 id="subtitle">Compete against yourself in a memorization game to quickly memorize text</h1>
@@ -20,7 +28,7 @@
         <div id="gameBox" class="box">
 
             <div id="enterMemDiv">
-                <input id="memInput" type="text" placeholder="Enter text to memorize"></input>
+                <input id="memInput" type="text" placeholder="Enter text to memorize" autocomplete="off"></input>
                 <h3 id="warning" class="subtext"></h3>
             </div>
 
@@ -31,7 +39,8 @@
                 <button id="speakMemText" onclick="speak();">Speak <i class="fa-solid fa-volume-high"></i></button>
 
                 <div id="fullEnterTryMem">
-                    <input id="tryMemInput" type="text" placeholder="Type the text again" oninput="start();"></input>
+                    <input id="tryMemInput" type="text" placeholder="Type the text again" oninput="start();"
+                        autocomplete="off"></input>
                     <button id="enterTry" onclick="enterTry();">Enter</button>
                     <button id="resetTime" onclick="reset();">Reset <i
                             class="fa-solid fa-arrow-rotate-right"></i></button>
@@ -71,8 +80,8 @@
 
 <script>
 
-    console.log("v1.0.2");
-    console.log("whats new: \n Minor improvements");
+    console.log("v1.0.3");
+    console.log("whats new: \n New Options: \n > Ignore punctuation when entering \n > Change incorrect limit before Show Text button appears \n Click return to click Enter, Next, Speak, and Reset buttons \n Minor style improvements \n Fixes");
 
     let memText;
     let step = 1;
@@ -82,8 +91,10 @@
     let ret;
     let listItems;
     let incorrect = 0;
-
-    // console.log("step 1");
+    let igPunc = false;
+    let currentInput;
+    let ogInput;
+    let incLimit = 2;
 
     function nextStep() {
         if (step == 1) {
@@ -106,8 +117,6 @@
 
                 step++;
 
-                // console.log("step 2");
-
             }
 
         } else if (step == 2) {
@@ -122,8 +131,6 @@
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
-
-            // console.log("step 3");
 
         } else if (step == 3) {
             document.getElementById("fullEnterTryMem").style.display = "flex";
@@ -141,8 +148,6 @@
 
             step++;
 
-            // console.log("step 4");
-
         } else if (step == 4) {
             document.getElementById("tryMemInput").value = "";
 
@@ -153,8 +158,6 @@
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
-
-            // console.log("step 5");
 
         } else if (step == 5) {
             // Math.round(((time * 10) / 10) - 0.1)
@@ -209,19 +212,21 @@
 
             step++;
 
-            // console.log("step 6");
-
         }
 
         document.getElementById("tryMemInput").disabled = false;
+        document.getElementById("enterTry").disabled = false;
+        document.getElementById("enterTry").style.cursor = "pointer";
 
-        if (document.getElementById("showText").innerText == "Hide Text") {
+        if (document.getElementById("showText").style.display == "initial") {
             document.getElementById("memText").style.display = "none";
             document.getElementById("showText").style.display = "none";
             document.getElementById("showText").innerText = "Show Text";
         }
 
         document.getElementById("tryMemInput").select();
+
+        console.log("step " + step);
     }
 
     function start() {
@@ -251,6 +256,8 @@
         document.getElementById("resetTime").style.display = "none";
 
         document.getElementById("tryMemInput").disabled = false;
+        document.getElementById("enterTry").disabled = false;
+        document.getElementById("enterTry").style.cursor = "pointer";
 
         document.getElementById("memText").style.display = "none";
         document.getElementById("showText").style.display = "none";
@@ -286,7 +293,17 @@
     }
 
     function enterTry() {
-        if (document.getElementById("tryMemInput").value.toString().toLowerCase() == memText.toString().toLowerCase()) {
+        if (igPunc == true) { // changes values if ignore punctuation is on
+            currentInput = document.getElementById("tryMemInput").value.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "");
+            ogInput = memText.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "");
+
+        } else {
+            currentInput = document.getElementById("tryMemInput").value.toString().toLowerCase();
+            ogInput = memText.toString().toLowerCase();
+
+        }
+
+        if (currentInput == ogInput) {
             document.getElementById("status").innerText = "Correct!";
             document.getElementById("status").style.color = "#438736";
 
@@ -351,12 +368,13 @@
                 document.getElementById("enterTry").style.display = "none";
                 document.getElementById("resetTime").style.display = "initial";
 
-
             } else {
                 document.getElementById("nextStepDiv").style.display = "block";
             }
 
             document.getElementById("tryMemInput").disabled = true;
+            document.getElementById("enterTry").disabled = true;
+            document.getElementById("enterTry").style.cursor = "default";
 
         } else if (step == 6 && document.getElementById("tryMemInput").value == "") {
             document.getElementById("status").innerText = "Enter text to beat your record!";
@@ -369,12 +387,11 @@
             incorrect++;
 
             if (step == 4 || step == 5 || step == 6) {
-                if (incorrect >= 2) {
+                if (incorrect >= incLimit) {
                     document.getElementById("showText").style.display = "initial";
 
                 }
             }
-
         }
     }
 
@@ -431,9 +448,48 @@
 
     }
 
-    document.getElementById("tryMemInput").onkeyup = function (event) {
+    function toggleIgPunc() {
+        if (igPunc == false) {
+            igPunc = true;
+            document.getElementById("ignorePunc").innerText = "Ignore Punctuation: On";
+        } else {
+            igPunc = false;
+            document.getElementById("ignorePunc").innerText = "Ignore Punctuation: Off";
+        }
+    }
+
+    function changeIncLim() {
+        if (incLimit < 6) {
+            incLimit++;
+        } else {
+            incLimit = 1;
+        }
+
+        document.getElementById("incorrectLimit").innerText = "Incorrect Limit: " + incLimit;
+    }
+
+    document.body.onkeyup = function (event) {
         if (event.keyCode == 13) {
-            document.getElementById("enterTry").click();
+            if (document.getElementById("memInput") === document.activeElement && (document.getElementById("tryMemInput") === document.activeElement) == false) {
+                document.getElementById("nextStep").click(); // clicking next for 1st step
+                // next clicked b/c 1st input was active, 2nd was not
+
+            } else if (document.getElementById("tryMemInput") === document.activeElement && (document.getElementById("memInput") === document.activeElement) == false) {
+                document.getElementById("enterTry").click(); // clicking enter
+                // enter clicked b/c 2nd input was active, 1st was not
+
+            } else if (document.getElementById("nextStepDiv").style.display == "block") {
+                document.getElementById("nextStep").click(); // clicking next for all steps except 1st step
+                // next clicked b/c nextstepdiv was visible
+
+            } else if (document.getElementById("resetTime").style.display == "initial" && document.getElementById("enterTry").style.display == "none") {
+                document.getElementById("resetTime").click(); // clicking reset
+                // .reset clicked b/c resettime button was visible
+
+            } else if (document.getElementById("speakMemText").style.display == "block") {
+                document.getElementById("speakMemText").click(); // clicking reset
+                // .reset clicked b/c resettime button was visible
+            }
         }
     }
 
