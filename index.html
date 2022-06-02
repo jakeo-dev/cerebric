@@ -18,12 +18,12 @@
         <button class="options" id="showOptions">Options</button>
     </div>
 
-    <div id="titleBox" class="box">
+    <div id="titleBox" class="bigBox box">
         <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
         <h1 id="subtitle">Compete against yourself in a memorization game to quickly memorize text</h1>
     </div>
 
-    <div id="bigGameBox">
+    <div id="bigGameBox" class="bigBox">
 
         <div id="gameBox" class="box">
 
@@ -36,7 +36,7 @@
                 <h1 id="directions"></h1>
                 <h2 id="memText"></h2>
 
-                <button id="speakMemText" onclick="speak();">Speak <i class="fa-solid fa-volume-high"></i></button>
+                <button id="speakText" onclick="speak();">Speak <i class="fa-solid fa-volume-high"></i></button>
 
                 <div id="fullEnterTryMem">
                     <input id="tryMemInput" type="text" placeholder="Type the text again" oninput="start();"
@@ -80,8 +80,8 @@
 
 <script>
 
-    console.log("v1.0.3");
-    console.log("whats new: \n New Options: \n > Ignore punctuation when entering \n > Change incorrect limit before Show Text button appears \n Click return to click Enter, Next, Speak, and Reset buttons \n Minor style improvements \n Fixes");
+    console.log("v1.0.4");
+    console.log("whats new: \n Increased incorrect limit to 8 \n Minor style changes \n Improvements for smaller screens");
 
     let memText;
     let step = 1;
@@ -122,7 +122,7 @@
         } else if (step == 2) {
             document.getElementById("fullEnterTryMem").style.display = "none";
 
-            document.getElementById("speakMemText").style.display = "block";
+            document.getElementById("speakText").style.display = "block";
 
             document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
 
@@ -138,7 +138,7 @@
             document.getElementById("tryMemInput").value = "";
             document.getElementById("memText").style.display = "none";
 
-            document.getElementById("speakMemText").style.display = "none";
+            document.getElementById("speakText").style.display = "none";
 
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
@@ -459,7 +459,7 @@
     }
 
     function changeIncLim() {
-        if (incLimit < 6) {
+        if (incLimit < 8) {
             incLimit++;
         } else {
             incLimit = 1;
@@ -484,11 +484,11 @@
 
             } else if (document.getElementById("resetTime").style.display == "initial" && document.getElementById("enterTry").style.display == "none") {
                 document.getElementById("resetTime").click(); // clicking reset
-                // .reset clicked b/c resettime button was visible
+                // reset clicked b/c resettime button was visible
 
-            } else if (document.getElementById("speakMemText").style.display == "block") {
-                document.getElementById("speakMemText").click(); // clicking reset
-                // .reset clicked b/c resettime button was visible
+            } else if (document.getElementById("speakText").style.display == "block") {
+                document.getElementById("speakText").click(); // clicking reset
+                // speak clicked b/c speak button was visible
             }
         }
     }
