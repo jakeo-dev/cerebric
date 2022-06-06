@@ -3,19 +3,30 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Cerebric - Memorization Game</title>
+    <title>Cerebric - A Memorization Game</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
+    <button id="devButton" onclick="devThing();">dev</button>
 
     <div id="fullOptionsDiv">
+        <button class="options" id="showOptions" onclick="showOps();"><i class="fa-solid fa-ellipsis-vertical"></i>
+            Options</button>
         <div id="optionsDiv">
-            <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();">Ignore Punctuation: Off</button>
-            <button class="options setting" id="incorrectLimit" onclick="changeIncLim();">Incorrect Limit: 2</button>
+            <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();"
+                title="Ignore punctuation when entering text">Ignore Punctuation: On</button>
+            <button class="options setting" id="autoSetGoal" onclick="toggleSetGoal();"
+                title="Automatically set a goal based on your past records">Auto Set Goal:
+                Off</button>
+            <button class="options setting" id="autoResetGoal" onclick="toggleResetGoal();"
+                title="Automatically reset your goal after reaching it">Auto Reset Goal:
+                On</button>
+            <button class="options setting" id="incorrectLimit" onclick="changeIncLim();"
+                title="Change the limit of incorrect answers you can enter before being able to show the text">Incorrect
+                Limit: 2</button>
         </div>
-        <button class="options" id="showOptions">Options</button>
     </div>
 
     <div id="titleBox" class="bigBox box">
@@ -27,8 +38,12 @@
 
         <div id="gameBox" class="box">
 
+            <button id="goalButton" onclick="setGoal();"><i class="fa-solid fa-bullseye"></i>Set Goal</button>
+
             <div id="enterMemDiv">
                 <input id="memInput" type="text" placeholder="Enter text to memorize" autocomplete="off"></input>
+                <!-- TO PREVENT COPYING: onCopy="return false" onDrag="return false" -->
+                <!-- TO PREVENT PASTING: onPaste="return false" onDrop="return false" -->
                 <h3 id="warning" class="subtext"></h3>
             </div>
 
@@ -36,13 +51,13 @@
                 <h1 id="directions"></h1>
                 <h2 id="memText"></h2>
 
-                <button id="speakText" onclick="speak();">Speak <i class="fa-solid fa-volume-high"></i></button>
+                <button id="speakText" onclick="speak();">Speak<i class="fa-solid fa-volume-high"></i></button>
 
                 <div id="fullEnterTryMem">
                     <input id="tryMemInput" type="text" placeholder="Type the text again" oninput="start();"
                         autocomplete="off"></input>
                     <button id="enterTry" onclick="enterTry();">Enter</button>
-                    <button id="resetTime" onclick="reset();">Reset <i
+                    <button id="resetTime" onclick="reset();">Reset<i
                             class="fa-solid fa-arrow-rotate-right"></i></button>
                     <button id="showText" onclick="showText();">Show Text</button>
                 </div>
@@ -52,7 +67,7 @@
             </div>
 
             <div id="nextStepDiv">
-                <button id="nextStep" onclick="nextStep();">Next <i class="fa-solid fa-arrow-right"></i></button>
+                <button id="nextStep" onclick="nextStep();">Next<i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
         </div>
@@ -60,15 +75,29 @@
         <div id="timesBox" class="box">
 
             <div id="timesTitleDiv">
-                <h2 id="timesTitle">Records <i class="fa-solid fa-scroll"></i></h2>
+                <h2 id="timesTitle"><i class="fa-solid fa-scroll"></i>Records</h2>
             </div>
 
             <div id="timesSubtextDiv">
                 <h2 id="timesSubtext"></h2>
+                <h2 id="timesAverage"></h2>
             </div>
 
             <div id="listDiv">
                 <ul id="timesList">
+                </ul>
+            </div>
+
+            <div id="badgesTitleDiv">
+                <h2 id="badgesTitle"><i class="fa-solid fa-scroll"></i>Reached Goals</h2>
+            </div>
+
+            <div id="badgesSubtextDiv">
+                <h2 id="badgesSubtext"></h2>
+            </div>
+
+            <div id="badgeListDiv">
+                <ul id="badgesList">
                 </ul>
             </div>
 
@@ -86,15 +115,62 @@
     let memText;
     let step = 1;
     let time = 0;
-    var interval;
+    let interval;
     let txt;
     let ret;
     let listItems;
     let incorrect = 0;
-    let igPunc = false;
+    let igPunc = true;
     let currentInput;
     let ogInput;
     let incLimit = 2;
+    let goal;
+    let auReGo = true;
+    let matches;
+    let acronym;
+    let sum = 0;
+    let average = 0;
+    let icon;
+    let sec;
+    let goalSec;
+    let auSeGo = false;
+    let record;
+    let recentTime;
+    var j;
+    var fasterThanAll = 0;
+
+    /* document.getElementById("timesList").addEventListener("click", function (e) {
+        var tgt = e.target;
+        if (tgt.tagName.toUpperCase() == "LI") {
+            tgt.parentNode.removeChild(tgt); // or tgt.remove();
+
+            listToArray();
+
+            for (var i = 0; i < ret.length; i++) {
+                sum = +sum + +j;
+            }
+
+            average = sum / ret.length;
+            sum = 0; // resets sum
+
+            if (ret.length >= 2) {
+                if (average == 1 || average == 1.0) {
+                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * 10)) / 10} second`;
+                } else {
+                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * 10)) / 10} seconds`;
+                }
+            } else {
+                document.getElementById("timesAverage").innerText = "";
+            }
+        }
+    });
+
+    document.getElementById("badgesList").addEventListener("click", function (e) {
+        var tgt = e.target;
+        if (tgt.tagName.toUpperCase() == "LI") {
+            tgt.parentNode.removeChild(tgt); // or tgt.remove();
+        }
+    }); */
 
     function nextStep() {
         if (step == 1) {
@@ -107,6 +183,8 @@
             } else {
                 memText = document.getElementById("memInput").value;
                 document.getElementById("memText").innerText = memText;
+
+                document.getElementById("memInput").value = "";
 
                 document.getElementById("directions").innerText = "First, read the text and type it.";
 
@@ -136,9 +214,25 @@
             document.getElementById("fullEnterTryMem").style.display = "flex";
 
             document.getElementById("tryMemInput").value = "";
-            document.getElementById("memText").style.display = "none";
+
+            matches = memText.match(/\b(\w)/g); // ['U','W','U']
+            acronym = matches.join('___ '); // U___ W___ U
+            acronym = acronym + "___"; // U___ W___ U___
+            document.getElementById("memText").innerText = acronym;
 
             document.getElementById("speakText").style.display = "none";
+
+            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 4) {
+            document.getElementById("tryMemInput").value = "";
+            document.getElementById("memText").style.display = "none";
 
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
@@ -148,7 +242,7 @@
 
             step++;
 
-        } else if (step == 4) {
+        } else if (step == 5) {
             document.getElementById("tryMemInput").value = "";
 
             document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
@@ -159,7 +253,7 @@
 
             step++;
 
-        } else if (step == 5) {
+        } else if (step == 6) {
             // Math.round(((time * 10) / 10) - 0.1)
             // time.toFixed(1)
 
@@ -172,15 +266,24 @@
             document.getElementById("nextStepDiv").style.display = "none";
             document.getElementById("timesBox").style.display = "block";
 
+            document.getElementById("goalButton").style.display = "initial";
+
             /* add time to list */
 
             var li = document.createElement("li");
-            if (time.toFixed(1) - 0.1 == 1) {
-                var inputValue = `${time.toFixed(1)} second`;
+            li.className = "listEl";
+
+            if ((Math.round(time * 10)) / 10 == 1) {
+                var inputValue = `${(Math.round(time * 10)) / 10} second`;
             } else {
-                var inputValue = `${time.toFixed(1)} seconds`;
+                var inputValue = `${(Math.round(time * 10)) / 10} seconds`;
 
             }
+
+            icon = document.createElement("i");
+            icon.className = "fa-solid fa-stopwatch";
+            li.appendChild(icon);
+
             var text = document.createTextNode(inputValue);
             li.appendChild(text);
 
@@ -193,13 +296,13 @@
             time = 0;
 
             start = function () {
-                if (step == 5 || step == 6) {
+                if (step == 6 || step == 7) {
                     start = function () { };
                     interval = setInterval(function () {
-                        if (time.toFixed(1) == 1) {
-                            document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                        if ((Math.round(time * 10)) / 10 == 1) {
+                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
                         } else {
-                            document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
 
                         }
                         // rounds number to tenth place, hundredth is too fast
@@ -216,7 +319,8 @@
 
         document.getElementById("tryMemInput").disabled = false;
         document.getElementById("enterTry").disabled = false;
-        document.getElementById("enterTry").style.cursor = "pointer";
+        document.getElementById("tryMemInput").classList.remove("disabled");
+        document.getElementById("enterTry").classList.remove("disabled");
 
         if (document.getElementById("showText").style.display == "initial") {
             document.getElementById("memText").style.display = "none";
@@ -226,17 +330,17 @@
 
         document.getElementById("tryMemInput").select();
 
-        console.log("step " + step);
+        // console.log("step " + step);
     }
 
     function start() {
-        if (step == 5 || step == 6) {
+        if (step == 6 || step == 7) {
             start = function () { };
             interval = setInterval(function () {
-                if (time.toFixed(1) == 1) {
-                    document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                if ((Math.round(time * 10)) / 10 == 1) {
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
 
                 }
                 // rounds number to tenth place, hundredth is too fast
@@ -257,7 +361,8 @@
 
         document.getElementById("tryMemInput").disabled = false;
         document.getElementById("enterTry").disabled = false;
-        document.getElementById("enterTry").style.cursor = "pointer";
+        document.getElementById("tryMemInput").classList.remove("disabled");
+        document.getElementById("enterTry").classList.remove("disabled");
 
         document.getElementById("memText").style.display = "none";
         document.getElementById("showText").style.display = "none";
@@ -265,16 +370,53 @@
 
         document.getElementById("tryMemInput").select();
 
+        if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal && auReGo) {
+            goal = 0;
+            document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Set Goal";
+        }
+
+        if (auSeGo) {
+            if (document.getElementById("timesSubtext").innerText == "") {
+                goal = (Math.round((average - (average * 0.25)) * 10)) / 10;
+            } else {
+                goal = (Math.round((average - (0.4 * (average - record))) * 10)) / 10;
+
+                if (goal >= record) {
+                    goal = (Math.round((goal - (0.15 * record)) * 10)) / 10;
+                }
+            }
+
+            if (goal <= 0 || goal > 3600) {
+                goal = 0;
+
+            } else {
+                if (screen.width < 1100) {
+                    if (goal == 1) {
+                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
+                    } else {
+                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
+                    }
+
+                } else if (screen.width >= 1100) {
+                    if (goal == 1) {
+                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " second";
+                    } else {
+                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " seconds";
+                    }
+                }
+            }
+        }
+
         time = 0;
 
         start = function () {
-            if (step == 5 || step == 6) {
+            if (step == 6 || step == 7) {
                 start = function () { };
                 interval = setInterval(function () {
-                    if (time.toFixed(1) == 1) {
-                        document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+                    if ((Math.round(time * 10)) / 10 == 1) {
+                        document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
                     } else {
-                        document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+                        document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
 
                     }
                     // rounds number to tenth place, hundredth is too fast
@@ -290,12 +432,15 @@
         };
 
         clearInterval(interval); // stops timer
+
+        document.getElementById("goalButton").disabled = false;
+        document.getElementById("goalButton").classList.remove("disabled");
     }
 
     function enterTry() {
-        if (igPunc == true) { // changes values if ignore punctuation is on
-            currentInput = document.getElementById("tryMemInput").value.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "");
-            ogInput = memText.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "");
+        if (igPunc) { // changes values if ignore punctuation is on
+            currentInput = document.getElementById("tryMemInput").value.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "").replace(/\-/g, "").replace(/\s/g, "");
+            ogInput = memText.toString().toLowerCase().replace(/\,/g, "").replace(/\./g, "").replace(/\!/g, "").replace(/\?/g, "").replace(/\&/g, "").replace(/\"/g, "").replace(/\'/g, "").replace(/\-/g, "").replace(/\s/g, "");
 
         } else {
             currentInput = document.getElementById("tryMemInput").value.toString().toLowerCase();
@@ -309,29 +454,46 @@
 
             incorrect = 0;
 
-            if (step == 5) {
-                if (time.toFixed(1) == 1) {
-                    document.getElementById("time").innerText = `${time.toFixed(1)} second`;
+            if (step == 6) {
+                if ((Math.round(time * 10)) / 10 == 1) {
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    document.getElementById("time").innerText = `${time.toFixed(1)} seconds`;
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
 
                 }
 
                 clearInterval(interval); // stops timer
 
+                listToArray();
 
                 document.getElementById("nextStepDiv").style.display = "block";
 
-            } else if (step == 6) {
+            } else if (step == 7) {
+                if ((Math.round(time * 10)) / 10 == 1) {
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                } else {
+                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+
+                }
+
+                recentTime = (Math.round(time * 10)) / 10;
+
                 /* add time to list */
 
                 li = document.createElement("li");
-                if (time.toFixed(1) - 0.1 == 1) {
-                    inputValue = `${time.toFixed(1) - 0.1} second`;
+                li.className = "listEl";
+
+                if ((Math.round(time * 10)) / 10 == 1) {
+                    inputValue = `${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    inputValue = `${time.toFixed(1) - 0.1} seconds`;
+                    inputValue = `${(Math.round(time * 10)) / 10} seconds`;
 
                 }
+
+                icon = document.createElement("i");
+                icon.className = "fa-solid fa-stopwatch";
+                li.appendChild(icon);
+
                 text = document.createTextNode(inputValue);
                 li.appendChild(text);
 
@@ -341,26 +503,75 @@
 
                 listToArray();
 
-                var j;
-                var fasterThanAll = 0;;
+                fasterThanAll = 0;
 
                 for (var i = 0; i < ret.length; i++) {
                     j = ret[i];
 
-                    if (time.toFixed(1) - 0.1 <= j) { /* current time less than or equal to time looked at in array */
+                    sum = +sum + +j;
+
+                    if ((Math.round(time * 10)) / 10 <= j) { // current time less than or equal to time looked at in array
                         fasterThanAll++; // should increase every time it sees the time is less than another time
                     }
                 }
 
+                average = sum / ret.length;
+                sum = 0; // resets sum
+
                 if (fasterThanAll == ret.length) { // should be equal to length of array if all other times are greater, probably ------ get rid of word "seconds" in first time put into list to fix it not looking at all times in list
-                    document.getElementById("status").innerText = "New record!";
+                    document.getElementById("status").innerText = "Correct! New record!";
                     document.getElementById("status").style.color = "#d14848";
 
-                    if (time.toFixed(1) - 0.1 == 1) {
-                        document.getElementById("timesSubtext").innerText = `${time.toFixed(1) - 0.1} second`;
+                    if ((Math.round(time * 10)) / 10 == 1) {
+                        document.getElementById("timesSubtext").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * 10)) / 10} second`;
                     } else {
-                        document.getElementById("timesSubtext").innerText = `${time.toFixed(1) - 0.1} seconds`;
+                        document.getElementById("timesSubtext").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * 10)) / 10} seconds`;
                     }
+
+                    record = (Math.round(time * 10)) / 10;
+                }
+
+                if (ret.length >= 2) {
+                    if (average == 1 || average == 1.0) {
+                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * 10)) / 10} second`;
+                    } else {
+                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * 10)) / 10} seconds`;
+                    }
+                }
+
+                if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) { // if the goal is a number (not null) and is not 0 and the time is less than the goal
+                    document.getElementById("status").innerText = "Correct! You reached your goal!";
+                    document.getElementById("status").style.color = "#d14848";
+
+                    li = document.createElement("li");
+                    li.className = "listEl";
+
+                    if ((Math.round(time * 10)) / 10 == 1) {
+                        sec = `${(Math.round(time * 10)) / 10} second`;
+                    } else {
+                        sec = `${(Math.round(time * 10)) / 10} seconds`;
+                    }
+
+                    goalSec = document.getElementById("goalButton").innerText.replace("Goal: ", "");
+
+                    icon = document.createElement("i");
+                    icon.className = "fa-solid fa-bullseye";
+                    li.appendChild(icon);
+
+                    text = document.createTextNode(goalSec);
+                    li.appendChild(text);
+
+                    li.appendChild(document.createElement("br"));
+
+                    icon = document.createElement("i");
+                    icon.className = "fa-solid fa-stopwatch";
+                    li.appendChild(icon);
+
+                    text = document.createTextNode(sec);
+                    li.appendChild(text);
+
+                    document.getElementById("badgesList").appendChild(li);
+
                 }
 
                 clearInterval(interval); // stops timer
@@ -368,15 +579,19 @@
                 document.getElementById("enterTry").style.display = "none";
                 document.getElementById("resetTime").style.display = "initial";
 
+                document.getElementById("goalButton").disabled = true;
+                document.getElementById("goalButton").classList.add("disabled");
+
             } else {
                 document.getElementById("nextStepDiv").style.display = "block";
             }
 
             document.getElementById("tryMemInput").disabled = true;
             document.getElementById("enterTry").disabled = true;
-            document.getElementById("enterTry").style.cursor = "default";
+            document.getElementById("tryMemInput").classList.add("disabled");
+            document.getElementById("enterTry").classList.add("disabled");
 
-        } else if (step == 6 && document.getElementById("tryMemInput").value == "") {
+        } else if (step == 7 && document.getElementById("tryMemInput").value == "") {
             document.getElementById("status").innerText = "Enter text to beat your record!";
             document.getElementById("status").style.color = "#ad4337";
 
@@ -386,7 +601,7 @@
 
             incorrect++;
 
-            if (step == 4 || step == 5 || step == 6) {
+            if (step == 4 || step == 5 || step == 6 || step == 7) {
                 if (incorrect >= incLimit) {
                     document.getElementById("showText").style.display = "initial";
 
@@ -439,13 +654,19 @@
 
     function showText() {
         if (document.getElementById("showText").innerText == "Show Text") {
+            document.getElementById("memText").innerText = memText; // for step 4
             document.getElementById("memText").style.display = "block";
             document.getElementById("showText").innerText = "Hide Text";
-        } else {
-            document.getElementById("memText").style.display = "none";
-            document.getElementById("showText").innerText = "Show Text";
-        }
 
+        } else {
+            document.getElementById("showText").innerText = "Show Text";
+
+            if (step == 4) {
+                document.getElementById("memText").innerText = acronym;
+            } else {
+                document.getElementById("memText").style.display = "none";
+            }
+        }
     }
 
     function toggleIgPunc() {
@@ -458,6 +679,26 @@
         }
     }
 
+    function toggleSetGoal() {
+        if (auSeGo == false) {
+            auSeGo = true;
+            document.getElementById("autoSetGoal").innerText = "Auto Set Goal: On";
+        } else {
+            auSeGo = false;
+            document.getElementById("autoSetGoal").innerText = "Auto Set Goal: Off";
+        }
+    }
+
+    function toggleResetGoal() {
+        if (auReGo == false) {
+            auReGo = true;
+            document.getElementById("autoResetGoal").innerText = "Auto Reset Goal: On";
+        } else {
+            auReGo = false;
+            document.getElementById("autoResetGoal").innerText = "Auto Reset Goal: Off";
+        }
+    }
+
     function changeIncLim() {
         if (incLimit < 8) {
             incLimit++;
@@ -466,6 +707,65 @@
         }
 
         document.getElementById("incorrectLimit").innerText = "Incorrect Limit: " + incLimit;
+    }
+
+    function setGoal() {
+        let userEntered = prompt("Enter a number to set your goal");
+
+        if (userEntered == null || userEntered == "") {
+            return;
+
+        } else if (isNaN(userEntered)) {
+            alert("Please enter a number");
+
+        } else if (userEntered <= 0) {
+            alert("Please enter a number above zero");
+
+        } else if (userEntered > 3600) {
+            alert("Please enter a lower number");
+
+        } else {
+            goal = (Math.round(userEntered * 10)) / 10;
+
+            if (screen.width < 1100) {
+                if (goal == 1) {
+                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
+                } else {
+                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
+                }
+
+            } else if (screen.width >= 1100) {
+                if (goal == 1) {
+                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " second";
+                } else {
+                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " seconds";
+                }
+            }
+        }
+    }
+
+    function showOps() {
+        if (document.getElementById("optionsDiv").style.display == "flex") {
+            document.getElementById("optionsDiv").style.display = "none";
+
+            document.getElementById("showOptions").style.boxShadow = "none";
+            document.getElementById("optionsDiv").style.boxShadow = "none";
+
+            document.getElementById("showOptions").style.borderBottomLeftRadius = "4px";
+
+            if (document.getElementById("memInput").value == "ravioli ravioli give me the formuoli" || document.getElementById("tryMemInput").value == "ravioli ravioli give me the formuoli") {
+                document.getElementById("devButton").style.display = "block";
+            }
+
+        } else {
+            document.getElementById("optionsDiv").style.display = "flex";
+
+            document.getElementById("showOptions").style.boxShadow = "0 5px 10px 0 #86868665";
+            document.getElementById("optionsDiv").style.boxShadow = "0 5px 10px 0 #86868665";
+
+            document.getElementById("showOptions").style.borderTopLeftRadius = "0px";
+            document.getElementById("showOptions").style.borderBottomLeftRadius = "0px";
+        }
     }
 
     document.body.onkeyup = function (event) {
@@ -491,6 +791,149 @@
                 // speak clicked b/c speak button was visible
             }
         }
+    }
+
+    function devThing() {
+        if (step == 7) {
+            step = 0;
+            document.getElementById("memText").innerText = "";
+
+            document.getElementById("directions").innerText = "";
+
+            document.getElementById("enterMemDiv").style.display = "block";
+            document.getElementById("tryMemDiv").style.display = "none";
+
+            document.getElementById("nextStepDiv").style.display = "block";
+
+            step++;
+
+        } else if (step == 1) {
+            memText = document.getElementById("memInput").value;
+            document.getElementById("memText").innerText = memText;
+
+            document.getElementById("directions").innerText = "First, read the text and type it.";
+
+            document.getElementById("enterMemDiv").style.display = "none";
+            document.getElementById("tryMemDiv").style.display = "block";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 2) {
+            document.getElementById("fullEnterTryMem").style.display = "none";
+
+            document.getElementById("speakText").style.display = "block";
+
+            document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 3) {
+            document.getElementById("fullEnterTryMem").style.display = "flex";
+
+            document.getElementById("tryMemInput").value = "";
+
+            matches = memText.match(/\b(\w)/g); // ['U','W','U']
+            acronym = matches.join('___ '); // U___ W___ U
+            acronym = acronym + "___"; // U___ W___ U___
+            document.getElementById("memText").innerText = acronym;
+
+            document.getElementById("speakText").style.display = "none";
+
+            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 4) {
+            document.getElementById("tryMemInput").value = "";
+            document.getElementById("memText").style.display = "none";
+
+            document.getElementById("directions").innerText = "Now, type the text without reading it.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 5) {
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+
+            step++;
+
+        } else if (step == 6) {
+            // Math.round(((time * 10) / 10) - 0.1)
+            // time.toFixed(1)
+
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
+
+            document.getElementById("status").innerText = "";
+
+            document.getElementById("nextStepDiv").style.display = "none";
+            document.getElementById("timesBox").style.display = "block";
+
+            document.getElementById("goalButton").style.display = "initial";
+
+            /* add time to list */
+
+            var li = document.createElement("li");
+            if ((Math.round(time * 10)) / 10 == 1) {
+                var inputValue = `${(Math.round(time * 10)) / 10} second`;
+            } else {
+                var inputValue = `${(Math.round(time * 10)) / 10} seconds`;
+
+            }
+            var text = document.createTextNode(inputValue);
+            li.appendChild(text);
+
+            document.getElementById("timesList").appendChild(li);
+
+            /* */
+
+            document.getElementById("time").innerText = "";
+
+            time = 0;
+
+            start = function () {
+                if (step == 6 || step == 7) {
+                    start = function () { };
+                    interval = setInterval(function () {
+                        if ((Math.round(time * 10)) / 10 == 1) {
+                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                        } else {
+                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+
+                        }
+                        // rounds number to tenth place, hundredth is too fast
+
+                        time += 0.1;
+
+                    }, 100);
+                }
+            };
+
+            step++;
+
+        }
+
+        document.getElementById("devButton").innerText = "step: " + step;
     }
 
 </script>
