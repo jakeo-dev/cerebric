@@ -1,7 +1,32 @@
+:root {
+  --bgRed: #d14848; /* background */
+  --shadowRed: #8f313173; /* shadow for divs on background */
+  --yellow: #ffd64f; /* title div */
+  --darkYellow: #d4b345; /* title div border */
+  --selectYellow: #dfca548f; /* text selection color */
+  --shadowYellow: #8f863173; /* shadow for buttons in title div */
+  --lightBlue: #a2d9e7; /* hover on buttons or input */
+  --blue: #70c3d8; /* background for game and times divs */
+  --darkBlue: #5ca3b4; /* border for game and times divs */
+  --darkerBlue: #437583; /* border for buttons and input */
+  --placeholderBlue: #152427; /* placeeholder text in input */
+  --darkWhite: #e6e6e6; /* options on hover */
+  --darkerWhite: #9faaaf; /* border for options */
+  --disabled: #576b6e; /* text of disabled buttons and inputs */
+  --darkDisabled: #5a8291; /* border for disabled buttons and inputs */
+  --green: #9debaa; /* hover on speak */
+  --darkGreen: #4e885f; /* speak border */
+  --darkerGreen: #368546; /* correct */
+  --lightRed: #d14848; /* new record / goal reached / record */
+  --red: #ebaaaf; /* hover on reset */
+  --darkRed: #8a4046; /* reset border */
+  --darkerRed: #ad4337; /* incorrect */
+}
+
 body {
   margin: 0px;
   padding: 50px;
-  background-color: #d14848;
+  background-color: var(--bgRed);
 }
 
 #devButton {
@@ -9,17 +34,17 @@ body {
 }
 
 ::selection {
-  background: #dfca548f;
+  background: var(--selectYellow);
 }
 
 ::-moz-selection {
   /* Firefox */
-  background: #dfca548f;
+  background: var(--selectYellow);
 }
 
 #titleBox {
-  border: 6px solid #d6b445;
-  background-color: #ffd64f;
+  border: 6px solid var(--darkYellow);
+  background-color: var(--yellow);
   padding-top: 35px;
   padding-bottom: 35px;
   margin-bottom: 50px;
@@ -27,13 +52,13 @@ body {
 
 .box {
   border-radius: 4px;
-  box-shadow: 0 5px 10px 0 #8f313173;
+  box-shadow: 0 5px 10px 0 var(--shahowRed);
   padding: 45px;
 }
 
 #title {
   font-size: 115px;
-  color: #d14848;
+  color: var(--bgRed);
   margin: 0px;
   margin-bottom: 10px;
   -webkit-touch-callout: none; /* iOS Safari */
@@ -47,7 +72,7 @@ body {
 
 #subtitle {
   font-size: 45px;
-  color: #d14848;
+  color: var(--bgRed);
   margin: 0px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -65,8 +90,8 @@ body {
 
 #gameBox {
   position: relative;
-  border: 6px solid #5ca3b4;
-  background-color: #70c3d8;
+  border: 6px solid var(--darkBlue);
+  background-color: var(--blue);
   flex: 5;
 }
 
@@ -92,18 +117,18 @@ body {
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #152427;
+  color: var(--placeholderBlue);
   opacity: 0.4; /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #152427;
+  color: var(--placeholderBlue);
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: #152427;
+  color: var(--placeholderBlue);
 }
 
 #showText {
@@ -124,24 +149,24 @@ body {
   display: inline-block;
   margin-left: auto;
   font-size: 33px;
-  color: #152427;
+  color: var(--placeholderBlue);
   background-color: white;
-  border: 6px solid #8f863173;
+  border: 6px solid var(--darkerWhite);
   border-top-left-radius: 0px;
   border-bottom-right-radius: 0px;
   transition: background-color 0.1s linear /* , box-shadow 0.1s linear */;
 }
 
 #showOptions:hover {
-  background-color: #e6e6e6;
-  /* box-shadow: 0 5px 10px 0 #8f863173; */
+  background-color: var(--darkWhite);
+  /* box-shadow: 0 5px 10px 0 var(--shadowYellow); */
 }
 
 #optionsDiv {
   display: none;
   background-color: white;
   flex-flow: column;
-  box-shadow: 0 5px 10px 0 #8f863173;
+  box-shadow: 0 5px 10px 0 var(--shadowYellow);
   border-radius: 4px;
   border-top-right-radius: 0px;
 }
@@ -156,23 +181,23 @@ body {
   text-align: right;
   margin-top: 8px;
   margin-bottom: 8px;
-  margin-left: 12px;
-  margin-right: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
   padding: 12px 10px;
   transition: background-color 0.1s linear;
 }
 
 .setting:hover:enabled {
-  background-color: #e6e6e6;
+  background-color: var(--darkWhite);
 }
 
 input,
 button {
   font-size: 48px;
   background-color: transparent;
-  color: #152427;
+  color: var(--placeholderBlue);
   box-sizing: border-box;
-  border: 6px solid #437583;
+  border: 6px solid var(--darkerBlue);
   border-radius: 4px;
   margin: 0px;
   padding: 12px 20px;
@@ -186,12 +211,12 @@ input {
 
 input:hover:enabled,
 button:hover:enabled {
-  background-color: #a2d9e7;
+  background-color: var(--lightBlue);
   /* box-shadow: 0 5px 10px 0 #528f9e7e; */
 }
 
 input:focus {
-  background-color: #a2d9e7;
+  background-color: var(--lightBlue);
   /* box-shadow: 5px 5px 2px #528f9e7e; */
 }
 
@@ -214,13 +239,13 @@ h2,
 }
 
 .disabled {
-  color: #475a5e;
-  border-color: #5d8896;
+  color: var(--disabled);
+  border-color: var(--darkDisabled);
   cursor: default;
 }
 
 #speakText {
-  border-color: #4e885f;
+  border-color: var(--darkGreen);
   display: none;
   margin-top: 10px;
 }
@@ -249,10 +274,6 @@ h2,
   margin-bottom: 0px;
 }
 
-#time {
-  color: #438736;
-}
-
 #memInput {
   width: 100%;
 }
@@ -276,11 +297,11 @@ h2,
 
 #resetTime {
   display: none;
-  border-color: #8a4046;
+  border-color: var(--darkRed);
 }
 
 #resetTime:hover {
-  background-color: #ebaaaf;
+  background-color: var(--red);
 }
 
 #nextStepDiv {
@@ -289,8 +310,8 @@ h2,
 
 #timesBox {
   display: none;
-  border: 6px solid #5ca3b4;
-  background-color: #70c3d8;
+  border: 6px solid var(--darkBlue);
+  background-color: var(--blue);
   margin-top: 50px;
   flex: 1;
 }
@@ -302,7 +323,7 @@ h2,
 }
 
 #timesSubtext {
-  color: #d14848;
+  color: var(--lightRed);
   font-size: 51px;
   margin-top: 0px;
 }
@@ -321,8 +342,13 @@ ul {
 .fa-stopwatch,
 .fa-scroll,
 .fa-bullseye,
-.fa-ellipsis-vertical {
+.fa-circle-check,
+.fa-circle-xmark {
   margin-right: 5px;
+}
+
+.fa-ellipsis-vertical {
+  margin-right: 8px;
 }
 
 .fa-arrow-right,
@@ -378,7 +404,7 @@ ul {
   }
 
   #titleBox {
-    border: 4px solid #d6b445;
+    border: 4px solid var(--darkYellow);
   }
 
   #fullOptionsDiv {
@@ -388,7 +414,7 @@ ul {
 
   #showOptions {
     font-size: 30px;
-    border: 4px solid #9faaaf;
+    border: 4px solid var(--darkerWhite);
   }
 
   .options {
@@ -404,7 +430,7 @@ ul {
   }
 
   #gameBox {
-    border: 4px solid #5ca3b4;
+    border: 4px solid var(--darkBlue);
   }
 
   #goalButton {
@@ -415,7 +441,7 @@ ul {
   input,
   button {
     font-size: 30px;
-    border: 4px solid #437583;
+    border: 4px solid var(--darkerBlue);
   }
 
   #directions {
@@ -432,7 +458,7 @@ ul {
   }
 
   #timesBox {
-    border: 4px solid #5ca3b4;
+    border: 4px solid var(--darkBlue);
   }
 
   #timesTitle {
@@ -470,7 +496,7 @@ ul {
   }
 
   #titleBox {
-    border: 3px solid #d6b445;
+    border: 3px solid var(--darkYellow);
     margin-bottom: 25px;
   }
 
@@ -481,7 +507,7 @@ ul {
 
   #showOptions {
     font-size: 18px;
-    border: 3px solid #9faaaf;
+    border: 3px solid var(--darkerWhite);
   }
 
   .options {
@@ -502,7 +528,7 @@ ul {
   }
 
   #gameBox {
-    border: 3px solid #5ca3b4;
+    border: 3px solid var(--darkBlue);
   }
 
   #goalButton {
@@ -513,7 +539,7 @@ ul {
   input,
   button {
     font-size: 18px;
-    border: 3px solid #437583;
+    border: 3px solid var(--darkerBlue);
   }
 
   #directions {
@@ -530,7 +556,7 @@ ul {
   }
 
   #timesBox {
-    border: 4px solid #5ca3b4;
+    border: 4px solid var(--darkBlue);
     margin-top: 25px;
     margin-bottom: 0px;
   }
@@ -564,7 +590,7 @@ ul {
   }
 
   #timesBox {
-    border: 3px solid #5ca3b4;
+    border: 3px solid var(--darkBlue);
     margin: 0px;
     margin-left: 25px;
   }

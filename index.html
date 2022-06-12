@@ -12,8 +12,8 @@
     <button id="devButton" onclick="devThing();">dev</button>
 
     <div id="fullOptionsDiv">
-        <button class="options" id="showOptions" onclick="showOps();"><i class="fa-solid fa-ellipsis-vertical"></i>
-            Options</button>
+        <button class="options" id="showOptions" onclick="showOps();"><i
+                class="fa-solid fa-ellipsis-vertical"></i>Options</button>
         <div id="optionsDiv">
             <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();"
                 title="Ignore punctuation when entering text">Ignore Punctuation: On</button>
@@ -109,8 +109,8 @@
 
 <script>
 
-    console.log("v1.1");
-    console.log("whats new: \n **Additions** \n New step to type text while seeing the first letter of each word \n Set goal for how fast text is typed \n Section under records shows goals you have reached \n Option to automatically set a goal based off of previous times \n Option to automatically reset goal when goal is reached \n Average of all times under highest record \n \n **Improvements** \n Explanations of options on hover \n Ignore punctuation now on by default \n Ignore punctuation also ignores whitespace \n Click to access options instead of hover \n Improvements for smaller screens \n More intuitive options design \n More icons \n Minor style improvements \n Bug fixes: fixed time showing very long decimals, fixed list of times not being selectable \n *added secret dev button 😏*");
+    console.log("v1.1.1");
+    console.log("whats new: \n Improved auto set goals \n Minor style improvements");
 
     let memText;
     let step = 1;
@@ -136,8 +136,12 @@
     let auSeGo = false;
     let record;
     let recentTime;
-    var j;
-    var fasterThanAll = 0;
+    let j;
+    let fasterThanAll = 0;
+
+    var darkerGreen = "#368546"; /* correct */
+    var lightRed = "#d14848" /*  new record / goal reached / record */
+    var darkerRed = "#ad4337"; /* incorrect */
 
     /* document.getElementById("timesList").addEventListener("click", function (e) {
         var tgt = e.target;
@@ -176,9 +180,9 @@
         if (step == 1) {
             if (document.getElementById("memInput").value == "") {
                 document.getElementById("warning").innerText = "Enter something to memorize!";
-                document.getElementById("warning").style.color = "#ad4337";
+                document.getElementById("warning").style.color = darkerRed;
 
-                document.getElementById("memInput").select();
+                document.getElementById("memInput").focus();
 
             } else {
                 memText = document.getElementById("memInput").value;
@@ -300,9 +304,9 @@
                     start = function () { };
                     interval = setInterval(function () {
                         if ((Math.round(time * 10)) / 10 == 1) {
-                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                         } else {
-                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                         }
                         // rounds number to tenth place, hundredth is too fast
@@ -328,7 +332,7 @@
             document.getElementById("showText").innerText = "Show Text";
         }
 
-        document.getElementById("tryMemInput").select();
+        document.getElementById("tryMemInput").focus();
 
         // console.log("step " + step);
     }
@@ -338,9 +342,9 @@
             start = function () { };
             interval = setInterval(function () {
                 if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                 }
                 // rounds number to tenth place, hundredth is too fast
@@ -368,7 +372,7 @@
         document.getElementById("showText").style.display = "none";
         document.getElementById("showText").innerText = "Show Text";
 
-        document.getElementById("tryMemInput").select();
+        document.getElementById("tryMemInput").focus();
 
         if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal && auReGo) {
             goal = 0;
@@ -377,17 +381,26 @@
 
         if (auSeGo) {
             if (document.getElementById("timesSubtext").innerText == "") {
-                goal = (Math.round((average - (average * 0.25)) * 10)) / 10;
-            } else {
-                goal = (Math.round((average - (0.4 * (average - record))) * 10)) / 10;
+                goal = (Math.round((average - (average * 0.1)) * 10)) / 10;
 
-                if (goal >= record) {
-                    goal = (Math.round((goal - (0.15 * record)) * 10)) / 10;
-                }
+            } else {
+                goal = (Math.round((record - (0.4 * (average - record))) * 10)) / 10;
+
             }
 
             if (goal <= 0 || goal > 3600) {
-                goal = 0;
+
+                if (document.getElementById("timesSubtext").innerText == "") {
+                    goal = (Math.round((average - (average * 0.05)) * 10)) / 10;
+
+                } else {
+                    goal = (Math.round((record - (0.25 * (average - record))) * 10)) / 10;
+
+                }
+
+                if (goal <= 0 || goal > 3600) {
+                    goal = 0;
+                }
 
             } else {
                 if (screen.width < 1100) {
@@ -414,9 +427,9 @@
                 start = function () { };
                 interval = setInterval(function () {
                     if ((Math.round(time * 10)) / 10 == 1) {
-                        document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                     } else {
-                        document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                     }
                     // rounds number to tenth place, hundredth is too fast
@@ -449,16 +462,18 @@
         }
 
         if (currentInput == ogInput) {
-            document.getElementById("status").innerText = "Correct!";
-            document.getElementById("status").style.color = "#438736";
+            document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct!";
+            document.getElementById("status").style.color = darkerGreen;
 
             incorrect = 0;
 
+            console.log("aa");
+
             if (step == 6) {
                 if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                 }
 
@@ -470,9 +485,9 @@
 
             } else if (step == 7) {
                 if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
-                    document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                 }
 
@@ -519,8 +534,8 @@
                 sum = 0; // resets sum
 
                 if (fasterThanAll == ret.length) { // should be equal to length of array if all other times are greater, probably ------ get rid of word "seconds" in first time put into list to fix it not looking at all times in list
-                    document.getElementById("status").innerText = "Correct! New record!";
-                    document.getElementById("status").style.color = "#d14848";
+                    document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! New record!";
+                    document.getElementById("status").style.color = lightRed;
 
                     if ((Math.round(time * 10)) / 10 == 1) {
                         document.getElementById("timesSubtext").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * 10)) / 10} second`;
@@ -540,8 +555,8 @@
                 }
 
                 if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) { // if the goal is a number (not null) and is not 0 and the time is less than the goal
-                    document.getElementById("status").innerText = "Correct! You reached your goal!";
-                    document.getElementById("status").style.color = "#d14848";
+                    document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! You reached your goal!";
+                    document.getElementById("status").style.color = lightRed;
 
                     li = document.createElement("li");
                     li.className = "listEl";
@@ -591,13 +606,15 @@
             document.getElementById("tryMemInput").classList.add("disabled");
             document.getElementById("enterTry").classList.add("disabled");
 
+            document.getElementById("tryMemInput").blur();
+
         } else if (step == 7 && document.getElementById("tryMemInput").value == "") {
             document.getElementById("status").innerText = "Enter text to beat your record!";
-            document.getElementById("status").style.color = "#ad4337";
+            document.getElementById("status").style.color = darkerRed;
 
         } else {
-            document.getElementById("status").innerText = "Incorrect!";
-            document.getElementById("status").style.color = "#ad4337";
+            document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-xmark\"></i>Incorrect!";
+            document.getElementById("status").style.color = darkerRed;
 
             incorrect++;
 
@@ -741,6 +758,9 @@
                     document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " seconds";
                 }
             }
+
+            auSeGo = false;
+            document.getElementById("autoSetGoal").innerText = "Auto Set Goal: Off";
         }
     }
 
@@ -916,9 +936,9 @@
                     start = function () { };
                     interval = setInterval(function () {
                         if ((Math.round(time * 10)) / 10 == 1) {
-                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} second`;
+                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                         } else {
-                            document.getElementById("time").innerText = `${(Math.round(time * 10)) / 10} seconds`;
+                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
 
                         }
                         // rounds number to tenth place, hundredth is too fast
