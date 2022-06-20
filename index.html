@@ -5,34 +5,40 @@
     <meta charset="utf-8">
     <title>Cerebric - A Memorization Game</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link href="cerebric-logo-inverted.ico" rel="shortcut icon" type="image/ico">
     <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
-    <button id="devButton" onclick="devThing();">dev</button>
+    <button id="devButton" onclick="devThing();">skip step</button>
 
-    <div id="fullOptionsDiv">
-        <button class="options" id="showOptions" onclick="showOps();"><i
-                class="fa-solid fa-ellipsis-vertical"></i>Options</button>
-        <div id="optionsDiv">
-            <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();"
-                title="Ignore punctuation when entering text">Ignore Punctuation: On</button>
-            <button class="options setting" id="autoSetGoal" onclick="toggleSetGoal();"
-                title="Automatically set a goal based on your past records">Auto Set Goal:
-                Off</button>
-            <button class="options setting" id="autoResetGoal" onclick="toggleResetGoal();"
-                title="Automatically reset your goal after reaching it">Auto Reset Goal:
-                On</button>
-            <button class="options setting" id="incorrectLimit" onclick="changeIncLim();"
-                title="Change the limit of incorrect answers you can enter before being able to show the text">Incorrect
-                Limit: 2</button>
-        </div>
-    </div>
+    <ul id="navBar">
 
-    <div id="titleBox" class="bigBox box">
-        <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
-        <h1 id="subtitle">Compete against yourself in a memorization game to quickly memorize text</h1>
-    </div>
+        <li class="navItem" id="titleItem">
+            <div id="titleDiv">
+                <h1 id="title"><a onclick="location.reload();">Cerebric</a></h1>
+                <!-- Compete against yourself in a memorization game to quickly memorize text -->
+            </div>
+        </li>
+
+        <li class="navItem" id="optionsItem">
+            <div id="fullOptionsDiv">
+                <button class="options" id="showOptions" onclick="showOps();"><i
+                        class="fa-solid fa-ellipsis-vertical"></i>Options</button>
+                <div id="optionsDiv">
+                    <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();"
+                        title="Ignore punctuation when entering text">Ignore Punctuation: On</button>
+                    <button class="options setting" id="autoSetGoal" onclick="toggleSetGoal();"
+                        title="Automatically set a goal based on your past records">Auto Set Goal:
+                        Off</button>
+                    <button class="options setting" id="incorrectLimit" onclick="changeIncLim();"
+                        title="Change the limit of incorrect answers you can enter before being able to show the text">Incorrect
+                        Limit: 2</button>
+                </div>
+            </div>
+        </li>
+
+    </ul>
 
     <div id="bigGameBox" class="bigBox">
 
@@ -49,7 +55,18 @@
 
             <div id="tryMemDiv">
                 <h1 id="directions"></h1>
-                <h2 id="memText"></h2>
+
+                <div id="memTextDiv">
+                    <h2 class="memText" id="memText"></h2>
+                    <input class="memText" id="memEditText"></input>
+
+                    <button class="changeText" id="editMemText" onclick="editText();"><i
+                            class="fa-solid fa-pen"></i></button>
+                    <button class="changeText" id="saveMemText" onclick="saveText();"><i
+                            class="fa-solid fa-check"></i></button>
+                    <button class="changeText" id="closeMemText" onclick="closeText();"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
 
                 <button id="speakText" onclick="speak();">Speak<i class="fa-solid fa-volume-high"></i></button>
 
@@ -83,21 +100,21 @@
                 <h2 id="timesAverage"></h2>
             </div>
 
-            <div id="listDiv">
+            <div id="timesListDiv">
                 <ul id="timesList">
                 </ul>
             </div>
 
-            <div id="badgesTitleDiv">
-                <h2 id="badgesTitle"><i class="fa-solid fa-scroll"></i>Reached Goals</h2>
+            <div id="goalsTitleDiv">
+                <h2 id="goalsTitle"><i class="fa-solid fa-scroll"></i>Reached Goals</h2>
             </div>
 
-            <div id="badgesSubtextDiv">
-                <h2 id="badgesSubtext"></h2>
+            <div id="goalsSubtextDiv">
+                <h2 id="goalsSubtext" class="listEl">None</h2>
             </div>
 
-            <div id="badgeListDiv">
-                <ul id="badgesList">
+            <div id="goalsListDiv">
+                <ul id="goalsList">
                 </ul>
             </div>
 
@@ -109,8 +126,8 @@
 
 <script>
 
-    console.log("v1.1.2");
-    console.log("whats new: \n Minor style improvements");
+    console.log("v1.1.3");
+    console.log("whats new: \n **Additions** \n Edit text to memorize after setting it \n Text to memorize now shows with a highlight \n Added a favicon \n \n **Improvements** \n Auto reset goal removed, goals now always reset after reaching them \n Improvements to auto set goals \n Design improvements");
 
     let memText;
     let step = 1;
@@ -125,7 +142,6 @@
     let ogInput;
     let incLimit = 2;
     let goal;
-    let auReGo = true;
     let matches;
     let acronym;
     let sum = 0;
@@ -169,7 +185,7 @@
         }
     });
 
-    document.getElementById("badgesList").addEventListener("click", function (e) {
+    document.getElementById("goalsList").addEventListener("click", function (e) {
         var tgt = e.target;
         if (tgt.tagName.toUpperCase() == "LI") {
             tgt.parentNode.removeChild(tgt); // or tgt.remove();
@@ -208,7 +224,7 @@
 
             document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -228,7 +244,7 @@
 
             document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -236,11 +252,11 @@
 
         } else if (step == 4) {
             document.getElementById("tryMemInput").value = "";
-            document.getElementById("memText").style.display = "none";
+            document.getElementById("memTextDiv").style.display = "none";
 
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -251,7 +267,7 @@
 
             document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -265,7 +281,7 @@
 
             document.getElementById("directions").innerText = "Keep trying to type the text faster!";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
             document.getElementById("timesBox").style.display = "block";
@@ -295,7 +311,7 @@
 
             /* */
 
-            document.getElementById("time").innerText = "";
+            document.getElementById("time").style.display = "none";
 
             time = 0;
 
@@ -303,6 +319,8 @@
                 if (step == 6 || step == 7) {
                     start = function () { };
                     interval = setInterval(function () {
+                        document.getElementById("time").style.display = "block";
+
                         if ((Math.round(time * 10)) / 10 == 1) {
                             document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                         } else {
@@ -310,6 +328,10 @@
 
                         }
                         // rounds number to tenth place, hundredth is too fast
+
+                        if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                            document.getElementById("status").style.display = "none";
+                        }
 
                         time += 0.1;
 
@@ -327,7 +349,7 @@
         document.getElementById("enterTry").classList.remove("disabled");
 
         if (document.getElementById("showText").style.display == "initial") {
-            document.getElementById("memText").style.display = "none";
+            document.getElementById("memTextDiv").style.display = "none";
             document.getElementById("showText").style.display = "none";
             document.getElementById("showText").innerText = "Show Text";
         }
@@ -341,6 +363,8 @@
         if (step == 6 || step == 7) {
             start = function () { };
             interval = setInterval(function () {
+                document.getElementById("time").style.display = "block";
+
                 if ((Math.round(time * 10)) / 10 == 1) {
                     document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
@@ -348,6 +372,10 @@
 
                 }
                 // rounds number to tenth place, hundredth is too fast
+
+                if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                    document.getElementById("status").style.display = "none";
+                }
 
                 time += 0.1;
 
@@ -357,8 +385,8 @@
 
     function reset() {
         document.getElementById("tryMemInput").value = "";
-        document.getElementById("time").innerText = "";
-        document.getElementById("status").innerText = "";
+        document.getElementById("time").style.display = "none";
+        document.getElementById("status").style.display = "none";
 
         document.getElementById("enterTry").style.display = "initial";
         document.getElementById("resetTime").style.display = "none";
@@ -368,13 +396,13 @@
         document.getElementById("tryMemInput").classList.remove("disabled");
         document.getElementById("enterTry").classList.remove("disabled");
 
-        document.getElementById("memText").style.display = "none";
+        document.getElementById("memTextDiv").style.display = "none";
         document.getElementById("showText").style.display = "none";
         document.getElementById("showText").innerText = "Show Text";
 
         document.getElementById("tryMemInput").focus();
 
-        if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal && auReGo) {
+        if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) {
             goal = 0;
             document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Set Goal";
         }
@@ -384,7 +412,7 @@
                 goal = (Math.round((average - (average * 0.1)) * 10)) / 10;
 
             } else {
-                goal = (Math.round((record - (0.4 * (average - record))) * 10)) / 10;
+                goal = (Math.round((record - (0.4 * (average - record)) + (0.1 * (average))) * 10)) / 10;
 
             }
 
@@ -394,7 +422,7 @@
                     goal = (Math.round((average - (average * 0.05)) * 10)) / 10;
 
                 } else {
-                    goal = (Math.round((record - (0.25 * (average - record))) * 10)) / 10;
+                    goal = (Math.round((record - (0.25 * (average - record)) + (0.2 * (average))) * 10)) / 10;
 
                 }
 
@@ -426,6 +454,8 @@
             if (step == 6 || step == 7) {
                 start = function () { };
                 interval = setInterval(function () {
+                    document.getElementById("time").style.display = "block";
+
                     if ((Math.round(time * 10)) / 10 == 1) {
                         document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                     } else {
@@ -435,7 +465,7 @@
                     // rounds number to tenth place, hundredth is too fast
 
                     if (document.getElementById("status").innerText == "Enter text to beat your record!") {
-                        document.getElementById("status").innerText = "";
+                        document.getElementById("status").style.display = "none";
                     }
 
                     time += 0.1;
@@ -462,12 +492,16 @@
         }
 
         if (currentInput == ogInput) {
+            document.getElementById("status").style.display = "block";
+
             document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct!";
             document.getElementById("status").style.color = darkerGreen;
 
             incorrect = 0;
 
             if (step == 6) {
+                document.getElementById("time").style.display = "block";
+
                 if ((Math.round(time * 10)) / 10 == 1) {
                     document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
@@ -482,6 +516,8 @@
                 document.getElementById("nextStepDiv").style.display = "block";
 
             } else if (step == 7) {
+                document.getElementById("time").style.display = "block";
+
                 if ((Math.round(time * 10)) / 10 == 1) {
                     document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                 } else {
@@ -532,6 +568,8 @@
                 sum = 0; // resets sum
 
                 if (fasterThanAll == ret.length) { // should be equal to length of array if all other times are greater, probably ------ get rid of word "seconds" in first time put into list to fix it not looking at all times in list
+                    document.getElementById("status").style.display = "block";
+
                     document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! New record!";
                     document.getElementById("status").style.color = lightRed;
 
@@ -553,6 +591,8 @@
                 }
 
                 if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) { // if the goal is a number (not null) and is not 0 and the time is less than the goal
+                    document.getElementById("status").style.display = "block";
+
                     document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! You reached your goal!";
                     document.getElementById("status").style.color = lightRed;
 
@@ -583,7 +623,9 @@
                     text = document.createTextNode(sec);
                     li.appendChild(text);
 
-                    document.getElementById("badgesList").appendChild(li);
+                    document.getElementById("goalsList").appendChild(li);
+
+                    document.getElementById("goalsSubtext").style.display = "none";
 
                 }
 
@@ -599,6 +641,10 @@
                 document.getElementById("nextStepDiv").style.display = "block";
             }
 
+            if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                document.getElementById("status").style.display = "none";
+            }
+
             document.getElementById("tryMemInput").disabled = true;
             document.getElementById("enterTry").disabled = true;
             document.getElementById("tryMemInput").classList.add("disabled");
@@ -607,10 +653,14 @@
             document.getElementById("tryMemInput").blur();
 
         } else if (step == 7 && document.getElementById("tryMemInput").value == "") {
+            document.getElementById("status").style.display = "block";
+
             document.getElementById("status").innerText = "Enter text to beat your record!";
             document.getElementById("status").style.color = darkerRed;
 
         } else {
+            document.getElementById("status").style.display = "block";
+
             document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-xmark\"></i>Incorrect!";
             document.getElementById("status").style.color = darkerRed;
 
@@ -658,8 +708,6 @@
     /* */
 
     function speak() {
-        document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
-
         var msg = new SpeechSynthesisUtterance();
         msg.text = memText;
         window.speechSynthesis.speak(msg);
@@ -670,7 +718,7 @@
     function showText() {
         if (document.getElementById("showText").innerText == "Show Text") {
             document.getElementById("memText").innerText = memText; // for step 4
-            document.getElementById("memText").style.display = "block";
+            document.getElementById("memTextDiv").style.display = "flex";
             document.getElementById("showText").innerText = "Hide Text";
 
         } else {
@@ -679,7 +727,7 @@
             if (step == 4) {
                 document.getElementById("memText").innerText = acronym;
             } else {
-                document.getElementById("memText").style.display = "none";
+                document.getElementById("memTextDiv").style.display = "none";
             }
         }
     }
@@ -701,16 +749,6 @@
         } else {
             auSeGo = false;
             document.getElementById("autoSetGoal").innerText = "Auto Set Goal: Off";
-        }
-    }
-
-    function toggleResetGoal() {
-        if (auReGo == false) {
-            auReGo = true;
-            document.getElementById("autoResetGoal").innerText = "Auto Reset Goal: On";
-        } else {
-            auReGo = false;
-            document.getElementById("autoResetGoal").innerText = "Auto Reset Goal: Off";
         }
     }
 
@@ -767,9 +805,9 @@
             document.getElementById("optionsDiv").style.display = "none";
 
             document.getElementById("showOptions").style.boxShadow = "none";
-            document.getElementById("optionsDiv").style.boxShadow = "none";
 
-            document.getElementById("showOptions").style.borderBottomLeftRadius = "4px";
+            document.getElementById("showOptions").style.borderBottomLeftRadius = "5px";
+            document.getElementById("showOptions").style.borderBottomRightRadius = "5px";
 
             if (document.getElementById("memInput").value == "ravioli ravioli give me the formuoli" || document.getElementById("tryMemInput").value == "ravioli ravioli give me the formuoli") {
                 document.getElementById("devButton").style.display = "block";
@@ -778,35 +816,133 @@
         } else {
             document.getElementById("optionsDiv").style.display = "flex";
 
-            document.getElementById("showOptions").style.boxShadow = "0 5px 10px 0 #86868665";
-            document.getElementById("optionsDiv").style.boxShadow = "0 5px 10px 0 #86868665";
+            document.getElementById("showOptions").style.boxShadow = "0 5px 10px 0 #8f313173";
 
-            document.getElementById("showOptions").style.borderTopLeftRadius = "0px";
-            document.getElementById("showOptions").style.borderBottomLeftRadius = "0px";
+            document.getElementById("showOptions").style.borderBottomLeftRadius = "0";
+            document.getElementById("showOptions").style.borderBottomRightRadius = "0";
+        }
+    }
+
+    function editText() {
+        document.getElementById("memEditText").value = memText;
+
+        document.getElementById("memEditText").style.display = "flex";
+        document.getElementById("memText").style.display = "none";
+
+        document.getElementById("editMemText").style.display = "none";
+        document.getElementById("saveMemText").style.display = "flex";
+        document.getElementById("closeMemText").style.display = "flex";
+
+        document.getElementById("tryMemInput").disabled = true;
+        document.getElementById("enterTry").disabled = true;
+        document.getElementById("nextStep").disabled = true;
+        document.getElementById("tryMemInput").classList.add("disabled");
+        document.getElementById("enterTry").classList.add("disabled");
+        document.getElementById("nextStep").classList.add("disabled");
+
+        document.getElementById("memTextDiv").style.borderBottomColor = "#3c8b91";
+
+        document.getElementById("memEditText").focus();
+    }
+
+    function saveText() {
+        document.getElementById("memEditText").style.display = "none";
+        document.getElementById("memText").style.display = "flex";
+
+        memText = document.getElementById("memEditText").value;
+        document.getElementById("memText").innerText = memText;
+
+        document.getElementById("editMemText").style.display = "flex";
+        document.getElementById("saveMemText").style.display = "none";
+        document.getElementById("closeMemText").style.display = "none";
+
+        if (document.getElementById("nextStepDiv").style.display !== "block") {
+            document.getElementById("tryMemInput").disabled = false;
+            document.getElementById("enterTry").disabled = false;
+            document.getElementById("tryMemInput").classList.remove("disabled");
+            document.getElementById("enterTry").classList.remove("disabled");
+        }
+
+        document.getElementById("nextStep").disabled = false;
+        document.getElementById("nextStep").classList.remove("disabled");
+
+        document.getElementById("memTextDiv").style.borderBottomColor = "transparent";
+
+        document.getElementById("memEditText").innerText = memText;
+        document.getElementById("memEditText").blur();
+
+        if (document.getElementById("nextStepDiv").style.display == "block") {
+            document.getElementById("nextStep").focus();
+        } else if (document.getElementById("fullEnterTryMem").style.display !== "none") {
+            document.getElementById("tryMemInput").focus();
+        } else {
+            document.getElementById("speakText").focus();
+        }
+    }
+
+    function closeText() {
+        document.getElementById("memEditText").style.display = "none";
+        document.getElementById("memText").style.display = "flex";
+
+        document.getElementById("editMemText").style.display = "flex";
+        document.getElementById("saveMemText").style.display = "none";
+        document.getElementById("closeMemText").style.display = "none";
+
+        if (document.getElementById("nextStepDiv").style.display !== "block") {
+            document.getElementById("tryMemInput").disabled = false;
+            document.getElementById("enterTry").disabled = false;
+            document.getElementById("tryMemInput").classList.remove("disabled");
+            document.getElementById("enterTry").classList.remove("disabled");
+        }
+
+        document.getElementById("nextStep").disabled = false;
+        document.getElementById("nextStep").classList.remove("disabled");
+
+        document.getElementById("memTextDiv").style.borderBottomColor = "transparent";
+
+        document.getElementById("memEditText").innerText = memText;
+        document.getElementById("memEditText").blur();
+
+        if (document.getElementById("nextStepDiv").style.display == "block") {
+            document.getElementById("nextStep").focus();
+        } else if (document.getElementById("fullEnterTryMem").style.display !== "none") {
+            document.getElementById("tryMemInput").focus();
+        } else {
+            document.getElementById("speakText").focus();
         }
     }
 
     document.body.onkeyup = function (event) {
         if (event.keyCode == 13) {
-            if (document.getElementById("memInput") === document.activeElement && (document.getElementById("tryMemInput") === document.activeElement) == false) {
-                document.getElementById("nextStep").click(); // clicking next for 1st step
-                // next clicked b/c 1st input was active, 2nd was not
+            if (document.getElementById("memInput") === document.activeElement && (document.getElementById("tryMemInput") === document.activeElement) == false && (document.getElementById("memEditText") === document.activeElement) == false) {
+                document.getElementById("nextStep").click(); // clicks next for 1st step
+                // next clicked b/c 1st input was active, 2nd and edit was not
 
-            } else if (document.getElementById("tryMemInput") === document.activeElement && (document.getElementById("memInput") === document.activeElement) == false) {
-                document.getElementById("enterTry").click(); // clicking enter
-                // enter clicked b/c 2nd input was active, 1st was not
+            } else if (document.getElementById("tryMemInput") === document.activeElement && (document.getElementById("memInput") === document.activeElement) == false && (document.getElementById("memEditText") === document.activeElement) == false) {
+                document.getElementById("enterTry").click(); // clicks enter
+                // enter clicked b/c 2nd input was active, 1st and edit was not
+
+            } else if (document.getElementById("memEditText") === document.activeElement && (document.getElementById("memInput") === document.activeElement) == false && (document.getElementById("tryMemInput") === document.activeElement) == false) {
+                document.getElementById("saveMemText").click(); // clicks save edit
+                // enter clicked b/c edit input was active, 1st and 2nd was not
 
             } else if (document.getElementById("nextStepDiv").style.display == "block") {
-                document.getElementById("nextStep").click(); // clicking next for all steps except 1st step
+                document.getElementById("nextStep").click(); // clicks next for all steps except 1st step
                 // next clicked b/c nextstepdiv was visible
 
+            } else if (document.getElementById("speakText").style.display == "block") {
+                document.getElementById("speakText").click(); // clicks speak
+                // speak clicked b/c speak button was visible
+
             } else if (document.getElementById("resetTime").style.display == "initial" && document.getElementById("enterTry").style.display == "none") {
-                document.getElementById("resetTime").click(); // clicking reset
+                document.getElementById("resetTime").click(); // clicks reset
                 // reset clicked b/c resettime button was visible
 
-            } else if (document.getElementById("speakText").style.display == "block") {
-                document.getElementById("speakText").click(); // clicking reset
-                // speak clicked b/c speak button was visible
+            }
+
+        } else if (event.keyCode == 27) {
+            if (document.getElementById("memEditText") === document.activeElement) {
+                document.getElementById("closeMemText").click(); // clicks close edit
             }
         }
     }
@@ -814,7 +950,7 @@
     function devThing() {
         if (step == 7) {
             step = 0;
-            document.getElementById("memText").innerText = "";
+            document.getElementById("memTextDiv").style.display = "none";
 
             document.getElementById("directions").innerText = "";
 
@@ -845,7 +981,7 @@
 
             document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -865,7 +1001,7 @@
 
             document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -873,11 +1009,11 @@
 
         } else if (step == 4) {
             document.getElementById("tryMemInput").value = "";
-            document.getElementById("memText").style.display = "none";
+            document.getElementById("memTextDiv").style.display = "none";
 
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -888,7 +1024,7 @@
 
             document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
 
@@ -902,7 +1038,7 @@
 
             document.getElementById("directions").innerText = "Keep trying to type the text faster!";
 
-            document.getElementById("status").innerText = "";
+            document.getElementById("status").style.display = "none";
 
             document.getElementById("nextStepDiv").style.display = "none";
             document.getElementById("timesBox").style.display = "block";
@@ -925,7 +1061,7 @@
 
             /* */
 
-            document.getElementById("time").innerText = "";
+            document.getElementById("time").style.display = "none";
 
             time = 0;
 
@@ -933,6 +1069,8 @@
                 if (step == 6 || step == 7) {
                     start = function () { };
                     interval = setInterval(function () {
+                        document.getElementById("time").style.display = "block";
+
                         if ((Math.round(time * 10)) / 10 == 1) {
                             document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
                         } else {
@@ -940,6 +1078,10 @@
 
                         }
                         // rounds number to tenth place, hundredth is too fast
+
+                        if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                            document.getElementById("status").style.display = "none";
+                        }
 
                         time += 0.1;
 

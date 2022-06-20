@@ -1,32 +1,40 @@
 :root {
   --bgRed: #d14848; /* background */
+  --titleRed: #ffd0d0; /* background */
   --shadowRed: #8f313173; /* shadow for divs on background */
-  --yellow: #ffd64f; /* title div */
-  --darkYellow: #d4b345; /* title div border */
-  --selectYellow: #dfca548f; /* text selection color */
-  --shadowYellow: #8f863173; /* shadow for buttons in title div */
-  --lightBlue: #a2d9e7; /* hover on buttons or input */
-  --blue: #70c3d8; /* background for game and times divs */
-  --darkBlue: #5ca3b4; /* border for game and times divs */
-  --darkerBlue: #437583; /* border for buttons and input */
-  --placeholderBlue: #152427; /* placeeholder text in input */
+  --select: #56afbe8f; /* text selection color */
+  --lightBlue: #6ce5e9; /* hover on buttons or input */
+  --blue: #56cfd8; /* background for game and times divs */
+  --darkBlue: #49afb3; /* border for game and times divs */
+  --darkerBlue: #3c8b91; /* border for buttons and input */
+  --placeholderBlue: #152527; /* placeeholder text in input */
   --darkWhite: #e6e6e6; /* options on hover */
-  --darkerWhite: #9faaaf; /* border for options */
-  --disabled: #576b6e; /* text of disabled buttons and inputs */
-  --darkDisabled: #5a8291; /* border for disabled buttons and inputs */
+  --darkerWhite: #c4c4c4; /* border for options */
+  --darkestWhite: #a3a3a3; /* border for options on hover */
+  --shadowWhite: #9c9c9c73; /* border for options on hover */
+  --disabled: #647c86; /* text of disabled buttons and inputs */
+  --darkDisabled: #6d8c9b; /* border for disabled buttons and inputs */
   --green: #9debaa; /* hover on speak */
   --darkGreen: #4e885f; /* speak border */
   --darkerGreen: #368546; /* correct */
   --lightRed: #d14848; /* new record / goal reached / record */
-  --red: #ebaaaf; /* hover on reset */
-  --darkRed: #8a4046; /* reset border */
-  --darkerRed: #ad4337; /* incorrect */
+  --red: #f1b0b5; /* hover on reset */
+  --darkRed: #9e4a51; /* reset border */
+  --darkerRed: #bd493c; /* incorrect */
+
+  --borderRadius: 6px;
+
+  /* unused */
+  --yellow: #ff8e8e; /* title div */
+  --darkYellow: #c97171; /* title div border */
+  --shadowYellow: #8f863173; /* shadow for buttons in title div */
 }
 
 body {
-  margin: 0px;
-  padding: 50px;
   background-color: var(--bgRed);
+  margin: 0;
+  padding: 50px;
+  padding-top: 120px;
 }
 
 #devButton {
@@ -34,46 +42,54 @@ body {
 }
 
 ::selection {
-  background: var(--selectYellow);
+  background: var(--select);
 }
 
 ::-moz-selection {
   /* Firefox */
-  background: var(--selectYellow);
+  background: var(--select);
 }
 
-#titleBox {
-  border: 6px solid var(--darkYellow);
-  background-color: var(--yellow);
-  padding-top: 35px;
-  padding-bottom: 35px;
-  margin-bottom: 50px;
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+#navBar {
+  list-style-type: none;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.navItem {
+  float: left;
+  flex: 1;
+  margin: 0;
+  display: block;
+  color: white;
+  padding: 20px;
+  text-decoration: none;
+}
+
+#optionsItem {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .box {
-  border-radius: 4px;
-  box-shadow: 0 5px 10px 0 var(--shahowRed);
-  padding: 45px;
+  border-radius: var(--borderRadius);
+  box-shadow: 0 5px 10px 0 var(--shadowRed);
+  padding: 50px;
 }
 
 #title {
-  font-size: 115px;
-  color: var(--bgRed);
-  margin: 0px;
-  margin-bottom: 10px;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none;
-  font-family: righteous;
-}
-
-#subtitle {
-  font-size: 45px;
-  color: var(--bgRed);
-  margin: 0px;
+  font-size: 60px;
+  color: var(--titleRed);
+  margin: 0;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -100,8 +116,8 @@ body {
   display: none;
   top: -6px;
   right: -6px;
-  border-top-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 /* span[contenteditable]:empty::before { // resize text box to fit text
@@ -138,42 +154,45 @@ body {
 
 #fullOptionsDiv {
   display: flex;
-  position: absolute;
   flex-flow: column;
   z-index: 1;
-  right: 50px;
-  top: 50px;
+  position: relative;
+  top: 0;
+  right: 0;
 }
 
 #showOptions {
   display: inline-block;
-  margin-left: auto;
   font-size: 33px;
-  color: var(--placeholderBlue);
-  background-color: white;
-  border: 6px solid var(--darkerWhite);
-  border-top-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  transition: background-color 0.1s linear /* , box-shadow 0.1s linear */;
+  color: white;
+  background-color: transparent;
+  /* color: var(--placeholderBlue);
+  background-color: var(--darkWhite); */
+  border: 6px solid var(--darkWhite);
+  border-radius: var(--borderRadius);
+  margin-left: auto;
+  transition: color 0.1s linear, background-color 0.1s linear,
+    border-color 0.1s linear;
 }
 
 #showOptions:hover {
+  color: var(--placeholderBlue);
   background-color: var(--darkWhite);
-  /* box-shadow: 0 5px 10px 0 var(--shadowYellow); */
+  border-color: var(--darkerWhite);
 }
 
 #optionsDiv {
   display: none;
   background-color: white;
   flex-flow: column;
-  box-shadow: 0 5px 10px 0 var(--shadowYellow);
-  border-radius: 4px;
-  border-top-right-radius: 0px;
+  box-shadow: 0 5px 10px 0 var(--shadowWhite);
+  border-radius: var(--borderRadius);
+  border-top-right-radius: 0;
   padding: 12px;
 }
 
 .options {
-  color: black;
+  color: var(--placeholderBlue);
   font-size: 29px;
   border: none;
 }
@@ -195,8 +214,8 @@ button {
   color: var(--placeholderBlue);
   box-sizing: border-box;
   border: 6px solid var(--darkerBlue);
-  border-radius: 4px;
-  margin: 0px;
+  border-radius: var(--borderRadius);
+  margin: 0;
   padding: 12px 20px;
   transition: background-color 0.1s linear /* , box-shadow 0.1s linear */;
   font-family: alata;
@@ -214,7 +233,7 @@ button:hover:enabled {
 
 input:focus {
   background-color: var(--lightBlue);
-  /* box-shadow: 5px 5px 2px #528f9e7e; */
+  /* box-shadow: 0 5px 10px 0 #528f9e7e; */
 }
 
 button {
@@ -242,22 +261,34 @@ h2,
 }
 
 #speakText {
-  border-color: var(--darkGreen);
   display: none;
   margin-top: 10px;
 }
 
-#speakText:hover {
-  background-color: #9debaa;
-}
-
 #directions {
   font-size: 55px;
-  margin-top: 0px;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+#memTextDiv {
+  display: flex;
+  background-color: #ffffff7e;
+  border: 6px solid transparent;
+  border-radius: var(--borderRadius);
+  margin-bottom: 20px;
+}
+
+.memText {
+  font-size: 50px;
+  flex: 1;
+  padding: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0;
 }
 
 #memText {
-  font-size: 50px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -266,9 +297,58 @@ h2,
   user-select: none;
 }
 
+#memEditText {
+  display: none;
+  border: none;
+  font-family: alata;
+}
+
+#memEditText:hover,
+#memEditText:focus {
+  background-color: transparent;
+}
+
+.changeText {
+  color: var(--placeholderBlue);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  transition: color 0.1s linear;
+}
+
+#editMemText:hover {
+  background-color: transparent;
+  color: var(--darkerBlue);
+}
+
+#saveMemText,
+#closeMemText {
+  display: none;
+  margin-left: 0;
+}
+
+#saveMemText:hover {
+  background-color: transparent;
+  color: var(--darkerGreen);
+}
+
+#closeMemText:hover {
+  background-color: transparent;
+  color: var(--darkerRed);
+}
+
 .subtext {
   font-size: 50px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+}
+
+#time,
+#status {
+  display: none;
 }
 
 #memInput {
@@ -277,15 +357,15 @@ h2,
 
 #tryMemInput {
   border-right: none;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   flex: 1;
 }
 
 #enterTry,
 #resetTime {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 #tryMemDiv {
@@ -310,30 +390,25 @@ h2,
   border: 6px solid var(--darkBlue);
   background-color: var(--blue);
   margin-top: 50px;
-  flex: 1;
+  flex: 1.5;
 }
 
 #timesTitle {
   font-size: 55px;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 22px;
 }
 
 #timesSubtext {
   color: var(--lightRed);
   font-size: 51px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 #timesAverage {
   font-size: 51px;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 22px;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
 }
 
 .fa-stopwatch,
@@ -358,7 +433,7 @@ ul {
   position: relative;
   list-style-type: none;
   font-size: 50px;
-  margin: 0px;
+  margin: 0;
   margin-left: -0.1px;
   margin-bottom: 16px;
   font-family: alata;
@@ -369,13 +444,13 @@ ul {
   cursor: pointer;
 } */
 
-#badgesTitle {
+#goalsTitle {
   font-size: 55px;
   margin-top: 35px;
   margin-bottom: 22px;
 }
 
-#badgesList {
+#goalsList {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -398,20 +473,12 @@ ul {
 @media only screen and (min-width: 500px) {
   body {
     padding: 40px;
-  }
-
-  #titleBox {
-    border: 4px solid var(--darkYellow);
-  }
-
-  #fullOptionsDiv {
-    right: 40px;
-    top: 40px;
+    padding-top: 110px;
   }
 
   #showOptions {
     font-size: 30px;
-    border: 4px solid var(--darkerWhite);
+    border-width: 4px;
   }
 
   .options {
@@ -419,15 +486,11 @@ ul {
   }
 
   #title {
-    font-size: 95px;
-  }
-
-  #subtitle {
-    font-size: 28px;
+    font-size: 55px;
   }
 
   #gameBox {
-    border: 4px solid var(--darkBlue);
+    border-width: 4px;
   }
 
   #goalButton {
@@ -438,16 +501,20 @@ ul {
   input,
   button {
     font-size: 30px;
-    border: 4px solid var(--darkerBlue);
+    border-width: 4px;
   }
 
   #directions {
     font-size: 40px;
-    margin-top: 0px;
+    margin-top: 0;
   }
 
-  #memText {
+  .memText {
     font-size: 32px;
+  }
+
+  #memTextDiv {
+    border-width: 4px;
   }
 
   .subtext {
@@ -455,7 +522,7 @@ ul {
   }
 
   #timesBox {
-    border: 4px solid var(--darkBlue);
+    border-width: 4px;
   }
 
   #timesTitle {
@@ -470,7 +537,7 @@ ul {
     font-size: 31px;
   }
 
-  #badgesTitle {
+  #goalsTitle {
     font-size: 35px;
   }
 
@@ -490,21 +557,12 @@ ul {
     margin: initial;
     height: initial;
     padding: 120px;
-  }
-
-  #titleBox {
-    border: 3px solid var(--darkYellow);
-    margin-bottom: 25px;
-  }
-
-  #fullOptionsDiv {
-    right: 120px;
-    top: 120px;
+    padding-top: 155px;
   }
 
   #showOptions {
     font-size: 18px;
-    border: 3px solid var(--darkerWhite);
+    border-width: 3px;
   }
 
   .options {
@@ -512,11 +570,7 @@ ul {
   }
 
   #title {
-    font-size: 60px;
-  }
-
-  #subtitle {
-    font-size: 20px;
+    font-size: 45px;
   }
 
   #bigGameBox {
@@ -525,7 +579,7 @@ ul {
   }
 
   #gameBox {
-    border: 3px solid var(--darkBlue);
+    border-width: 3px;
   }
 
   #goalButton {
@@ -536,16 +590,20 @@ ul {
   input,
   button {
     font-size: 18px;
-    border: 3px solid var(--darkerBlue);
+    border-width: 3px;
   }
 
   #directions {
     font-size: 32px;
-    margin-top: 0px;
+    margin-top: 0;
   }
 
-  #memText {
-    font-size: 24px;
+  .memText {
+    font-size: 22px;
+  }
+
+  #memTextDiv {
+    border-width: 3px;
   }
 
   .subtext {
@@ -553,9 +611,9 @@ ul {
   }
 
   #timesBox {
-    border: 4px solid var(--darkBlue);
+    border-width: 3px;
     margin-top: 25px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   #timesTitle {
@@ -570,7 +628,7 @@ ul {
     font-size: 21px;
   }
 
-  #badgesTitle {
+  #goalsTitle {
     font-size: 24px;
   }
 
@@ -587,8 +645,8 @@ ul {
   }
 
   #timesBox {
-    border: 3px solid var(--darkBlue);
-    margin: 0px;
+    border-width: 3px;
+    margin: 0;
     margin-left: 25px;
   }
 }
