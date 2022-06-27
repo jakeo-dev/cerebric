@@ -21,20 +21,39 @@
             </div>
         </li>
 
-        <li class="navItem" id="optionsItem">
+        <li class="navItem" id="rightItem">
+
+            <!-- <div id="howToUseDiv">
+                <button class="navButton" id="howToUse" onclick="howToUse();"><i
+                        class="fa-solid fa-circle-question"></i>How to Use</button>
+            </div> -->
+
             <div id="fullOptionsDiv">
-                <button class="options" id="showOptions" onclick="showOps();"><i
-                        class="fa-solid fa-ellipsis-vertical"></i>Options</button>
+                <button class="options navButton" id="showOptions" onclick="showOps();" onmouseover="onOps();"
+                    onmouseout="offOps();"><i class="fa-solid fa-ellipsis-vertical"></i>Options</button>
+
                 <div id="optionsDiv">
-                    <button class="options setting" id="ignorePunc" onclick="toggleIgPunc();"
-                        title="Ignore punctuation when entering text">Ignore Punctuation: On</button>
-                    <button class="options setting" id="autoSetGoal" onclick="toggleSetGoal();"
-                        title="Automatically set a goal based on your past records">Auto Set Goal:
-                        Off</button>
-                    <button class="options setting" id="incorrectLimit" onclick="changeIncLim();"
-                        title="Change the limit of incorrect answers you can enter before being able to show the text">Incorrect
-                        Limit: 2</button>
+
+                    <div class="options setting" id="ignorePuncDiv" onclick="toggleIgPunc();">
+                        <h1 class="optionTitle" id="ignorePunc">Ignore Punctuation: On</h1>
+                        <h6 class="optionSubtext" id="ignorePuncSubtext">Ignore punctuation when entering text</h6>
+                    </div>
+
+                    <div class="options setting" id="autoSetGoalDiv" onclick="toggleSetGoal();">
+                        <h1 class="optionTitle" id="autoSetGoal">Auto Set Goal: Off</h1>
+                        <h6 class="optionSubtext" id="autoSetGoalSubtext">Automatically set a goal based on
+                            your past records</h6>
+                    </div>
+
+                    <div class="options setting" id="incorrectLimitDiv" onclick="changeIncLim();">
+                        <h1 class="optionTitle" id="incorrectLimit">Incorrect Limit: 2</h1>
+                        <h6 class="optionSubtext" id="incorrectLimitSubtext">Change the limit of incorrect answers
+                            you can enter before being able
+                            to show the text</h6>
+                    </div>
+
                 </div>
+
             </div>
         </li>
 
@@ -60,11 +79,11 @@
                     <h2 class="memText" id="memText"></h2>
                     <input class="memText" id="memEditText"></input>
 
-                    <button class="changeText" id="editMemText" onclick="editText();"><i
+                    <button class="changeText" id="editMemText" aria-label="Edit text" onclick="editText();"><i
                             class="fa-solid fa-pen"></i></button>
-                    <button class="changeText" id="saveMemText" onclick="saveText();"><i
+                    <button class="changeText" id="saveMemText" aria-label="Save text" onclick="saveText();"><i
                             class="fa-solid fa-check"></i></button>
-                    <button class="changeText" id="closeMemText" onclick="closeText();"><i
+                    <button class="changeText" id="closeMemText" aria-label="Don't save text" onclick="closeText();"><i
                             class="fa-solid fa-xmark"></i></button>
                 </div>
 
@@ -76,7 +95,7 @@
                     <button id="enterTry" onclick="enterTry();">Enter</button>
                     <button id="resetTime" onclick="reset();">Reset<i
                             class="fa-solid fa-arrow-rotate-right"></i></button>
-                    <button id="showText" onclick="showText();">Show Text</button>
+                    <button id="showText" onclick="showText();"><i class="fa-solid fa-eye"></i>Show Text</button>
                 </div>
 
                 <h3 id="time" class="subtext"></h3>
@@ -96,8 +115,8 @@
             </div>
 
             <div id="timesSubtextDiv">
-                <h2 id="timesSubtext"></h2>
-                <h2 id="timesAverage"></h2>
+                <h2 id="timesRecord" class="timesSubtext"></h2>
+                <h2 id="timesAverage" class="timesSubtext"></h2>
             </div>
 
             <div id="timesListDiv">
@@ -126,8 +145,8 @@
 
 <script>
 
-    console.log("v1.1.3");
-    console.log("whats new: \n **Additions** \n Edit text to memorize after setting it \n Text to memorize now shows with a highlight \n Added a favicon \n \n **Improvements** \n Auto reset goal removed, goals now always reset after reaching them \n Improvements to auto set goals \n Design improvements");
+    console.log("v1.1.4");
+    console.log("whats new: \n • New descriptions for options \n • Minor improvements: \n  - Goal is now highlighted in bold \n  - Icon for show text button \n  - Clicking off of options now closes them \n • Bug fixes");
 
     let memText;
     let step = 1;
@@ -154,10 +173,16 @@
     let recentTime;
     let j;
     let fasterThanAll = 0;
+    let tRound = 10;
+    let tCount = 0.1;
+    let tAmount = 100; // ADD a 0 to tRound and tCount, and REMOVE a 0 from tAmount, to be more specific with the times (ex. 100, 0.01, and 1000: 3.82 seconds)
 
     var darkerGreen = "#368546"; /* correct */
     var lightRed = "#d14848" /*  new record / goal reached / record */
-    var darkerRed = "#ad4337"; /* incorrect */
+    var darkerRed = "#b9483b"; /* incorrect */
+    var lightWhite = "#f7f7f7"; /* show options background on hover */
+    var darkestBlue = "#162a2c"; /* show options text color */
+    var shadowRed = "#8f313173" /* shadow for divs on background */
 
     /* document.getElementById("timesList").addEventListener("click", function (e) {
         var tgt = e.target;
@@ -175,9 +200,9 @@
 
             if (ret.length >= 2) {
                 if (average == 1 || average == 1.0) {
-                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * 10)) / 10} second`;
+                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * tRound)) / tRound} second`;
                 } else {
-                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * 10)) / 10} seconds`;
+                    document.getElementById("timesAverage").innerText = `Average: ${(Math.round(average * tRound)) / tRound} seconds`;
                 }
             } else {
                 document.getElementById("timesAverage").innerText = "";
@@ -201,16 +226,15 @@
                 document.getElementById("memInput").focus();
 
             } else {
+                document.getElementById("directions").innerText = "First, read the text and type it.";
+
                 memText = document.getElementById("memInput").value;
                 document.getElementById("memText").innerText = memText;
 
                 document.getElementById("memInput").value = "";
 
-                document.getElementById("directions").innerText = "First, read the text and type it.";
-
                 document.getElementById("enterMemDiv").style.display = "none";
                 document.getElementById("tryMemDiv").style.display = "block";
-
                 document.getElementById("nextStepDiv").style.display = "none";
 
                 step++;
@@ -218,74 +242,61 @@
             }
 
         } else if (step == 2) {
-            document.getElementById("fullEnterTryMem").style.display = "none";
-
-            document.getElementById("speakText").style.display = "block";
-
             document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
 
+            document.getElementById("fullEnterTryMem").style.display = "none";
+            document.getElementById("speakText").style.display = "block";
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 3) {
-            document.getElementById("fullEnterTryMem").style.display = "flex";
-
-            document.getElementById("tryMemInput").value = "";
+            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
 
             matches = memText.match(/\b(\w)/g); // ['U','W','U']
             acronym = matches.join('___ '); // U___ W___ U
             acronym = acronym + "___"; // U___ W___ U___
             document.getElementById("memText").innerText = acronym;
 
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("fullEnterTryMem").style.display = "flex";
             document.getElementById("speakText").style.display = "none";
-
-            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
-
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 4) {
-            document.getElementById("tryMemInput").value = "";
-            document.getElementById("memTextDiv").style.display = "none";
-
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
-            document.getElementById("status").style.display = "none";
+            document.getElementById("tryMemInput").value = "";
 
+            document.getElementById("memTextDiv").style.display = "none";
+            document.getElementById("status").style.display = "none";
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 5) {
-            document.getElementById("tryMemInput").value = "";
-
             document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
 
-            document.getElementById("status").style.display = "none";
+            document.getElementById("tryMemInput").value = "";
 
+            document.getElementById("status").style.display = "none";
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 6) {
-            // Math.round(((time * 10) / 10) - 0.1)
-            // time.toFixed(1)
+            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
 
             document.getElementById("tryMemInput").value = "";
 
-            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
-
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
             document.getElementById("timesBox").style.display = "block";
-
             document.getElementById("goalButton").style.display = "initial";
 
             /* add time to list */
@@ -293,11 +304,10 @@
             var li = document.createElement("li");
             li.className = "listEl";
 
-            if ((Math.round(time * 10)) / 10 == 1) {
-                var inputValue = `${(Math.round(time * 10)) / 10} second`;
+            if ((Math.round(time * tRound)) / tRound == 1) {
+                var inputValue = `${(Math.round(time * tRound)) / tRound} second`;
             } else {
-                var inputValue = `${(Math.round(time * 10)) / 10} seconds`;
-
+                var inputValue = `${(Math.round(time * tRound)) / tRound} seconds`;
             }
 
             icon = document.createElement("i");
@@ -316,31 +326,28 @@
             time = 0;
 
             start = function () {
-                if (step == 6 || step == 7) {
-                    start = function () { };
-                    interval = setInterval(function () {
-                        document.getElementById("time").style.display = "block";
+                start = function () { };
+                interval = setInterval(function () {
+                    document.getElementById("time").style.display = "block";
 
-                        if ((Math.round(time * 10)) / 10 == 1) {
-                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
-                        } else {
-                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
+                    if ((Math.round(time * tRound)) / tRound == 1) {
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
+                    } else {
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
+                    }
+                    // rounds number to tenth place, hundredth is too fast
 
-                        }
-                        // rounds number to tenth place, hundredth is too fast
+                    if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                        document.getElementById("status").style.display = "none";
+                    }
 
-                        if (document.getElementById("status").innerText == "Enter text to beat your record!") {
-                            document.getElementById("status").style.display = "none";
-                        }
+                    time += tCount;
 
-                        time += 0.1;
+                }, tAmount);
 
-                    }, 100);
-                }
             };
 
             step++;
-
         }
 
         document.getElementById("tryMemInput").disabled = false;
@@ -351,7 +358,7 @@
         if (document.getElementById("showText").style.display == "initial") {
             document.getElementById("memTextDiv").style.display = "none";
             document.getElementById("showText").style.display = "none";
-            document.getElementById("showText").innerText = "Show Text";
+            document.getElementById("showText").innerHTML = "<i class=\"fa-solid fa-eye\"></i>Show Text";
         }
 
         document.getElementById("tryMemInput").focus();
@@ -365,11 +372,10 @@
             interval = setInterval(function () {
                 document.getElementById("time").style.display = "block";
 
-                if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
+                if ((Math.round(time * tRound)) / tRound == 1) {
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
                 } else {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
-
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
                 }
                 // rounds number to tenth place, hundredth is too fast
 
@@ -377,9 +383,9 @@
                     document.getElementById("status").style.display = "none";
                 }
 
-                time += 0.1;
+                time += tCount;
 
-            }, 100);
+            }, tAmount);
         }
     };
 
@@ -398,31 +404,31 @@
 
         document.getElementById("memTextDiv").style.display = "none";
         document.getElementById("showText").style.display = "none";
-        document.getElementById("showText").innerText = "Show Text";
+        document.getElementById("showText").innerHTML = "<i class=\"fa-solid fa-eye\"></i>Show Text";
 
         document.getElementById("tryMemInput").focus();
 
-        if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) {
+        if (!isNaN(goal) && goal !== 0 && (Math.round(time * tRound)) / tRound <= goal) {
             goal = 0;
             document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Set Goal";
         }
 
         if (auSeGo) {
-            if (document.getElementById("timesSubtext").innerText == "") {
-                goal = (Math.round((average - (average * 0.1)) * 10)) / 10;
+            if (document.getElementById("timesRecord").innerText == "") {
+                goal = (Math.round((average - (average * 0.1)) * tRound)) / tRound;
 
             } else {
-                goal = (Math.round((record - (0.4 * (average - record)) + (0.1 * (average))) * 10)) / 10;
+                goal = (Math.round((record - (0.4 * (average - record)) + (0.1 * (average))) * tRound)) / tRound;
 
             }
 
             if (goal <= 0 || goal > 3600) {
 
-                if (document.getElementById("timesSubtext").innerText == "") {
-                    goal = (Math.round((average - (average * 0.05)) * 10)) / 10;
+                if (document.getElementById("timesRecord").innerText == "") {
+                    goal = (Math.round((average - (average * 0.05)) * tRound)) / tRound;
 
                 } else {
-                    goal = (Math.round((record - (0.25 * (average - record)) + (0.2 * (average))) * 10)) / 10;
+                    goal = (Math.round((record - (0.25 * (average - record)) + (0.2 * (average))) * tRound)) / tRound;
 
                 }
 
@@ -432,17 +438,13 @@
 
             } else {
                 if (screen.width < 1100) {
-                    if (goal == 1) {
-                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
-                    } else {
-                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
-                    }
+                    document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} sec.</b>`;
 
                 } else if (screen.width >= 1100) {
                     if (goal == 1) {
-                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " second";
+                        document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} second</b>`;
                     } else {
-                        document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " seconds";
+                        document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} seconds</b>`;
                     }
                 }
             }
@@ -456,11 +458,10 @@
                 interval = setInterval(function () {
                     document.getElementById("time").style.display = "block";
 
-                    if ((Math.round(time * 10)) / 10 == 1) {
-                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
+                    if ((Math.round(time * tRound)) / tRound == 1) {
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
                     } else {
-                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
-
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
                     }
                     // rounds number to tenth place, hundredth is too fast
 
@@ -468,9 +469,9 @@
                         document.getElementById("status").style.display = "none";
                     }
 
-                    time += 0.1;
+                    time += tCount;
 
-                }, 100);
+                }, tAmount);
             }
         };
 
@@ -502,11 +503,10 @@
             if (step == 6) {
                 document.getElementById("time").style.display = "block";
 
-                if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
+                if ((Math.round(time * tRound)) / tRound == 1) {
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
                 } else {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
-
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
                 }
 
                 clearInterval(interval); // stops timer
@@ -518,24 +518,23 @@
             } else if (step == 7) {
                 document.getElementById("time").style.display = "block";
 
-                if ((Math.round(time * 10)) / 10 == 1) {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
+                if ((Math.round(time * tRound)) / tRound == 1) {
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
                 } else {
-                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
-
+                    document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
                 }
 
-                recentTime = (Math.round(time * 10)) / 10;
+                recentTime = (Math.round(time * tRound)) / tRound;
 
                 /* add time to list */
 
                 li = document.createElement("li");
                 li.className = "listEl";
 
-                if ((Math.round(time * 10)) / 10 == 1) {
-                    inputValue = `${(Math.round(time * 10)) / 10} second`;
+                if ((Math.round(time * tRound)) / tRound == 1) {
+                    inputValue = `${(Math.round(time * tRound)) / tRound} second`;
                 } else {
-                    inputValue = `${(Math.round(time * 10)) / 10} seconds`;
+                    inputValue = `${(Math.round(time * tRound)) / tRound} seconds`;
 
                 }
 
@@ -559,7 +558,7 @@
 
                     sum = +sum + +j;
 
-                    if ((Math.round(time * 10)) / 10 <= j) { // current time less than or equal to time looked at in array
+                    if ((Math.round(time * tRound)) / tRound <= j) { // current time less than or equal to time looked at in array
                         fasterThanAll++; // should increase every time it sees the time is less than another time
                     }
                 }
@@ -573,24 +572,24 @@
                     document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! New record!";
                     document.getElementById("status").style.color = lightRed;
 
-                    if ((Math.round(time * 10)) / 10 == 1) {
-                        document.getElementById("timesSubtext").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * 10)) / 10} second`;
+                    if ((Math.round(time * tRound)) / tRound == 1) {
+                        document.getElementById("timesRecord").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * tRound)) / tRound} second`;
                     } else {
-                        document.getElementById("timesSubtext").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * 10)) / 10} seconds`;
+                        document.getElementById("timesRecord").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Record: ${(Math.round(time * tRound)) / tRound} seconds`;
                     }
 
-                    record = (Math.round(time * 10)) / 10;
+                    record = (Math.round(time * tRound)) / tRound;
                 }
 
                 if (ret.length >= 2) {
                     if (average == 1 || average == 1.0) {
-                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * 10)) / 10} second`;
+                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * tRound)) / tRound} second`;
                     } else {
-                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * 10)) / 10} seconds`;
+                        document.getElementById("timesAverage").innerHTML = `<i class="fa-solid fa-stopwatch"></i>Average: ${(Math.round(average * tRound)) / tRound} seconds`;
                     }
                 }
 
-                if (!isNaN(goal) && goal !== 0 && (Math.round(time * 10)) / 10 <= goal) { // if the goal is a number (not null) and is not 0 and the time is less than the goal
+                if (!isNaN(goal) && goal !== 0 && (Math.round(time * tRound)) / tRound <= goal) { // if the goal is a number (not null) and is not 0 and the time is less than the goal
                     document.getElementById("status").style.display = "block";
 
                     document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-check\"></i>Correct! You reached your goal!";
@@ -599,13 +598,15 @@
                     li = document.createElement("li");
                     li.className = "listEl";
 
-                    if ((Math.round(time * 10)) / 10 == 1) {
-                        sec = `${(Math.round(time * 10)) / 10} second`;
-                    } else {
-                        sec = `${(Math.round(time * 10)) / 10} seconds`;
-                    }
+                    if ((Math.round(time * tRound)) / tRound == 1) {
+                        sec = `${(Math.round(time * tRound)) / tRound} second`;
+                        goalSec = document.getElementById("goalButton").innerText.replace("Goal: ", "").replace("sec.", "second");
 
-                    goalSec = document.getElementById("goalButton").innerText.replace("Goal: ", "");
+                    } else {
+                        sec = `${(Math.round(time * tRound)) / tRound} seconds`;
+                        goalSec = document.getElementById("goalButton").innerText.replace("Goal: ", "").replace("sec.", "seconds");
+
+                    }
 
                     icon = document.createElement("i");
                     icon.className = "fa-solid fa-bullseye";
@@ -664,6 +665,8 @@
             document.getElementById("status").innerHTML = "<i class=\"fa-solid fa-circle-xmark\"></i>Incorrect!";
             document.getElementById("status").style.color = darkerRed;
 
+            document.getElementById("tryMemInput").focus();
+
             incorrect++;
 
             if (step == 4 || step == 5 || step == 6 || step == 7) {
@@ -716,13 +719,13 @@
     }
 
     function showText() {
-        if (document.getElementById("showText").innerText == "Show Text") {
+        if (document.getElementById("showText").innerHTML == "<i class=\"fa-solid fa-eye\"></i>Show Text") {
             document.getElementById("memText").innerText = memText; // for step 4
             document.getElementById("memTextDiv").style.display = "flex";
-            document.getElementById("showText").innerText = "Hide Text";
+            document.getElementById("showText").innerHTML = "<i class=\"fa-solid fa-eye-slash\"></i>Hide Text";
 
         } else {
-            document.getElementById("showText").innerText = "Show Text";
+            document.getElementById("showText").innerHTML = "<i class=\"fa-solid fa-eye\"></i>Show Text";
 
             if (step == 4) {
                 document.getElementById("memText").innerText = acronym;
@@ -778,20 +781,16 @@
             alert("Please enter a lower number");
 
         } else {
-            goal = (Math.round(userEntered * 10)) / 10;
+            goal = (Math.round(userEntered * tRound)) / tRound;
 
             if (screen.width < 1100) {
-                if (goal == 1) {
-                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
-                } else {
-                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " sec.";
-                }
+                document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} sec.</b>`;
 
             } else if (screen.width >= 1100) {
                 if (goal == 1) {
-                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " second";
+                    document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} second</b>`;
                 } else {
-                    document.getElementById("goalButton").innerHTML = "<i class=\"fa-solid fa-bullseye\"></i>Goal: " + goal + " seconds";
+                    document.getElementById("goalButton").innerHTML = `<i class=\"fa-solid fa-bullseye\"></i>Goal: <b>${goal} seconds</b>`;
                 }
             }
 
@@ -800,14 +799,32 @@
         }
     }
 
+    /* hides options when clicking off */
+
+    document.addEventListener('click', function handleClickOutsideBox(event) {
+        if (!document.getElementById("fullOptionsDiv").contains(event.target)) {
+            document.getElementById("optionsDiv").style.display = "none";
+
+            document.getElementById("showOptions").style.boxShadow = "none";
+            document.getElementById("showOptions").style.borderBottomLeftRadius = "5px";
+            document.getElementById("showOptions").style.borderBottomRightRadius = "5px";
+            document.getElementById("showOptions").style.backgroundColor = "transparent";
+            document.getElementById("showOptions").style.color = lightWhite;
+        }
+    });
+
+    /* */
+
+
     function showOps() {
         if (document.getElementById("optionsDiv").style.display == "flex") {
             document.getElementById("optionsDiv").style.display = "none";
 
             document.getElementById("showOptions").style.boxShadow = "none";
-
             document.getElementById("showOptions").style.borderBottomLeftRadius = "5px";
             document.getElementById("showOptions").style.borderBottomRightRadius = "5px";
+            document.getElementById("showOptions").style.backgroundColor = "transparent";
+            document.getElementById("showOptions").style.color = lightWhite;
 
             if (document.getElementById("memInput").value == "ravioli ravioli give me the formuoli" || document.getElementById("tryMemInput").value == "ravioli ravioli give me the formuoli") {
                 document.getElementById("devButton").style.display = "block";
@@ -816,12 +833,29 @@
         } else {
             document.getElementById("optionsDiv").style.display = "flex";
 
-            document.getElementById("showOptions").style.boxShadow = "0 5px 10px 0 #8f313173";
-
+            document.getElementById("showOptions").style.boxShadow = "0 5px 10px 0 " + shadowRed;
             document.getElementById("showOptions").style.borderBottomLeftRadius = "0";
             document.getElementById("showOptions").style.borderBottomRightRadius = "0";
+            document.getElementById("showOptions").style.backgroundColor = lightWhite;
+            document.getElementById("showOptions").style.color = lightRed;
         }
     }
+
+    /* hovering doesnt change color in css after clicking the button for some reason */
+
+    function onOps() {
+        document.getElementById("showOptions").style.backgroundColor = lightWhite;
+        document.getElementById("showOptions").style.color = lightRed;
+    }
+
+    function offOps() {
+        if (document.getElementById("optionsDiv").style.display !== "flex") {
+            document.getElementById("showOptions").style.backgroundColor = "transparent";
+            document.getElementById("showOptions").style.color = lightWhite;
+        }
+    }
+
+    /* */
 
     function editText() {
         document.getElementById("memEditText").value = memText;
@@ -871,13 +905,13 @@
         document.getElementById("memEditText").innerText = memText;
         document.getElementById("memEditText").blur();
 
-        if (document.getElementById("nextStepDiv").style.display == "block") {
+        /* if (document.getElementById("nextStepDiv").style.display == "block") {
             document.getElementById("nextStep").focus();
         } else if (document.getElementById("fullEnterTryMem").style.display !== "none") {
             document.getElementById("tryMemInput").focus();
         } else {
             document.getElementById("speakText").focus();
-        }
+        } */
     }
 
     function closeText() {
@@ -903,13 +937,13 @@
         document.getElementById("memEditText").innerText = memText;
         document.getElementById("memEditText").blur();
 
-        if (document.getElementById("nextStepDiv").style.display == "block") {
+        /* if (document.getElementById("nextStepDiv").style.display == "block") {
             document.getElementById("nextStep").focus();
         } else if (document.getElementById("fullEnterTryMem").style.display !== "none") {
             document.getElementById("tryMemInput").focus();
         } else {
             document.getElementById("speakText").focus();
-        }
+        } */
     }
 
     document.body.onkeyup = function (event) {
@@ -947,113 +981,108 @@
         }
     }
 
+
     function devThing() {
         if (step == 7) {
             step = 0;
-            document.getElementById("memTextDiv").style.display = "none";
 
             document.getElementById("directions").innerText = "";
-
+            document.getElementById("memTextDiv").style.display = "none";
             document.getElementById("enterMemDiv").style.display = "block";
             document.getElementById("tryMemDiv").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "block";
+            document.getElementById("timesBox").style.display = "none";
+            document.getElementById("goalButton").style.display = "none";
 
             step++;
 
         } else if (step == 1) {
+            document.getElementById("directions").innerText = "First, read the text and type it.";
+
             memText = document.getElementById("memInput").value;
             document.getElementById("memText").innerText = memText;
 
-            document.getElementById("directions").innerText = "First, read the text and type it.";
+            document.getElementById("memInput").value = "";
 
             document.getElementById("enterMemDiv").style.display = "none";
             document.getElementById("tryMemDiv").style.display = "block";
-
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 2) {
-            document.getElementById("fullEnterTryMem").style.display = "none";
-
-            document.getElementById("speakText").style.display = "block";
-
             document.getElementById("directions").innerText = "Now, listen to the text being spoken.";
 
+            document.getElementById("fullEnterTryMem").style.display = "none";
+            document.getElementById("speakText").style.display = "block";
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 3) {
-            document.getElementById("fullEnterTryMem").style.display = "flex";
-
-            document.getElementById("tryMemInput").value = "";
+            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
 
             matches = memText.match(/\b(\w)/g); // ['U','W','U']
             acronym = matches.join('___ '); // U___ W___ U
             acronym = acronym + "___"; // U___ W___ U___
             document.getElementById("memText").innerText = acronym;
 
+            document.getElementById("tryMemInput").value = "";
+
+            document.getElementById("fullEnterTryMem").style.display = "flex";
             document.getElementById("speakText").style.display = "none";
-
-            document.getElementById("directions").innerText = "Now, read the first letter of each word and type it.";
-
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 4) {
-            document.getElementById("tryMemInput").value = "";
-            document.getElementById("memTextDiv").style.display = "none";
-
             document.getElementById("directions").innerText = "Now, type the text without reading it.";
 
-            document.getElementById("status").style.display = "none";
+            document.getElementById("tryMemInput").value = "";
 
+            document.getElementById("memTextDiv").style.display = "none";
+            document.getElementById("status").style.display = "none";
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 5) {
-            document.getElementById("tryMemInput").value = "";
-
             document.getElementById("directions").innerText = "Now, type the text as fast as you can.";
 
-            document.getElementById("status").style.display = "none";
+            document.getElementById("tryMemInput").value = "";
 
+            document.getElementById("status").style.display = "none";
             document.getElementById("nextStepDiv").style.display = "none";
 
             step++;
 
         } else if (step == 6) {
-            // Math.round(((time * 10) / 10) - 0.1)
-            // time.toFixed(1)
+            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
 
             document.getElementById("tryMemInput").value = "";
 
-            document.getElementById("directions").innerText = "Keep trying to type the text faster!";
-
             document.getElementById("status").style.display = "none";
-
             document.getElementById("nextStepDiv").style.display = "none";
             document.getElementById("timesBox").style.display = "block";
-
             document.getElementById("goalButton").style.display = "initial";
 
             /* add time to list */
 
             var li = document.createElement("li");
-            if ((Math.round(time * 10)) / 10 == 1) {
-                var inputValue = `${(Math.round(time * 10)) / 10} second`;
-            } else {
-                var inputValue = `${(Math.round(time * 10)) / 10} seconds`;
+            li.className = "listEl";
 
+            if ((Math.round(time * tRound)) / tRound == 1) {
+                var inputValue = `${(Math.round(time * tRound)) / tRound} second`;
+            } else {
+                var inputValue = `${(Math.round(time * tRound)) / tRound} seconds`;
             }
+
+            icon = document.createElement("i");
+            icon.className = "fa-solid fa-stopwatch";
+            li.appendChild(icon);
+
             var text = document.createTextNode(inputValue);
             li.appendChild(text);
 
@@ -1066,31 +1095,28 @@
             time = 0;
 
             start = function () {
-                if (step == 6 || step == 7) {
-                    start = function () { };
-                    interval = setInterval(function () {
-                        document.getElementById("time").style.display = "block";
+                start = function () { };
+                interval = setInterval(function () {
+                    document.getElementById("time").style.display = "block";
 
-                        if ((Math.round(time * 10)) / 10 == 1) {
-                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} second`;
-                        } else {
-                            document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * 10)) / 10} seconds`;
+                    if ((Math.round(time * tRound)) / tRound == 1) {
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} second`;
+                    } else {
+                        document.getElementById("time").innerHTML = `<i class="fa-solid fa-stopwatch"></i>${(Math.round(time * tRound)) / tRound} seconds`;
+                    }
+                    // rounds number to tenth place, hundredth is too fast
 
-                        }
-                        // rounds number to tenth place, hundredth is too fast
+                    if (document.getElementById("status").innerText == "Enter text to beat your record!") {
+                        document.getElementById("status").style.display = "none";
+                    }
 
-                        if (document.getElementById("status").innerText == "Enter text to beat your record!") {
-                            document.getElementById("status").style.display = "none";
-                        }
+                    time += tCount;
 
-                        time += 0.1;
+                }, tAmount);
 
-                    }, 100);
-                }
             };
 
             step++;
-
         }
 
         document.getElementById("devButton").innerText = "step: " + step;
