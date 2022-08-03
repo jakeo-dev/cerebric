@@ -1,46 +1,63 @@
 :root {
-  --bgRed: #d14848; /* background */
-  --titleRed: #ffd0d0; /* background */
-  --shadowRed: #8f313173; /* shadow for divs on background */
-  --select: #52a4b38f; /* text selection color */
+  --lightRed: #d14848; /* background / new record / goal reached / record */
+  --titleRed: #ffd0d0; /* title */
+  --red: #ee9ea6; /* hover on reset */
+  --darkRed: #a83d46; /* reset border */
+  --darkerRed: #bd493c; /* incorrect */
+
+  --select: #4c99a78f; /* text selection color */
   --lightBlue: #6ce5e9; /* hover on buttons or input */
   --blue: #56cfd8; /* background for game and times divs */
   --darkBlue: #49afb3; /* border for game and times divs */
-  --darkerBlue: #3c8b91; /* border for buttons and input */
-  --darkestBlue: #162a2c; /* default text color */
+  --darkerBlue: #3c8b91; /* border for buttons and input, background for next and skip */
+  --darkestBlue: #2d6a6e; /* next and skip on hover */
+  --textBlue: #162a2c; /* default text color */
+  --lightTextBlue: #3c5758; /* lighter text color */
+
+  --lighterWhite: #fdfdfd; /* advance step buttons text color */
   --lightWhite: #f7f7f7; /* optionsdiv background */
-  --darkWhite: #e0e0e0; /* options on hover */
-  --darkerWhite: #c7c7c7; /* border for options and options on hover*/
-  --darkestWhite: #a3a3a3; /* border for options on hover */
-  --moreDarkestWhite: #888888; /* option subtext */
-  --shadowWhite: #5c5c5c6c; /* border for options on hover */
-  --disabled: #647c86; /* text of disabled buttons and inputs */
-  --darkDisabled: #6d8c9b; /* border for disabled buttons and inputs */
-  --green: #9debaa; /* hover on speak */
-  --darkGreen: #4e885f; /* speak border */
-  --darkerGreen: #368546; /* correct */
-  --lightRed: #d14848; /* new record / goal reached / record */
-  --red: #f1b0b5; /* hover on reset */
-  --darkRed: #a14048; /* reset border */
-  --darkerRed: #bd493c; /* incorrect */
+  --darkWhite: #dbdedf; /* options on hover */
+  --darkerWhite: #c0c4c5; /* border for options and options on hover*/
+  --darkestWhite: #9da5a7; /* text color for disabled filled */
+  --moreDarkestWhite: #82898b; /* option subtext */
+  --mostDarkestWhite: #494e50; /* sub option title */
+  --semiTransparentWhite: #ffffff7e;
+
+  --shadow: #0000002e; /* shadow for everything on hover */
+
+  --disabled: #60757e; /* text of disabled buttons and inputs */
+  --darkDisabled: #7192a1; /* border for disabled buttons and inputs */
+  --disabledFilled: #476977; /* disabled fill-colored buttons */
+
+  --green: #368546; /* correct and save text button on hover */
+
+  --borderWidthSm: 6px;
+  --borderWidthMd: 4px;
+  --borderWidthLg: 3px;
+
+  --borderWidthSmNeg: -6px;
+  --borderWidthMdNeg: -4px;
+  --borderWidthLgNeg: -3px;
 
   --borderRadius: 6px;
-
-  /* unused */
-  --yellow: #ff8e8e; /* title div */
-  --darkYellow: #c97171; /* title div border */
-  --shadowYellow: #8f863173; /* shadow for buttons in title div */
+  --transDuration: 0.08s;
 }
 
 body {
-  background-color: var(--bgRed);
+  background-color: var(--lightRed);
   margin: 0;
   padding: 50px;
   padding-top: 140px;
+  cursor: default;
 }
 
-#devButton {
+#devDiv {
   display: none;
+  font-size: 0; /* removes whitespace between buttons */
+}
+
+.devButton {
+  margin-right: 10px;
 }
 
 ::selection {
@@ -84,7 +101,7 @@ ul {
 
 .box {
   border-radius: var(--borderRadius);
-  box-shadow: 0 5px 10px 3px var(--shadowRed);
+  box-shadow: 0 3px 10px 3px var(--shadow);
   padding: 50px;
 }
 
@@ -109,21 +126,30 @@ ul {
 #gameBox {
   position: relative;
   background-color: var(--blue);
-  border: 6px solid var(--darkBlue);
+  border: var(--borderWidthSm) solid var(--darkBlue);
   flex: 5;
 }
 
 #goalButton {
-  position: absolute;
   display: none;
-  top: -6px;
-  right: -6px;
+  font-size: 53px;
+  top: var(--borderWidthSm);
+  right: var(--borderWidthSm);
+  border: none;
   border-top-left-radius: 0;
   border-bottom-right-radius: 0;
+  padding: 0;
+  margin-left: 8px;
+  margin-bottom: 12px;
+}
+
+#goalButton:hover:enabled {
+  background-color: transparent;
+  text-decoration: underline;
 }
 
 /* span[contenteditable]:empty::before { // resize text box to fit text
-  content: "Enter text to memorize";
+  content: 'Enter text to memorize';
   color: black;
   opacity: 0.4;
   cursor: text;
@@ -135,18 +161,18 @@ ul {
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--darkestBlue);
+  color: var(--textBlue);
   opacity: 0.4; /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: var(--darkestBlue);
+  color: var(--textBlue);
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: var(--darkestBlue);
+  color: var(--textBlue);
 }
 
 #showText {
@@ -158,13 +184,15 @@ input,
 button {
   font-size: 52px;
   background-color: transparent;
-  color: var(--darkestBlue);
+  color: var(--textBlue);
   box-sizing: border-box;
-  border: 6px solid var(--darkerBlue);
+  border: var(--borderWidthSm) solid var(--darkerBlue);
   border-radius: var(--borderRadius);
   margin: 0;
   padding: 12px 20px;
-  transition: background-color 0.1s linear /* , box-shadow 0.1s linear */;
+  transition: background-color var(--transDuration) linear,
+    border-color var(--transDuration) linear
+      /* , box-shadow var(--transDuration) linear */;
   font-family: alata;
 }
 
@@ -218,10 +246,10 @@ h2,
   background-color: var(--lightWhite);
   flex-flow: column;
   z-index: 1;
-  box-shadow: 0 5px 10px 3px var(--shadowWhite);
+  box-shadow: 0 3px 10px 3px var(--shadow);
   border-radius: var(--borderRadius);
   border-top-right-radius: 0;
-  padding: 12px;
+  padding: 10px;
 }
 
 .navButton {
@@ -229,17 +257,18 @@ h2,
   font-size: 43px;
   color: white;
   background-color: transparent;
-  /* color: var(--darkestBlue);
+  /* color: var(--textBlue);
   background-color: var(--darkWhite); */
-  border: 6px solid var(--lightWhite);
+  border: var(--borderWidthSm) solid var(--lightWhite);
   border-radius: var(--borderRadius);
   margin-left: auto;
-  transition: color 0.1s linear, background-color 0.1s linear,
-    border-color 0.1s linear;
+  transition: color var(--transDuration) linear,
+    background-color var(--transDuration) linear,
+    border-color var(--transDuration) linear;
 }
 
 .navButton:hover:enabled {
-  color: var(--bgRed);
+  color: var(--lightRed);
   background-color: var(--lightWhite);
 }
 
@@ -247,22 +276,45 @@ h2,
   text-align: right;
   border-radius: var(--borderRadius);
   padding: 14px 16px;
-  margin-bottom: 8px;
+  margin-top: 10px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
   cursor: pointer;
-  transition: background-color 0.1s linear;
+  transition: background-color var(--transDuration) linear;
 }
 
-.setting:last-child {
-  margin-bottom: 0;
+.subSetting {
+  display: none;
+  text-align: right;
+  border-radius: var(--borderRadius);
+  padding: 10px 16px 14px 16px;
+  margin-top: 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  cursor: pointer;
+  transition: background-color var(--transDuration) linear;
 }
 
-.setting:hover {
+.setting:first-child {
+  margin-top: 0;
+}
+
+.setting:hover,
+.subSetting:hover {
   background-color: var(--darkWhite);
 }
 
 .optionTitle {
   font-size: 44px;
-  color: var(--darkestBlue);
+  color: var(--textBlue);
   margin: 0;
   margin-bottom: 6px;
 }
@@ -276,41 +328,57 @@ h2,
   font-family: alata;
 }
 
+.subOptionTitle {
+  font-size: 40px;
+  color: var(--mostDarkestWhite);
+  margin: 0;
+}
+
+.subOptionSubtext {
+  font-size: 36px;
+  color: var(--moreDarkestWhite);
+  text-align: right;
+  white-space: pre-line;
+  margin: 0;
+  font-family: alata;
+}
+
 #howToUse {
   margin-right: 10px;
 }
 
-.disabled {
-  color: var(--disabled);
-  border-color: var(--darkDisabled);
-  cursor: default;
-}
-
 #speakText {
   display: none;
-  margin-top: 10px;
 }
 
 #directions {
   font-size: 55px;
+  color: var(--textBlue);
   margin: 0;
   margin-bottom: 30px;
 }
 
+#step {
+  font-size: 40px;
+  color: var(--lightTextBlue);
+  margin: 0;
+  margin-bottom: 8px;
+}
+
 #memTextDiv {
-  display: flex;
-  background-color: #ffffff7e;
-  border: 6px solid transparent;
+  display: none;
+  background-color: var(--semiTransparentWhite);
+  border-bottom: var(--borderWidthSm) solid transparent;
   border-radius: var(--borderRadius);
+  padding: 3px 3px 0 3px;
   margin-bottom: 20px;
 }
 
 .memText {
   font-size: 50px;
+  color: var(--textBlue);
   flex: 1;
-  padding: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 10px 16px;
   margin: 0;
 }
 
@@ -335,7 +403,7 @@ h2,
 }
 
 .changeText {
-  color: var(--darkestBlue);
+  color: var(--textBlue);
   border: none;
   display: flex;
   justify-content: center;
@@ -343,7 +411,7 @@ h2,
   padding: 0;
   margin: 15px;
   margin-right: 20px;
-  transition: color 0.1s linear;
+  transition: color var(--transDuration) linear;
 }
 
 #editMemText:hover {
@@ -359,7 +427,7 @@ h2,
 
 #saveMemText:hover {
   background-color: transparent;
-  color: var(--darkerGreen);
+  color: var(--green);
 }
 
 #closeMemText:hover {
@@ -373,13 +441,51 @@ h2,
   margin-bottom: 0;
 }
 
-#time,
+#timeDiv,
 #status {
   display: none;
 }
 
+#timeDiv {
+  align-items: center;
+}
+
+#time {
+  color: var(--textBlue);
+}
+
+#timeIcon {
+  color: var(--textBlue);
+  font-size: 50px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: color var(--transDuration) linear;
+}
+
+#timeIcon:hover {
+  color: var(--lightTextBlue);
+}
+
 #memInput {
   width: 100%;
+}
+
+#countDiv {
+  font-size: 0; /* removes whitespace between word and letter counts */
+  margin-top: 15px;
+}
+
+.count {
+  display: inline-block;
+  font-size: 40px;
+  background-color: var(--lightBlue);
+  color: var(--textBlue);
+  border-radius: 30px;
+  padding: 5px 11px 8px 11px;
+  margin: 0;
+  margin-right: 10px;
+  font-family: alata;
 }
 
 #tryMemInput {
@@ -408,13 +514,41 @@ h2,
   background-color: var(--red);
 }
 
-#nextStepDiv {
+#nextStepDiv,
+#skipStepDiv {
   margin-top: 60px;
+}
+
+#skipStepDiv {
+  display: none;
+}
+
+.advanceStep {
+  background-color: var(--darkerBlue);
+  color: var(--lighterWhite);
+}
+
+.advanceStep:hover:enabled {
+  background-color: var(--darkestBlue);
+  border-color: var(--darkestBlue);
+}
+
+.disabled {
+  color: var(--disabled);
+  border-color: var(--darkDisabled);
+  cursor: default;
+}
+
+.disabledFilled {
+  color: var(--darkestWhite);
+  background-color: var(--disabledFilled);
+  border-color: var(--disabledFilled);
+  cursor: default;
 }
 
 #timesBox {
   display: none;
-  border: 6px solid var(--darkBlue);
+  border: var(--borderWidthSm) solid var(--darkBlue);
   background-color: var(--blue);
   margin-top: 50px;
   flex: 1.5;
@@ -422,12 +556,14 @@ h2,
 
 #timesTitle {
   font-size: 55px;
-  margin-top: 0;
+  color: var(--textBlue);
+  margin: 0;
   margin-bottom: 22px;
 }
 
 .timesSubtext {
   font-size: 51px;
+  color: var(--textBlue);
   margin: 0;
   margin-bottom: 18px;
 }
@@ -436,13 +572,21 @@ h2,
   color: var(--lightRed);
 }
 
+#timesSubtextEl,
+#goalsSubtext {
+  font-size: 50px;
+  margin: 0;
+}
+
 .fa-stopwatch,
 .fa-scroll,
 .fa-bullseye,
 .fa-circle-check,
 .fa-circle-xmark,
 .fa-eye,
-.fa-eye-slash {
+.fa-eye-slash,
+.fa-lightbulb,
+.fa-hashtag {
   margin-right: 8px;
 }
 
@@ -453,11 +597,13 @@ h2,
 
 .fa-arrow-right,
 .fa-arrow-rotate-right,
-.fa-volume-high {
+.fa-volume-high,
+.fa-angles-right {
   margin-left: 8px;
 }
 
 .listEl {
+  color: var(--textBlue);
   position: relative;
   list-style-type: none;
   font-size: 50px;
@@ -476,16 +622,17 @@ h2,
   cursor: pointer;
 } */
 
-#goalsTitle {
-  font-size: 55px;
-  border-top: 6px solid var(--darkBlue);
-  padding-top: 35px;
+.line {
+  border-top: var(--borderWidthSm) solid var(--darkBlue);
   margin-top: 35px;
-  margin-bottom: 22px;
+  margin-bottom: 35px;
 }
 
-#goalsSubtext {
+#goalsTitle {
+  font-size: 55px;
+  color: var(--textBlue);
   margin: 0;
+  margin-bottom: 22px;
 }
 
 #goalsList {
@@ -516,11 +663,11 @@ h2,
 
   .navButton {
     font-size: 40px;
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   #optionsDiv {
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   .optionTitle {
@@ -531,28 +678,43 @@ h2,
     font-size: 24px;
   }
 
+  .subOptionTitle {
+    font-size: 26px;
+  }
+
+  .subOptionSubtext {
+    font-size: 24px;
+  }
+
   #title {
     font-size: 75px;
   }
 
+  #nextStep,
+  #skipStep {
+    border-width: var(--borderWidthMd);
+  }
+
   #gameBox {
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   #goalButton {
-    top: -4px;
-    right: -4px;
+    font-size: 36px;
   }
 
   input,
   button {
     font-size: 35px;
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   #directions {
     font-size: 40px;
-    margin-top: 0;
+  }
+
+  #step {
+    font-size: 25px;
   }
 
   .memText {
@@ -560,15 +722,24 @@ h2,
   }
 
   #memTextDiv {
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   .subtext {
     font-size: 32px;
   }
 
+  #timeIcon {
+    color: var(--textBlue);
+    font-size: 32px;
+  }
+
+  .count {
+    font-size: 30px;
+  }
+
   #timesBox {
-    border-width: 4px;
+    border-width: var(--borderWidthMd);
   }
 
   #timesTitle {
@@ -579,9 +750,17 @@ h2,
     font-size: 31px;
   }
 
+  #timesSubtextEl,
+  #goalsSubtext {
+    font-size: 30px;
+  }
+
+  .line {
+    border-width: var(--borderWidthMd);
+  }
+
   #goalsTitle {
     font-size: 35px;
-    border-width: 4px;
   }
 
   .listEl {
@@ -605,11 +784,11 @@ h2,
 
   .navButton {
     font-size: 18px;
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
   }
 
   #optionsDiv {
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
   }
 
   .optionTitle {
@@ -620,8 +799,21 @@ h2,
     font-size: 14px;
   }
 
+  .subOptionTitle {
+    font-size: 16px;
+  }
+
+  .subOptionSubtext {
+    font-size: 14px;
+  }
+
   #title {
     font-size: 45px;
+  }
+
+  #nextStep,
+  #skipStep {
+    border-width: var(--borderWidthLg);
   }
 
   #bigGameBox {
@@ -630,23 +822,25 @@ h2,
   }
 
   #gameBox {
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
   }
 
   #goalButton {
-    top: -3px;
-    right: -3px;
+    font-size: 19px;
   }
 
   input,
   button {
     font-size: 18px;
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
   }
 
   #directions {
     font-size: 32px;
-    margin-top: 0;
+  }
+
+  #step {
+    font-size: 20px;
   }
 
   .memText {
@@ -654,15 +848,24 @@ h2,
   }
 
   #memTextDiv {
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
   }
 
   .subtext {
     font-size: 22px;
   }
 
+  #timeIcon {
+    color: var(--textBlue);
+    font-size: 22px;
+  }
+
+  .count {
+    font-size: 16px;
+  }
+
   #timesBox {
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
     margin-top: 25px;
     margin-bottom: 0;
   }
@@ -675,9 +878,17 @@ h2,
     font-size: 21px;
   }
 
+  #timesSubtextEl,
+  #goalsSubtext {
+    font-size: 20px;
+  }
+
+  .line {
+    border-width: var(--borderWidthLg);
+  }
+
   #goalsTitle {
     font-size: 24px;
-    border-width: 3px;
   }
 
   .fa-stopwatch,
@@ -686,7 +897,9 @@ h2,
   .fa-circle-check,
   .fa-circle-xmark,
   .fa-eye,
-  .fa-eye-slash {
+  .fa-eye-slash,
+  .fa-lightbulb,
+  .fa-hashtag {
     margin-right: 5px;
   }
 
@@ -697,7 +910,8 @@ h2,
 
   .fa-arrow-right,
   .fa-arrow-rotate-right,
-  .fa-volume-high {
+  .fa-volume-high,
+  .fa-angles-right {
     margin-left: 5px;
   }
 
@@ -714,7 +928,7 @@ h2,
   }
 
   #timesBox {
-    border-width: 3px;
+    border-width: var(--borderWidthLg);
     margin: 0;
     margin-left: 25px;
   }
