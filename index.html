@@ -7,6 +7,8 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
     <link href='cerebric-logo-inverted.ico' rel='shortcut icon' type='image/ico'>
     <link href='style.css' rel='stylesheet'>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script> -->
 </head>
 
 <body>
@@ -36,41 +38,42 @@
 
             <div id='fullOptionsDiv'>
                 <button class='options navButton' id='showOptions' onclick='showOps();' onmouseover='onOps();'
-                    onmouseout='offOps();'><i class='fa-solid fa-ellipsis-vertical'></i>Options</button>
+                    onmouseout='offOps();'><i class='fa-solid fa-ellipsis-vertical'
+                        aria-hidden=true></i>Options</button>
 
                 <div id='optionsDiv'>
 
-                    <div class='options setting' id='ignorePuncDiv' onclick='toggleIgPunc();'>
+                    <button class='options setting' id='ignorePuncDiv' onclick='toggleIgPunc();'>
                         <h1 class='optionTitle' id='ignorePunc'>Ignore Punctuation: On</h1>
                         <h4 class='optionSubtext' id='ignorePuncSubtext'>Ignore punctuation when entering text</h4>
-                    </div>
+                    </button>
 
-                    <div class='options setting' id='autoSetGoalDiv' onclick='toggleAutoGoal();'>
+                    <button class='options setting' id='autoSetGoalDiv' onclick='toggleAutoGoal();'>
                         <h1 class='optionTitle' id='autoSetGoal'>Auto Set Goal: Off</h1>
                         <h4 class='optionSubtext' id='autoSetGoalSubtext'>Automatically set a goal based on
                             your past records
                         </h4>
-                    </div>
+                    </button>
 
-                    <div class='options subSetting' id='changeDiffDiv' onclick='changeGoalDiff();'>
+                    <button class='options subSetting' id='changeDiffDiv' onclick='changeGoalDiff();'>
                         <h1 class='subOptionTitle' id='changeDiff'>Goal Difficulty: Normal</h1>
                         <!-- <h4 class='subOptionSubtext' id='changeDiffSubtext'>Change the difficulty of automatically-
                             set goals</h4> -->
-                    </div>
+                    </button>
 
-                    <div class='options setting' id='practiceButtonDiv' onclick='togglePractice();'>
+                    <button class='options setting' id='practiceButtonDiv' onclick='togglePractice();'>
                         <h1 class='optionTitle' id='practiceButton'>Practice Mode:
                             Off</h1>
                         <h4 class='optionSubtext' id='practiceButtonSubtext'>Disable setting goals and adding
                             times and reached goals to your records</h4>
-                    </div>
+                    </button>
 
-                    <div class='options setting' id='incorrectLimitDiv' onclick='changeIncLim();'>
+                    <button class='options setting' id='incorrectLimitDiv' onclick='changeIncLim();'>
                         <h1 class='optionTitle' id='incorrectLimit'>Incorrect Limit: 2</h1>
                         <h4 class='optionSubtext' id='incorrectLimitSubtext'>Change the limit of incorrect answers
                             you can enter before being able
                             to show the text</h4>
-                    </div>
+                    </button>
 
                 </div>
 
@@ -84,8 +87,9 @@
         <div id='gameBox' class='box'>
 
             <div id='enterMemDiv'>
-                <input id='memInput' type='text' placeholder='Enter text to memorize' autocomplete='off'
-                    spellcheck='true'></input> <!-- oninput='count(); -->
+                <input id='memInput' type='text' placeholder='Enter text to memorize'
+                    aria-label='Enter text to memorize' autocomplete='off' spellcheck='true'></input>
+                <!-- oninput='count(); -->
                 <!-- TO PREVENT COPYING: onCopy='return false' onDrag='return false' -->
                 <!-- TO PREVENT PASTING: onPaste='return false' onDrop='return false' -->
                 <!-- <div id='countDiv'>
@@ -102,27 +106,32 @@
 
                 <div id='memTextDiv'>
                     <h2 class='memText' id='memText'></h2>
-                    <input class='memText' id='memEditText'></input>
+                    <input placeholder='Enter text to edit' aria-label='Enter text to edit' class='memText'
+                        id='memEditText'></input>
 
-                    <button class='changeText' id='editMemText' aria-label='Edit text' onclick='editText();'><i
-                            class='fa-solid fa-pen'></i></button>
-                    <button class='changeText' id='saveMemText' aria-label='Save text' onclick='saveText();'><i
-                            class='fa-solid fa-check'></i></button>
-                    <button class='changeText' id='closeMemText' aria-label="Don't save text" onclick='closeText();'><i
-                            class='fa-solid fa-xmark'></i></button>
+                    <button class='changeText' id='editMemText' onclick='editText();'><i class='fa-solid fa-pen'
+                            aria-label='Edit text'></i></button>
+                    <button class='changeText' id='saveMemText' onclick='saveText();'><i class='fa-solid fa-check'
+                            aria-label='Save text'></i></button>
+                    <button class='changeText' id='closeMemText' onclick='closeText();'><i class='fa-solid fa-xmark'
+                            aria-label="Don't save text"></i></button>
                 </div>
 
-                <button id='speakText' onclick='speak();'>Speak<i class='fa-solid fa-volume-high'></i></button>
+                <button id='speakText' onclick='speak();'>Speak<i class='fa-solid fa-volume-high'
+                        aria-hidden=true></i></button>
 
-                <button id='goalButton' onclick='setGoal();'><i class='fa-solid fa-bullseye'></i>Set Goal</button>
+                <button id='goalButton' onclick='setGoal();'><i class='fa-solid fa-bullseye' aria-hidden=true></i>Set
+                    Goal</button>
 
                 <div id='fullEnterTryMem'>
-                    <input id='tryMemInput' type='text' placeholder='Type the text again' oninput='start();'
-                        autocomplete='off' spellcheck='true'></input>
+                    <input id='tryMemInput' type='text' placeholder='Type the text again'
+                        aria-label='Type the text again' oninput='start();' autocomplete='off'
+                        spellcheck='true'></input>
                     <button id='enterTry' onclick='enterTry();'>Enter</button>
                     <button id='resetTime' onclick='reset();'>Reset<i
                             class='fa-solid fa-arrow-rotate-right'></i></button>
-                    <button id='showText' onclick='showText();'><i class='fa-solid fa-eye'></i>Show Text</button>
+                    <button id='showText' onclick='showText();'><i class='fa-solid fa-eye' aria-hidden=true></i>Show
+                        Text</button>
                 </div>
 
                 <div id='timeDiv'><i class='fa-solid fa-stopwatch' id='timeIcon' aria-label='Pause/unpause time'
@@ -146,36 +155,42 @@
 
         </div>
 
-        <div id='timesBox' class='box'>
+        <div id='statsDiv'>
 
-            <div id='timesTitleDiv'>
-                <h2 id='timesTitle'><i class='fa-solid fa-scroll'></i>Records</h2>
+            <div id='timesBox' class='box'>
+
+                <div id='timesTitleDiv'>
+                    <h2 id='timesTitle'><i class='fa-solid fa-scroll' aria-hidden=true></i>Records</h2>
+                </div>
+
+                <div id='timesSubtextDiv'>
+                    <h2 id='timesSubtextEl' class='timesSubtext'>None</h2>
+                    <h2 id='timesRecord' class='timesSubtext'></h2>
+                    <h2 id='timesAverage' class='timesSubtext'></h2>
+                </div>
+
+                <div id='timesListDiv'>
+                    <ul id='timesList'>
+                    </ul>
+                </div>
+
             </div>
 
-            <div id='timesSubtextDiv'>
-                <h2 id='timesSubtextEl' class='timesSubtext'>None</h2>
-                <h2 id='timesRecord' class='timesSubtext'></h2>
-                <h2 id='timesAverage' class='timesSubtext'></h2>
-            </div>
+            <div id='goalsBox' class='box'>
 
-            <div id='timesListDiv'>
-                <ul id='timesList'>
-                </ul>
-            </div>
+                <div id='goalsTitleDiv'>
+                    <h2 id='goalsTitle'><i class='fa-solid fa-scroll' aria-hidden=true></i>Reached Goals</h2>
+                </div>
 
-            <div class='line'></div>
+                <div id='goalsSubtextDiv'>
+                    <h2 id='goalsSubtext' class='timesSubtext'>None</h2>
+                </div>
 
-            <div id='goalsTitleDiv'>
-                <h2 id='goalsTitle'><i class='fa-solid fa-scroll'></i>Reached Goals</h2>
-            </div>
+                <div id='goalsListDiv'>
+                    <ul id='goalsList'>
+                    </ul>
+                </div>
 
-            <div id='goalsSubtextDiv'>
-                <h2 id='goalsSubtext' class='timesSubtext'>None</h2>
-            </div>
-
-            <div id='goalsListDiv'>
-                <ul id='goalsList'>
-                </ul>
             </div>
 
         </div>

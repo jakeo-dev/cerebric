@@ -9,14 +9,14 @@
   --lightBlue: #6ce5e9; /* hover on buttons or input */
   --blue: #56cfd8; /* background for game and times divs */
   --darkBlue: #49afb3; /* border for game and times divs */
-  --darkerBlue: #3c8b91; /* border for buttons and input, background for next and skip */
+  --darkerBlue: #238b91; /* border for buttons and input, background for next and skip */
   --darkestBlue: #2d6a6e; /* next and skip on hover */
   --textBlue: #162a2c; /* default text color */
   --lightTextBlue: #3c5758; /* lighter text color */
 
   --lighterWhite: #fdfdfd; /* advance step buttons text color */
   --lightWhite: #f7f7f7; /* optionsdiv background */
-  --darkWhite: #dbdedf; /* options on hover */
+  --darkWhite: #d6dadb; /* options on hover */
   --darkerWhite: #c0c4c5; /* border for options and options on hover*/
   --darkestWhite: #9da5a7; /* text color for disabled filled */
   --moreDarkestWhite: #82898b; /* option subtext */
@@ -100,8 +100,12 @@ ul {
 }
 
 .box {
+  border: var(--borderWidthSm) solid var(--darkBlue);
+  background-color: var(--blue);
   border-radius: var(--borderRadius);
   box-shadow: 0 3px 10px 3px var(--shadow);
+  margin-top: 25px;
+  margin-bottom: 0;
   padding: 50px;
 }
 
@@ -125,9 +129,11 @@ ul {
 
 #gameBox {
   position: relative;
+  /* height: min-content; */
   background-color: var(--blue);
   border: var(--borderWidthSm) solid var(--darkBlue);
   flex: 5;
+  margin: 0;
 }
 
 #goalButton {
@@ -243,6 +249,7 @@ h2,
 
 #optionsDiv {
   display: none;
+  border: solid 2px var(--darkWhite);
   background-color: var(--lightWhite);
   flex-flow: column;
   z-index: 1;
@@ -276,7 +283,7 @@ h2,
   text-align: right;
   border-radius: var(--borderRadius);
   padding: 14px 16px;
-  margin-top: 10px;
+  margin-top: 6px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -307,8 +314,8 @@ h2,
   margin-top: 0;
 }
 
-.setting:hover,
-.subSetting:hover {
+.setting:hover:enabled,
+.subSetting:hover:enabled {
   background-color: var(--darkWhite);
 }
 
@@ -546,12 +553,9 @@ h2,
   cursor: default;
 }
 
-#timesBox {
+#statsDiv {
   display: none;
-  border: var(--borderWidthSm) solid var(--darkBlue);
-  background-color: var(--blue);
-  margin-top: 50px;
-  flex: 1.5;
+  flex: 2.2;
 }
 
 #timesTitle {
@@ -570,6 +574,11 @@ h2,
 
 #timesRecord {
   color: var(--lightRed);
+}
+
+#timesRecord,
+#timesAverage {
+  display: none;
 }
 
 #timesSubtextEl,
@@ -738,7 +747,7 @@ h2,
     font-size: 30px;
   }
 
-  #timesBox {
+  .box {
     border-width: var(--borderWidthMd);
   }
 
@@ -864,10 +873,8 @@ h2,
     font-size: 16px;
   }
 
-  #timesBox {
+  .box {
     border-width: var(--borderWidthLg);
-    margin-top: 25px;
-    margin-bottom: 0;
   }
 
   #timesTitle {
@@ -927,9 +934,13 @@ h2,
     height: initial;
   }
 
-  #timesBox {
+  .box {
     border-width: var(--borderWidthLg);
-    margin: 0;
-    margin-left: 25px;
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+
+  #timesBox {
+    margin-top: 0;
   }
 }

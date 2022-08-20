@@ -1,5 +1,5 @@
-console.log('v1.2');
-console.log('whats new: \n \n Additions \n  • Skip step button \n  • Practice mode option to disable adding times and reached goals to the records list \n  • Option to change difficulty of auto set goal: Easy, Normal, or Challenging \n  • Click the timer icon to pause/unpause the timer \n  • Click up and down arrows to show/hide text and edit/close text \n  • Spellcheck added to inputs \n  • Counts number of times text entered incorrectly \n  • Change theme button added as a dev button \n \n Improvements \n  • Auto set goal improvements \n  • Style improvements \n  • Bug fixes');
+console.log('v1.2.1');
+console.log('whats new: \n • Accessibility improvements \n • Minor style changes');
 
 // inputs
 let memText;
@@ -54,8 +54,8 @@ let lightRed = '#d14848'; /*  new record / goal reached / record */
 let titleRed = '#ffd0d0'; /* title */
 let darkerRed = '#b9483b'; /* incorrect */
 let lightWhite = '#f7f7f7'; /* show options background on hover */
-let darkerWhite = '#b8c2c5'; /* border for options and options on hover*/
-let darkestBlue = '#162a2c'; /* show options text color */
+let darkerWhite = '#b8c2c5'; /* border for options and options on hover */
+let darkestBlue = '#2d6a6e'; /* show options text color */
 let shadow = '#0000002e'; /* shadow for divs on background */
 let green = '#368546'; /* correct */
 
@@ -195,7 +195,7 @@ function nextStep() {
         document.getElementById('tryMemInput').value = '';
 
         document.getElementById('status').style.display = 'none';
-        document.getElementById('timesBox').style.display = 'block';
+        document.getElementById('statsDiv').style.display = 'block';
         document.getElementById('goalButton').style.display = 'initial';
         document.getElementById('practiceButton').style.display = 'initial';
         document.getElementById('nextStepDiv').style.display = 'none';
@@ -480,6 +480,8 @@ function enterTry() {
                     } else {
                         document.getElementById('timesRecord').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Record: ${record} seconds`;
                     }
+
+                    document.getElementById('timesRecord').style.display = 'block';
                 }
 
                 if (ret.length > 1) {
@@ -488,6 +490,8 @@ function enterTry() {
                     } else {
                         document.getElementById('timesAverage').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Average: ${average} seconds`;
                     }
+
+                    document.getElementById('timesAverage').style.display = 'block';
                 }
             }
 
