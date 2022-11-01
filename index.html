@@ -4,9 +4,10 @@
 <head>
     <meta charset='utf-8'>
     <title>Cerebric - A Memorization Game</title>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/57c0dd6a0a.js" crossorigin="anonymous"></script>
     <link href='cerebric-logo-inverted.ico' rel='shortcut icon' type='image/ico'>
     <link href='style.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&family=Righteous&display=swap" rel="stylesheet">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script> -->
 </head>
@@ -16,7 +17,7 @@
         <button id='themeButton' class='devButton' onclick='changeTheme();'>theme: none</button>
         <div class='options setting' id='darkThemeDiv' onclick='toggleTheme();'>
             <h1 class='optionTitle' id='darkTheme'>Theme: Light</h1>
-            <h4 class='optionSubtext' id='darkThemeSubtext'>Toggle the theme of the website</h4>
+            <h2 class='optionSubtext' id='darkThemeSubtext'>Toggle the theme of the website</h2>
         </div>
     </div>
 
@@ -45,34 +46,34 @@
 
                     <button class='options setting' id='ignorePuncDiv' onclick='toggleIgPunc();'>
                         <h1 class='optionTitle' id='ignorePunc'>Ignore Punctuation: On</h1>
-                        <h4 class='optionSubtext' id='ignorePuncSubtext'>Ignore punctuation when entering text</h4>
+                        <h2 class='optionSubtext' id='ignorePuncSubtext'>Ignore punctuation when entering text</h2>
                     </button>
 
                     <button class='options setting' id='autoSetGoalDiv' onclick='toggleAutoGoal();'>
                         <h1 class='optionTitle' id='autoSetGoal'>Auto Set Goal: Off</h1>
-                        <h4 class='optionSubtext' id='autoSetGoalSubtext'>Automatically set a goal based on
+                        <h2 class='optionSubtext' id='autoSetGoalSubtext'>Automatically set a goal based on
                             your past records
-                        </h4>
+                        </h2>
                     </button>
 
                     <button class='options subSetting' id='changeDiffDiv' onclick='changeGoalDiff();'>
                         <h1 class='subOptionTitle' id='changeDiff'>Goal Difficulty: Normal</h1>
-                        <!-- <h4 class='subOptionSubtext' id='changeDiffSubtext'>Change the difficulty of automatically-
-                            set goals</h4> -->
+                        <!-- <h2 class='subOptionSubtext' id='changeDiffSubtext'>Change the difficulty of automatically-
+                            set goals</h2> -->
                     </button>
 
                     <button class='options setting' id='practiceButtonDiv' onclick='togglePractice();'>
                         <h1 class='optionTitle' id='practiceButton'>Practice Mode:
                             Off</h1>
-                        <h4 class='optionSubtext' id='practiceButtonSubtext'>Disable setting goals and adding
-                            times and reached goals to your records</h4>
+                        <h2 class='optionSubtext' id='practiceButtonSubtext'>Disable setting goals and adding
+                            times and reached goals to your records</h2>
                     </button>
 
                     <button class='options setting' id='incorrectLimitDiv' onclick='changeIncLim();'>
                         <h1 class='optionTitle' id='incorrectLimit'>Incorrect Limit: 2</h1>
-                        <h4 class='optionSubtext' id='incorrectLimitSubtext'>Change the limit of incorrect answers
+                        <h2 class='optionSubtext' id='incorrectLimitSubtext'>Change the limit of incorrect answers
                             you can enter before being able
-                            to show the text</h4>
+                            to show the text</h2>
                     </button>
 
                 </div>
@@ -86,6 +87,9 @@
 
         <div id='gameBox' class='box'>
 
+            <i class='fa-solid fa-lightbulb' id='practiceIndicator' aria-label='Practice mode enabled'
+                title='Practice mode enabled' onclick='alert("Practice mode is enabled");'></i>
+
             <div id='enterMemDiv'>
                 <input id='memInput' type='text' placeholder='Enter text to memorize'
                     aria-label='Enter text to memorize' autocomplete='off' spellcheck='true'></input>
@@ -93,8 +97,8 @@
                 <!-- TO PREVENT COPYING: onCopy='return false' onDrag='return false' -->
                 <!-- TO PREVENT PASTING: onPaste='return false' onDrop='return false' -->
                 <!-- <div id='countDiv'>
-                    <h4 id='wordCount' class='count'>0 words</h4>
-                    <h4 id='letterCount' class='count'>0 letters</h4>
+                    <h2 id='wordCount' class='count'>0 words</h2>
+                    <h2 id='letterCount' class='count'>0 letters</h2>
                 </div> -->
                 <h3 id='warning' class='subtext'></h3>
             </div>

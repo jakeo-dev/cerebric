@@ -5,14 +5,14 @@
   --darkRed: #a83d46; /* reset border */
   --darkerRed: #bd493c; /* incorrect */
 
-  --select: #4c99a78f; /* text selection color */
-  --lightBlue: #6ce5e9; /* hover on buttons or input */
-  --blue: #56cfd8; /* background for game and times divs */
-  --darkBlue: #49afb3; /* border for game and times divs */
-  --darkerBlue: #238b91; /* border for buttons and input, background for next and skip */
-  --darkestBlue: #2d6a6e; /* next and skip on hover */
-  --textBlue: #162a2c; /* default text color */
-  --lightTextBlue: #3c5758; /* lighter text color */
+  --select: #d47c7c93; /* text selection color */
+  --lightBlue: #def0f4; /* hover on buttons or input */
+  --blue: #cbdadd; /* background for game and times divs */
+  --darkBlue: #a4afb0; /* border for game and times divs */
+  --darkerBlue: #6e7a7d; /* border for buttons and input, background for next and skip */
+  --darkestBlue: #566264; /* next and skip on hover */
+  --textBlue: #202627; /* default text color */
+  --lightTextBlue: #485254; /* lighter text color */
 
   --lighterWhite: #fdfdfd; /* advance step buttons text color */
   --lightWhite: #f7f7f7; /* optionsdiv background */
@@ -25,28 +25,28 @@
 
   --shadow: #0000002e; /* shadow for everything on hover */
 
-  --disabled: #60757e; /* text of disabled buttons and inputs */
-  --darkDisabled: #7192a1; /* border for disabled buttons and inputs */
-  --disabledFilled: #476977; /* disabled fill-colored buttons */
+  --disabled: #6c787d; /* text of disabled buttons and inputs */
+  --darkDisabled: #8898a0; /* border for disabled buttons and inputs */
+  --disabledFilled: #647278; /* disabled fill-colored buttons */
 
   --green: #368546; /* correct and save text button on hover */
 
   --borderWidthSm: 6px;
   --borderWidthMd: 4px;
-  --borderWidthLg: 3px;
+  --borderWidthLg: 2.5px;
 
   --borderWidthSmNeg: -6px;
   --borderWidthMdNeg: -4px;
-  --borderWidthLgNeg: -3px;
+  --borderWidthLgNeg: -2.5px;
 
-  --borderRadius: 6px;
+  --borderRadius: 8px;
   --transDuration: 0.08s;
 }
 
 body {
   background-color: var(--lightRed);
   margin: 0;
-  padding: 50px;
+  padding: 20px;
   padding-top: 140px;
   cursor: default;
 }
@@ -103,7 +103,7 @@ ul {
   border: var(--borderWidthSm) solid var(--darkBlue);
   background-color: var(--blue);
   border-radius: var(--borderRadius);
-  box-shadow: 0 3px 10px 3px var(--shadow);
+  filter: drop-shadow(0 0 12px var(--shadow));
   margin-top: 25px;
   margin-bottom: 0;
   padding: 50px;
@@ -119,7 +119,7 @@ ul {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
-  font-family: righteous;
+  font-family: "Righteous", sans-serif;
 }
 
 #bigGameBox {
@@ -152,6 +152,7 @@ ul {
 #goalButton:hover:enabled {
   background-color: transparent;
   text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 /* span[contenteditable]:empty::before { // resize text box to fit text
@@ -199,7 +200,7 @@ button {
   transition: background-color var(--transDuration) linear,
     border-color var(--transDuration) linear
       /* , box-shadow var(--transDuration) linear */;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 input {
@@ -232,7 +233,7 @@ button,
 h1,
 h2,
 .subtext {
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 #fullOptionsDiv {
@@ -253,7 +254,7 @@ h2,
   background-color: var(--lightWhite);
   flex-flow: column;
   z-index: 1;
-  box-shadow: 0 3px 10px 3px var(--shadow);
+  filter: drop-shadow(0 0 12px var(--shadow));
   border-radius: var(--borderRadius);
   border-top-right-radius: 0;
   padding: 10px;
@@ -332,7 +333,7 @@ h2,
   text-align: right;
   white-space: pre-line;
   margin: 0;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 .subOptionTitle {
@@ -347,7 +348,7 @@ h2,
   text-align: right;
   white-space: pre-line;
   margin: 0;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 #howToUse {
@@ -401,7 +402,7 @@ h2,
 #memEditText {
   display: none;
   border: none;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 #memEditText:hover,
@@ -492,7 +493,7 @@ h2,
   padding: 5px 11px 8px 11px;
   margin: 0;
   margin-right: 10px;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 #tryMemInput {
@@ -594,7 +595,6 @@ h2,
 .fa-circle-xmark,
 .fa-eye,
 .fa-eye-slash,
-.fa-lightbulb,
 .fa-hashtag {
   margin-right: 8px;
 }
@@ -611,6 +611,18 @@ h2,
   margin-left: 8px;
 }
 
+#practiceIndicator {
+  display: none;
+  color: var(--textBlue);
+  font-size: 50px;
+  position: absolute;
+  border: none;
+  top: 20px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+}
+
 .listEl {
   color: var(--textBlue);
   position: relative;
@@ -619,7 +631,7 @@ h2,
   margin: 0;
   margin-left: -0.1px;
   margin-bottom: 16px;
-  font-family: alata;
+  font-family: "Alata", sans-serif;
 }
 
 .listEl:last-child {
@@ -651,22 +663,11 @@ h2,
   overflow: hidden;
 }
 
-@font-face {
-  font-family: righteous;
-  src: url("Righteous-Regular.ttf");
-}
-
-@font-face {
-  font-family: alata;
-  src: url("Alata-Regular.ttf");
-}
-
 /* 499px and down */ /* small screens */
 
 /* 500px and up */ /* phone screens */
 @media only screen and (min-width: 500px) {
   body {
-    padding: 40px;
     padding-top: 130px;
   }
 
@@ -739,7 +740,10 @@ h2,
   }
 
   #timeIcon {
-    color: var(--textBlue);
+    font-size: 32px;
+  }
+
+  #practiceIndicator {
     font-size: 32px;
   }
 
@@ -865,7 +869,10 @@ h2,
   }
 
   #timeIcon {
-    color: var(--textBlue);
+    font-size: 22px;
+  }
+
+  #practiceIndicator {
     font-size: 22px;
   }
 

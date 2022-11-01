@@ -1,5 +1,5 @@
-console.log('v1.2.1');
-console.log('whats new: \n • Accessibility improvements \n • Minor style changes');
+console.log('v1.2.2');
+console.log('whats new: \n • Added indicator to show when practice mode is enabled \n • Style changes \n • Auto set goal improvements \n • Accessibility improvements');
 
 // inputs
 let memText;
@@ -19,6 +19,8 @@ let goal;
 let record;
 let sum = 0;
 let average = 0;
+let nrc = 0;
+let rc = 0;
 
 // list to array
 let txt;
@@ -46,18 +48,19 @@ let textVisible = false;
 let userEntered;
 let acronym;
 let borderWidth;
-let borderRadius = '6px'; // default screen.width < 500
+let borderRadius = '8px'; // default screen.width < 500
 let half;
 
 // colors
-let lightRed = '#d14848'; /*  new record / goal reached / record */
-let titleRed = '#ffd0d0'; /* title */
-let darkerRed = '#b9483b'; /* incorrect */
-let lightWhite = '#f7f7f7'; /* show options background on hover */
-let darkerWhite = '#b8c2c5'; /* border for options and options on hover */
-let darkestBlue = '#2d6a6e'; /* show options text color */
-let shadow = '#0000002e'; /* shadow for divs on background */
-let green = '#368546'; /* correct */
+let lightRed = '#d14848';
+let titleRed = '#ffd0d0';
+let darkerRed = '#b9483b';
+let lightWhite = '#f7f7f7';
+let darkerWhite = '#b8c2c5';
+let darkerBlue = '#6e7a7d';
+let darkestBlue = '#616d6f';
+let shadow = '#0000002e';
+let green = '#368546';
 
 window.onload = setBorderWidth;
 
@@ -190,7 +193,7 @@ function nextStep() {
         step++;
 
     } else if (step == 6) {
-        document.getElementById('directions').innerText = 'Keep trying to type the text faster!';
+        document.getElementById('directions').innerText = 'Keep typing the text faster!';
 
         document.getElementById('tryMemInput').value = '';
 
@@ -317,7 +320,7 @@ function reset() {
 
     document.getElementById('tryMemInput').focus();
 
-    if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) {  // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal, else just say correct
+    if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) {  // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal
         goal = 0;
         document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i>Set Goal`;
     }
@@ -326,47 +329,11 @@ function reset() {
 
         /* auto set goal */
 
-        if (goalDiff == 1) {
-            if (record == undefined) {
-                goal = (average - (average * 0.04));
+        if (record == undefined) {
+            goal = average - (average * (0.08 + nrc));
 
-            } /* else if (average >= median * 1.5 || average <= median * 1.5) {
-                goal = (record - (0.78 * (median - record)) - (0.015 * (median)));
-
-            } */ else if (record <= average / 2) {
-                goal = (record - (0.24 * (average - record)) + (0.1 * (average)));
-
-            } else {
-                goal = (record - (0.78 * (average - record)) - (0.015 * (average)));
-            }
-
-        } else if (goalDiff == 2) {
-            if (record == undefined) {
-                goal = (average - (average * 0.08));
-
-            } /* else if (average >= median * 1.5 || average <= median * 1.5) {
-                goal = (record - (0.36 * (median - record)) - (0.06 * (median)));
-
-            } */ else if (record <= average / 2) {
-                goal = (record - (0.28 * (average - record)) + (0.1 * (average)));
-
-            } else {
-                goal = (record - (0.36 * (average - record)) - (0.06 * (average)));
-            }
-
-        } else if (goalDiff == 3) {
-            if (record == undefined) {
-                goal = (average - (average * 0.15));
-
-            } /* else if (average >= median * 1.5 || average <= median * 1.5) {
-                goal = (record - (0.08 * (median - record)) - (0.1 * (median)));
-
-            } */ else if (record <= average / 2) {
-                goal = (record - (0.4 * (average - record)) + (0.1 * (average)));
-
-            } else {
-                goal = (record - (0.08 * (average - record)) - (0.1 * (average)));
-            }
+        } else {
+            goal = record - ((record * (record / ((2 + rc) * ret.length))) / average);
         }
 
         goal = (Math.round(goal * rnd)) / rnd;
@@ -769,14 +736,20 @@ function setGoal() {
 function changeGoalDiff() {
     if (goalDiff == 1) {
         goalDiff = 2;
+        nrc = -0.04; /* no record constant */
+        rc = 1; /* record constant */
         document.getElementById('changeDiff').innerText = 'Goal Difficulty: Normal';
 
     } else if (goalDiff == 2) {
         goalDiff = 3;
+        nrc = 0;
+        rc = 0;
         document.getElementById('changeDiff').innerText = 'Goal Difficulty: Challenging';
 
     } else if (goalDiff == 3) {
         goalDiff = 1;
+        nrc = 0.04;
+        rc = -1;
         document.getElementById('changeDiff').innerText = 'Goal Difficulty: Easy';
     }
 }
@@ -836,7 +809,7 @@ function showOps() {
     } else {
         document.getElementById('optionsDiv').style.display = 'flex';
 
-        document.getElementById('showOptions').style.boxShadow = '0 5px 10px 0 ' + shadow;
+        document.getElementById('showOptions').style.boxShadow = '0 0 15px ' + shadow;
         document.getElementById('showOptions').style.borderBottomLeftRadius = '0';
         document.getElementById('showOptions').style.borderBottomRightRadius = '0';
         document.getElementById('showOptions').style.backgroundColor = lightWhite;
@@ -872,7 +845,7 @@ function editText() {
 
     disableOnEdit();
 
-    document.getElementById('memTextDiv').style.borderBottomColor = '#3c8b91';
+    document.getElementById('memTextDiv').style.borderBottomColor = darkerBlue;
     document.getElementById('memTextDiv').style.borderBottomLeftRadius = '0';
     document.getElementById('memTextDiv').style.borderBottomRightRadius = '0';
 
@@ -982,7 +955,7 @@ function findMedian() {
     if (ret.length % 2) {
         median = (Math.round(ret[half] * rnd)) / rnd;
     } else {
-        median = (Math.round((+(ret[half - 1]) + +(ret[half])) / 2.0 * rnd)) / rnd;
+        median = (Math.round((+(ret[half - 1]) + +(ret[half])) / 2 * rnd)) / rnd;
     }
 }
 
@@ -1007,6 +980,8 @@ function togglePractice() {
         document.getElementById('goalButton').disabled = true;
         document.getElementById('goalButton').classList.add('disabled');
 
+        document.getElementById('practiceIndicator').style.display = 'block';
+
     } else {
         pMode = false;
         document.getElementById('practiceButton').innerHTML = `Practice Mode: Off`;
@@ -1015,13 +990,14 @@ function togglePractice() {
             document.getElementById('goalButton').disabled = false;
             document.getElementById('goalButton').classList.remove('disabled');
         }
+
+        document.getElementById('practiceIndicator').style.display = 'none';
     }
 }
 
 function pauseUnpause() {
     if (paused == false) {
         paused = true;
-
     } else {
         paused = false;
     }
