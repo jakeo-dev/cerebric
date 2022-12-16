@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Alata&family=Righteous&display=swap" rel="stylesheet">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script> -->
+    <script async src="https://cdn.splitbee.io/sb.js"></script>
 </head>
 
 <body>
@@ -34,13 +35,12 @@
 
             <!-- <div id='howToUseDiv'>
                 <button class='navButton' id='howToUse' onclick='howToUse();'><i
-                        class='fa-solid fa-circle-question'></i>How to Use</button>
+                        class='fas fa-circle-question'></i>How to Use</button>
             </div> -->
 
             <div id='fullOptionsDiv'>
                 <button class='options navButton' id='showOptions' onclick='showOps();' onmouseover='onOps();'
-                    onmouseout='offOps();'><i class='fa-solid fa-ellipsis-vertical'
-                        aria-hidden=true></i>Options</button>
+                    onmouseout='offOps();'><i class='fas fa-ellipsis-vertical' aria-hidden=true></i>Options</button>
 
                 <div id='optionsDiv'>
 
@@ -87,7 +87,7 @@
 
         <div id='gameBox' class='box'>
 
-            <i class='fa-solid fa-lightbulb' id='practiceIndicator' aria-label='Practice mode enabled'
+            <i class='fas fa-lightbulb' id='practiceIndicator' aria-label='Practice mode enabled'
                 title='Practice mode enabled' onclick='alert("Practice mode is enabled");'></i>
 
             <div id='enterMemDiv'>
@@ -113,18 +113,18 @@
                     <input placeholder='Enter text to edit' aria-label='Enter text to edit' class='memText'
                         id='memEditText'></input>
 
-                    <button class='changeText' id='editMemText' onclick='editText();'><i class='fa-solid fa-pen'
+                    <button class='changeText' id='editMemText' onclick='editText();'><i class='fas fa-pen'
                             aria-label='Edit text'></i></button>
-                    <button class='changeText' id='saveMemText' onclick='saveText();'><i class='fa-solid fa-check'
+                    <button class='changeText' id='saveMemText' onclick='saveText();'><i class='fas fa-check'
                             aria-label='Save text'></i></button>
-                    <button class='changeText' id='closeMemText' onclick='closeText();'><i class='fa-solid fa-xmark'
+                    <button class='changeText' id='closeMemText' onclick='closeText();'><i class='fas fa-xmark'
                             aria-label="Don't save text"></i></button>
                 </div>
 
-                <button id='speakText' onclick='speak();'>Speak<i class='fa-solid fa-volume-high'
+                <button id='speakText' onclick='speak();'>Speak<i class='fas fa-volume-high'
                         aria-hidden=true></i></button>
 
-                <button id='goalButton' onclick='setGoal();'><i class='fa-solid fa-bullseye' aria-hidden=true></i>Set
+                <button id='goalButton' onclick='setGoal();'><i class='fas fa-bullseye' aria-hidden=true></i>Set
                     Goal</button>
 
                 <div id='fullEnterTryMem'>
@@ -132,13 +132,12 @@
                         aria-label='Type the text again' oninput='start();' autocomplete='off'
                         spellcheck='true'></input>
                     <button id='enterTry' onclick='enterTry();'>Enter</button>
-                    <button id='resetTime' onclick='reset();'>Reset<i
-                            class='fa-solid fa-arrow-rotate-right'></i></button>
-                    <button id='showText' onclick='showText();'><i class='fa-solid fa-eye' aria-hidden=true></i>Show
+                    <button id='resetTime' onclick='reset();'>Reset<i class='fas fa-arrow-rotate-right'></i></button>
+                    <button id='showText' onclick='showText();'><i class='fas fa-eye' aria-hidden=true></i>Show
                         Text</button>
                 </div>
 
-                <div id='timeDiv'><i class='fa-solid fa-stopwatch' id='timeIcon' aria-label='Pause/unpause time'
+                <div id='timeDiv'><i class='fas fa-stopwatch' id='timeIcon' aria-label='Pause/unpause time'
                         onclick='pauseUnpause();'></i>
                     <h3 id='time' class='subtext'></h3>
                 </div>
@@ -148,12 +147,12 @@
             <div id='advanceStepDiv'>
                 <div id='nextStepDiv'>
                     <button id='nextStep' class='advanceStep' onclick='nextStep();'>Next<i
-                            class='fa-solid fa-arrow-right'></i></button>
+                            class='fas fa-arrow-right'></i></button>
                 </div>
 
                 <div id='skipStepDiv'>
                     <button id='skipStep' class='advanceStep' onclick='nextStep();'>Skip Step<i
-                            class='fa-solid fa-angles-right'></i></button>
+                            class='fas fa-angles-right'></i></button>
                 </div>
             </div>
 
@@ -164,7 +163,7 @@
             <div id='timesBox' class='box'>
 
                 <div id='timesTitleDiv'>
-                    <h2 id='timesTitle'><i class='fa-solid fa-scroll' aria-hidden=true></i>Records</h2>
+                    <h2 id='timesTitle'><i class='fas fa-scroll' aria-hidden=true></i>Records</h2>
                 </div>
 
                 <div id='timesSubtextDiv'>
@@ -183,7 +182,7 @@
             <div id='goalsBox' class='box'>
 
                 <div id='goalsTitleDiv'>
-                    <h2 id='goalsTitle'><i class='fa-solid fa-scroll' aria-hidden=true></i>Reached Goals</h2>
+                    <h2 id='goalsTitle'><i class='fas fa-scroll' aria-hidden=true></i>Reached Goals</h2>
                 </div>
 
                 <div id='goalsSubtextDiv'>

@@ -253,7 +253,7 @@ function nextStep() {
 
         document.getElementById('memTextDiv').style.display = 'none';
         document.getElementById('showText').style.display = 'none';
-        document.getElementById('showText').innerHTML = `<i class=\'fa-solid fa-eye\'></i>Show Text`;
+        document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye\'></i>Show Text`;
     }
 
     document.getElementById('tryMemInput').focus();
@@ -316,13 +316,13 @@ function reset() {
 
     document.getElementById('memTextDiv').style.display = 'none';
     document.getElementById('showText').style.display = 'none';
-    document.getElementById('showText').innerHTML = `<i class=\'fa-solid fa-eye\'></i>Show Text`;
+    document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye\'></i>Show Text`;
 
     document.getElementById('tryMemInput').focus();
 
     if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) {  // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal
         goal = 0;
-        document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i>Set Goal`;
+        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
     }
 
     if (auSeGo && pMode == false) {
@@ -341,11 +341,11 @@ function reset() {
         /* */
 
         if (goal <= 0 || goal > 3600) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i>Set Goal`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
         } else if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} seconds</b>`;
         }
     }
 
@@ -388,7 +388,7 @@ function enterTry() {
     setInputs();
 
     if (currentInput == ogInput) {
-        document.getElementById('status').innerHTML = '<i class=\'fa-solid fa-circle-check\'></i>Correct!';
+        document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check\'></i>Correct!';
         document.getElementById('status').style.color = green;
 
         incorrect = 0;
@@ -432,7 +432,7 @@ function enterTry() {
                 if (fasterThanAll == ret.length && time > 0) {
                     document.getElementById('status').style.display = 'block';
 
-                    document.getElementById('status').innerHTML = '<i class=\'fa-solid fa-circle-check\'></i>Correct! New record!';
+                    document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check\'></i>Correct! New record!';
 
                     if (theme == 0) {
                         document.getElementById('status').style.color = lightRed;
@@ -443,9 +443,9 @@ function enterTry() {
                     record = time;
 
                     if (record == 1) {
-                        document.getElementById('timesRecord').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Record: ${record} second`;
+                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch'></i>Record: ${record} second`;
                     } else {
-                        document.getElementById('timesRecord').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Record: ${record} seconds`;
+                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch'></i>Record: ${record} seconds`;
                     }
 
                     document.getElementById('timesRecord').style.display = 'block';
@@ -453,9 +453,9 @@ function enterTry() {
 
                 if (ret.length > 1) {
                     if (average == 1) {
-                        document.getElementById('timesAverage').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Average: ${average} second`;
+                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch'></i>Average: ${average} second`;
                     } else {
-                        document.getElementById('timesAverage').innerHTML = `<i class='fa-solid fa-stopwatch'></i>Average: ${average} seconds`;
+                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch'></i>Average: ${average} seconds`;
                     }
 
                     document.getElementById('timesAverage').style.display = 'block';
@@ -506,9 +506,9 @@ function enterTry() {
         incorrect++;
 
         if (incorrect == 1) {
-            document.getElementById('status').innerHTML = `<i class=\'fa-solid fa-circle-xmark\'></i>Incorrect!`;
+            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark\'></i>Incorrect!`;
         } else {
-            document.getElementById('status').innerHTML = `<i class=\'fa-solid fa-circle-xmark\'></i>Incorrect! ×${incorrect}`;
+            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark\'></i>Incorrect! ×${incorrect}`;
         }
 
         document.getElementById('status').style.color = darkerRed;
@@ -523,7 +523,7 @@ function enterTry() {
     }
 
     if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) { // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal, else just say correct
-        document.getElementById('status').innerHTML = `<i class=\'fa-solid fa-circle-check\'></i>Correct! You reached your goal!`;
+        document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-check\'></i>Correct! You reached your goal!`;
         if (theme == 0) {
             document.getElementById('status').style.color = lightRed;
         } else {
@@ -531,9 +531,9 @@ function enterTry() {
         }
 
         if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-circle-check\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-circle-check\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check\'></i><b>${goal} seconds</b>`;
         }
 
     }
@@ -585,7 +585,7 @@ function addTime(time) {
         }
 
         var icon = document.createElement('i');
-        icon.className = 'fa-solid fa-stopwatch';
+        icon.className = 'fas fa-stopwatch';
         li.appendChild(icon);
 
         var text = document.createTextNode(inputValue);
@@ -605,7 +605,7 @@ function addReachedGoal(goal, time) {
         li.className = 'listEl';
 
         var icon = document.createElement('i');
-        icon.className = 'fa-solid fa-bullseye';
+        icon.className = 'fas fa-bullseye';
         li.appendChild(icon);
 
         if (goal == 1) {
@@ -618,7 +618,7 @@ function addReachedGoal(goal, time) {
         li.appendChild(document.createElement('br'));
 
         icon = document.createElement('i');
-        icon.className = 'fa-solid fa-stopwatch';
+        icon.className = 'fas fa-stopwatch';
         li.appendChild(icon);
 
         if (time == 1) {
@@ -648,7 +648,7 @@ function showText() {
     if (textVisible == false) {
         textVisible = true;
 
-        document.getElementById('showText').innerHTML = '<i class=\'fa-solid fa-eye-slash\'></i>Hide Text';
+        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye-slash\'></i>Hide Text';
 
         document.getElementById('memText').innerText = memText; // for step 4
         document.getElementById('memTextDiv').style.display = 'flex';
@@ -656,7 +656,7 @@ function showText() {
     } else {
         textVisible = false;
 
-        document.getElementById('showText').innerHTML = '<i class=\'fa-solid fa-eye\'></i>Show Text';
+        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye\'></i>Show Text';
 
         if (step == 4) {
             document.getElementById('memText').innerText = acronym;
@@ -722,9 +722,9 @@ function setGoal() {
         goal = (Math.round(userEntered * rnd)) / rnd;
 
         if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} seconds</b>`;
         }
 
         auSeGo = false;
@@ -974,7 +974,7 @@ function togglePractice() {
         pMode = true;
         document.getElementById('practiceButton').innerHTML = `Practice Mode: On`;
 
-        document.getElementById('goalButton').innerHTML = `<i class=\'fa-solid fa-bullseye\'></i>Set Goal`;
+        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
         goal = 0;
 
         document.getElementById('goalButton').disabled = true;
