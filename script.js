@@ -1,4 +1,4 @@
-console.log('v1.2.2');
+//console.log('v1.2.2');
 console.log('whats new: \n • Added indicator to show when practice mode is enabled \n • Style changes \n • Auto set goal improvements \n • Accessibility improvements');
 
 // inputs
@@ -33,8 +33,7 @@ let igPunc = true;
 let auSeGo = false;
 let goalDiff = 2;
 let incLimit = 2;
-let currentTheme = 0;
-let theme = 0;
+let theme = false;
 let pMode = false;
 
 // text counters
@@ -48,17 +47,15 @@ let textVisible = false;
 let userEntered;
 let acronym;
 let borderWidth;
-let borderRadius = '8px'; // default screen.width < 500
+let rounded = '0.5rem';
 let half;
 
 // colors
-let lightRed = '#d14848';
-let titleRed = '#ffd0d0';
+let lightRed = '#db4646';
 let darkerRed = '#b9483b';
-let lightWhite = '#f7f7f7';
-let darkerWhite = '#b8c2c5';
-let darkerBlue = '#6e7a7d';
-let darkestBlue = '#616d6f';
+let gray100 = 'rgb(243 244 246)'
+let gray200 = 'rgb(229 231 235)';
+let gray500 = 'rgb(107 114 128)';
 let shadow = '#0000002e';
 let green = '#368546';
 
@@ -134,7 +131,9 @@ function nextStep() {
     } else if (step == 2) {
         document.getElementById('directions').innerText = 'Now, listen to the text being spoken.';
 
-        document.getElementById('fullEnterTryMem').style.display = 'none';
+        document.getElementById('fullEnterTryMem').classList.add('hidden');
+        document.getElementById('fullEnterTryMem').classList.remove('block');
+        document.getElementById('fullEnterTryMem').classList.remove('md:flex');
         document.getElementById('speakText').style.display = 'block';
         document.getElementById('status').style.display = 'none';
         document.getElementById('nextStepDiv').style.display = 'none';
@@ -162,7 +161,9 @@ function nextStep() {
         } finally {
             document.getElementById('tryMemInput').value = '';
 
-            document.getElementById('fullEnterTryMem').style.display = 'flex';
+            document.getElementById('fullEnterTryMem').classList.remove('hidden');
+            document.getElementById('fullEnterTryMem').classList.add('block');
+            document.getElementById('fullEnterTryMem').classList.add('md:flex');
             document.getElementById('speakText').style.display = 'none';
             document.getElementById('status').style.display = 'none';
             document.getElementById('nextStepDiv').style.display = 'none';
@@ -203,6 +204,7 @@ function nextStep() {
         document.getElementById('practiceButton').style.display = 'initial';
         document.getElementById('nextStepDiv').style.display = 'none';
         document.getElementById('skipStepDiv').style.display = 'none';
+        document.getElementById('advanceStepDiv').style.display = 'none';
 
         if (currentInput == ogInput) {
             addTime(time);
@@ -253,7 +255,7 @@ function nextStep() {
 
         document.getElementById('memTextDiv').style.display = 'none';
         document.getElementById('showText').style.display = 'none';
-        document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye\'></i>Show Text`;
+        document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye mr-2\'></i>Show Text`;
     }
 
     document.getElementById('tryMemInput').focus();
@@ -316,13 +318,13 @@ function reset() {
 
     document.getElementById('memTextDiv').style.display = 'none';
     document.getElementById('showText').style.display = 'none';
-    document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye\'></i>Show Text`;
+    document.getElementById('showText').innerHTML = `<i class=\'fas fa-eye mr-2\'></i>Show Text`;
 
     document.getElementById('tryMemInput').focus();
 
     if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) {  // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal
         goal = 0;
-        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
+        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i>Set Goal`;
     }
 
     if (auSeGo && pMode == false) {
@@ -341,11 +343,11 @@ function reset() {
         /* */
 
         if (goal <= 0 || goal > 3600) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i>Set Goal`;
         } else if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i><b>${goal} seconds</b>`;
         }
     }
 
@@ -388,7 +390,7 @@ function enterTry() {
     setInputs();
 
     if (currentInput == ogInput) {
-        document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check\'></i>Correct!';
+        document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check mr-1\'></i>Correct!';
         document.getElementById('status').style.color = green;
 
         incorrect = 0;
@@ -432,20 +434,16 @@ function enterTry() {
                 if (fasterThanAll == ret.length && time > 0) {
                     document.getElementById('status').style.display = 'block';
 
-                    document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check\'></i>Correct! New record!';
+                    document.getElementById('status').innerHTML = '<i class=\'fas fa-circle-check mr-1\'></i>Correct! New record!';
 
-                    if (theme == 0) {
-                        document.getElementById('status').style.color = lightRed;
-                    } else {
-                        document.getElementById('status').style.color = titleRed;
-                    }
+                    document.getElementById('status').style.color = lightRed;
 
                     record = time;
 
                     if (record == 1) {
-                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch'></i>Record: ${record} second`;
+                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch mr-1'></i>Record: ${record} second`;
                     } else {
-                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch'></i>Record: ${record} seconds`;
+                        document.getElementById('timesRecord').innerHTML = `<i class='fas fa-stopwatch mr-1'></i>Record: ${record} seconds`;
                     }
 
                     document.getElementById('timesRecord').style.display = 'block';
@@ -453,9 +451,9 @@ function enterTry() {
 
                 if (ret.length > 1) {
                     if (average == 1) {
-                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch'></i>Average: ${average} second`;
+                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch mr-1'></i>Average: ${average} second`;
                     } else {
-                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch'></i>Average: ${average} seconds`;
+                        document.getElementById('timesAverage').innerHTML = `<i class='fas fa-stopwatch mr-1'></i>Average: ${average} seconds`;
                     }
 
                     document.getElementById('timesAverage').style.display = 'block';
@@ -506,9 +504,9 @@ function enterTry() {
         incorrect++;
 
         if (incorrect == 1) {
-            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark\'></i>Incorrect!`;
+            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark mr-1\'></i>Incorrect!`;
         } else {
-            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark\'></i>Incorrect! ×${incorrect}`;
+            document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-xmark mr-1\'></i>Incorrect! ×${incorrect}`;
         }
 
         document.getElementById('status').style.color = darkerRed;
@@ -523,17 +521,13 @@ function enterTry() {
     }
 
     if (!isNaN(goal) && goal !== 0 && time <= goal && time > 0) { // if the goal is a number (not null) and is not 0 and the time is less than the goal, then say it reached the goal, else just say correct
-        document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-check\'></i>Correct! You reached your goal!`;
-        if (theme == 0) {
-            document.getElementById('status').style.color = lightRed;
-        } else {
-            document.getElementById('status').style.color = titleRed;
-        }
+        document.getElementById('status').innerHTML = `<i class=\'fas fa-circle-check mr-1\'></i>Correct! You reached your goal!`;
+        document.getElementById('status').style.color = lightRed;
 
         if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check mr-1\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-circle-check mr-1\'></i><b>${goal} seconds</b>`;
         }
 
     }
@@ -585,7 +579,7 @@ function addTime(time) {
         }
 
         var icon = document.createElement('i');
-        icon.className = 'fas fa-stopwatch';
+        icon.className = 'fas fa-stopwatch mr-1';
         li.appendChild(icon);
 
         var text = document.createTextNode(inputValue);
@@ -605,7 +599,7 @@ function addReachedGoal(goal, time) {
         li.className = 'listEl';
 
         var icon = document.createElement('i');
-        icon.className = 'fas fa-bullseye';
+        icon.className = 'fas fa-bullseye mr-1';
         li.appendChild(icon);
 
         if (goal == 1) {
@@ -618,7 +612,7 @@ function addReachedGoal(goal, time) {
         li.appendChild(document.createElement('br'));
 
         icon = document.createElement('i');
-        icon.className = 'fas fa-stopwatch';
+        icon.className = 'fas fa-stopwatch mr-1';
         li.appendChild(icon);
 
         if (time == 1) {
@@ -648,7 +642,7 @@ function showText() {
     if (textVisible == false) {
         textVisible = true;
 
-        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye-slash\'></i>Hide Text';
+        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye-slash mr-2\'></i>Hide Text';
 
         document.getElementById('memText').innerText = memText; // for step 4
         document.getElementById('memTextDiv').style.display = 'flex';
@@ -656,7 +650,7 @@ function showText() {
     } else {
         textVisible = false;
 
-        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye\'></i>Show Text';
+        document.getElementById('showText').innerHTML = '<i class=\'fas fa-eye mr-2\'></i>Show Text';
 
         if (step == 4) {
             document.getElementById('memText').innerText = acronym;
@@ -722,9 +716,9 @@ function setGoal() {
         goal = (Math.round(userEntered * rnd)) / rnd;
 
         if (goal == 1) {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} second</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i><b>${goal} second</b>`;
         } else {
-            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i><b>${goal} seconds</b>`;
+            document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i><b>${goal} seconds</b>`;
         }
 
         auSeGo = false;
@@ -783,10 +777,10 @@ document.addEventListener('click', function handleClickOutsideBox(event) {
         document.getElementById('optionsDiv').style.display = 'none';
 
         document.getElementById('showOptions').style.boxShadow = 'none';
-        document.getElementById('showOptions').style.borderBottomLeftRadius = borderRadius;
-        document.getElementById('showOptions').style.borderBottomRightRadius = borderRadius;
+        document.getElementById('showOptions').style.borderBottomLeftRadius = rounded;
+        document.getElementById('showOptions').style.borderBottomRightRadius = rounded;
         document.getElementById('showOptions').style.backgroundColor = 'transparent';
-        document.getElementById('showOptions').style.color = lightWhite;
+        document.getElementById('showOptions').style.color = gray100;
     }
 });
 
@@ -797,10 +791,10 @@ function showOps() {
         document.getElementById('optionsDiv').style.display = 'none';
 
         document.getElementById('showOptions').style.boxShadow = 'none';
-        document.getElementById('showOptions').style.borderBottomLeftRadius = borderRadius;
-        document.getElementById('showOptions').style.borderBottomRightRadius = borderRadius;
+        document.getElementById('showOptions').style.borderBottomLeftRadius = rounded;
+        document.getElementById('showOptions').style.borderBottomRightRadius = rounded;
         document.getElementById('showOptions').style.backgroundColor = 'transparent';
-        document.getElementById('showOptions').style.color = lightWhite;
+        document.getElementById('showOptions').style.color = gray100;
 
         if (document.getElementById('memInput').value == 'ravioli ravioli give me the formuoli' || document.getElementById('tryMemInput').value == 'ravioli ravioli give me the formuoli') {
             document.getElementById('devDiv').style.display = 'block';
@@ -812,7 +806,7 @@ function showOps() {
         document.getElementById('showOptions').style.boxShadow = '0 0 15px ' + shadow;
         document.getElementById('showOptions').style.borderBottomLeftRadius = '0';
         document.getElementById('showOptions').style.borderBottomRightRadius = '0';
-        document.getElementById('showOptions').style.backgroundColor = lightWhite;
+        document.getElementById('showOptions').style.backgroundColor = gray200;
         document.getElementById('showOptions').style.color = lightRed;
     }
 }
@@ -820,14 +814,14 @@ function showOps() {
 /* hovering doesnt change color in css after clicking the button for some reason */
 
 function onOps() {
-    document.getElementById('showOptions').style.backgroundColor = lightWhite;
+    document.getElementById('showOptions').style.backgroundColor = gray200;
     document.getElementById('showOptions').style.color = lightRed;
 }
 
 function offOps() {
     if (document.getElementById('optionsDiv').style.display !== 'flex') {
         document.getElementById('showOptions').style.backgroundColor = 'transparent';
-        document.getElementById('showOptions').style.color = lightWhite;
+        document.getElementById('showOptions').style.color = gray100;
     }
 }
 
@@ -845,7 +839,7 @@ function editText() {
 
     disableOnEdit();
 
-    document.getElementById('memTextDiv').style.borderBottomColor = darkerBlue;
+    document.getElementById('memTextDiv').style.borderBottomColor = gray500;
     document.getElementById('memTextDiv').style.borderBottomLeftRadius = '0';
     document.getElementById('memTextDiv').style.borderBottomRightRadius = '0';
 
@@ -874,8 +868,8 @@ function saveText() {
     enableOnEdit();
 
     document.getElementById('memTextDiv').style.borderBottomColor = 'transparent';
-    document.getElementById('memTextDiv').style.borderBottomLeftRadius = borderRadius;
-    document.getElementById('memTextDiv').style.borderBottomRightRadius = borderRadius;
+    document.getElementById('memTextDiv').style.borderBottomLeftRadius = rounded;
+    document.getElementById('memTextDiv').style.borderBottomRightRadius = rounded;
 
     document.getElementById('memEditText').innerText = memText;
     document.getElementById('memEditText').blur();
@@ -896,8 +890,8 @@ function closeText() {
     enableOnEdit();
 
     document.getElementById('memTextDiv').style.borderBottomColor = 'transparent';
-    document.getElementById('memTextDiv').style.borderBottomLeftRadius = borderRadius;
-    document.getElementById('memTextDiv').style.borderBottomRightRadius = borderRadius;
+    document.getElementById('memTextDiv').style.borderBottomLeftRadius = rounded;
+    document.getElementById('memTextDiv').style.borderBottomRightRadius = rounded;
 
     document.getElementById('memEditText').innerText = memText;
     document.getElementById('memEditText').blur();
@@ -974,7 +968,7 @@ function togglePractice() {
         pMode = true;
         document.getElementById('practiceButton').innerHTML = `Practice Mode: On`;
 
-        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye\'></i>Set Goal`;
+        document.getElementById('goalButton').innerHTML = `<i class=\'fas fa-bullseye mr-1\'></i>Set Goal`;
         goal = 0;
 
         document.getElementById('goalButton').disabled = true;
@@ -1056,180 +1050,13 @@ document.body.onkeyup = function (event) {
 function changeTheme() {
     let el = document.querySelectorAll('*');
 
-    if (currentTheme == 0) {
-        currentTheme = 1;
-        document.getElementById('themeButton').innerText = 'theme: highlight red';
-
-        for (var i = 0; i < el.length; i++) {
-            el[i].style.backgroundColor = '#cf000021';
-            el[i].style.borderColor = '#cf000021';
-        }
-
-    } else if (currentTheme == 1) {
-        currentTheme = 2;
-        document.getElementById('themeButton').innerText = 'theme: highlight yellow';
-
-        for (var i = 0; i < el.length; i++) {
-            el[i].style.backgroundColor = '#e0cf0d21';
-            el[i].style.borderColor = '#e0cf0d21';
-        }
-
-    } else if (currentTheme == 2) {
-        currentTheme = 3;
-        document.getElementById('themeButton').innerText = 'theme: highlight green';
-
-        for (var i = 0; i < el.length; i++) {
-            el[i].style.backgroundColor = '#07e04421';
-            el[i].style.borderColor = '#07e04421';
-        }
-
-    } else if (currentTheme == 3) {
-        currentTheme = 4;
+    if (theme == false) {
+        theme = true;
         document.getElementById('themeButton').innerText = 'theme: highlight blue';
 
         for (var i = 0; i < el.length; i++) {
             el[i].style.backgroundColor = '#005eff21';
             el[i].style.borderColor = '#005eff21';
         }
-
-    } else if (currentTheme == 4) {
-        currentTheme = 5;
-        document.getElementById('themeButton').innerText = 'theme: highlight purple';
-
-        for (var i = 0; i < el.length; i++) {
-            el[i].style.backgroundColor = '#f700ff21';
-            el[i].style.borderColor = '#f700ff21';
-        }
-
-    } else if (currentTheme == 5) {
-        currentTheme = 0;
-        document.getElementById('themeButton').innerText = 'theme: black and white';
-
-        for (var i = 0; i < el.length; i++) {
-            el[i].style.backgroundColor = 'initial';
-            el[i].style.borderColor = 'initial';
-        }
-    }
-}
-
-function toggleTheme() {
-    if (theme == 0) {
-        document.getElementById('darkTheme').innerText = 'Theme: Dark';
-        theme = 1;
-
-        dThemeTitle = '#fff';
-        lightRed = '#1a1a1a';
-        titleRed = '#edb2b2';
-        darkerRed = '#db786e';
-        lightWhite = '#c1d5de';
-        darkerWhite = '#3a3e40';
-        darkestBlue = '#549da1';
-        green = '#4db062';
-
-        document.documentElement.style.setProperty('--lightRed', lightRed);
-        document.documentElement.style.setProperty('--titleRed', titleRed);
-        document.documentElement.style.setProperty('--red', '#805252');
-        document.documentElement.style.setProperty('--darkRed', '#bf7e83');
-        document.documentElement.style.setProperty('--darkerRed', darkerRed);
-
-        document.documentElement.style.setProperty('--select', '#65cbdd8f');
-        document.documentElement.style.setProperty('--lightBlue', '#1e3c3d');
-        document.documentElement.style.setProperty('--blue', '#274b4d');
-        document.documentElement.style.setProperty('--darkBlue', '#325f61');
-        document.documentElement.style.setProperty('--darkerBlue', '#498a8c');
-        document.documentElement.style.setProperty('--darkestBlue', darkestBlue);
-        document.documentElement.style.setProperty('--textBlue', '#cae1e3');
-
-        document.documentElement.style.setProperty('--lighterWhite', '#fafeff');
-        document.documentElement.style.setProperty('--lightWhite', lightWhite);
-        document.documentElement.style.setProperty('--darkWhite', '#2e3133');
-        document.documentElement.style.setProperty('--darkerWhite', darkerWhite);
-        document.documentElement.style.setProperty('--darkestWhite', '#b8c2c5');
-        document.documentElement.style.setProperty('--moreDarkestWhite', '#d3dcdf');
-        document.documentElement.style.setProperty('--mostDarkestWhite', '#eff5f7');
-        document.documentElement.style.setProperty('--semiTransparentWhite', '#516f7288');
-
-        document.getElementById('title').style.color = dThemeTitle;
-        document.getElementById('showOptions').style.backgroundColor = lightWhite;
-        document.getElementById('showOptions').style.color = lightRed;
-        document.getElementById('optionsDiv').style.backgroundColor = darkerWhite;
-        document.getElementById('timesRecord').style.color = titleRed;
-
-        document.documentElement.style.setProperty('--disabled', '#596970');
-        document.documentElement.style.setProperty('--darkDisabled', '#4a5a61');
-        document.documentElement.style.setProperty('--disabledFilled', '#3e5b63');
-
-        document.documentElement.style.setProperty('--green', green);
-
-    } else if (theme == 1) {
-        document.getElementById('darkTheme').innerText = 'Theme: Midnight';
-        theme = 2;
-
-        lightRed = '#000';
-        lightWhite = '#cadbe3';
-        darkerWhite = '#1e2021';
-        darkestBlue = '#49898a';
-
-        document.documentElement.style.setProperty('--lightRed', lightRed);
-
-        document.documentElement.style.setProperty('--lightBlue', '#000');
-        document.documentElement.style.setProperty('--blue', '#162b2b');
-        document.documentElement.style.setProperty('--darkBlue', '#213e40');
-        document.documentElement.style.setProperty('--darkerBlue', '#40797a');
-        document.documentElement.style.setProperty('--darkestBlue', darkestBlue);
-
-        document.documentElement.style.setProperty('--lightWhite', lightWhite);
-        document.documentElement.style.setProperty('--darkWhite', '#131414');
-        document.documentElement.style.setProperty('--darkerWhite', darkerWhite);
-
-        document.getElementById('showOptions').style.backgroundColor = lightWhite;
-        document.getElementById('showOptions').style.color = lightRed;
-        document.getElementById('optionsDiv').style.backgroundColor = darkerWhite;
-
-    } else if (theme == 2) {
-        document.getElementById('darkTheme').innerText = 'Theme: Light';
-        theme = 0;
-
-        lightRed = '#d14848';
-        titleRed = '#ffd0d0';
-        darkerRed = '#bd493c';
-        lightWhite = '#eff5f7';
-        darkerWhite = '#b8c2c5';
-        darkestBlue = '#2d6a6e';
-        green = '#368546';
-
-        document.documentElement.style.setProperty('--lightRed', lightRed);
-        document.documentElement.style.setProperty('--titleRed', titleRed);
-        document.documentElement.style.setProperty('--red', '#ec9aa2');
-        document.documentElement.style.setProperty('--darkRed', '#a83d46');
-        document.documentElement.style.setProperty('--darkerRed', darkerRed);
-
-        document.documentElement.style.setProperty('--select', '#4c99a78f');
-        document.documentElement.style.setProperty('--lightBlue', '#6ce5e9');
-        document.documentElement.style.setProperty('--blue', '#56cfd8');
-        document.documentElement.style.setProperty('--darkBlue', '#49afb3');
-        document.documentElement.style.setProperty('--darkerBlue', '#3c8b91');
-        document.documentElement.style.setProperty('--darkestBlue', darkestBlue);
-        document.documentElement.style.setProperty('--textBlue', '#162a2c');
-
-        document.documentElement.style.setProperty('--lighterWhite', '#f8fdff');
-        document.documentElement.style.setProperty('--lightWhite', lightWhite);
-        document.documentElement.style.setProperty('--darkWhite', '#d3dcdf');
-        document.documentElement.style.setProperty('--darkerWhite', darkerWhite);
-        document.documentElement.style.setProperty('--darkestWhite', '#97a2a5');
-        document.documentElement.style.setProperty('--moreDarkestWhite', '#7e888b');
-        document.documentElement.style.setProperty('--mostDarkestWhite', '#444d52');
-        document.documentElement.style.setProperty('--semiTransparentWhite', '#ffffff7e');
-
-        document.getElementById('showOptions').style.backgroundColor = lightWhite;
-        document.getElementById('showOptions').style.color = lightRed;
-        document.getElementById('optionsDiv').style.backgroundColor = lightWhite;
-        document.getElementById('timesRecord').style.color = lightRed;
-
-        document.documentElement.style.setProperty('--disabled', '#60757e');
-        document.documentElement.style.setProperty('--darkDisabled', '#7192a1');
-        document.documentElement.style.setProperty('--disabledFilled', '#476977');
-
-        document.documentElement.style.setProperty('--green', green);
     }
 }

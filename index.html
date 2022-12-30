@@ -2,78 +2,89 @@
 <html>
 
 <head>
-    <meta charset='utf-8'>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Cerebric - A Memorization Game</title>
-    <script src="https://kit.fontawesome.com/57c0dd6a0a.js" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/57c0dd6a0a.js' crossorigin='anonymous'></script>
     <link href='cerebric-logo-inverted.ico' rel='shortcut icon' type='image/ico'>
     <link href='style.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Alata&family=Righteous&display=swap" rel="stylesheet">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js" crossorigin="anonymous"
-        referrerpolicy="no-referrer"></script> -->
-    <script async src="https://cdn.splitbee.io/sb.js"></script>
+    <link href='https://fonts.googleapis.com/css2?family=Alata&family=Righteous&display=swap' rel='stylesheet'>
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js' crossorigin='anonymous'
+        referrerpolicy='no-referrer'></script> -->
+    <script async src='https://cdn.splitbee.io/sb.js'></script>
 </head>
 
-<body>
-    <div id='devDiv'>
-        <button id='themeButton' class='devButton' onclick='changeTheme();'>theme: none</button>
-        <div class='options setting' id='darkThemeDiv' onclick='toggleTheme();'>
-            <h1 class='optionTitle' id='darkTheme'>Theme: Light</h1>
-            <h2 class='optionSubtext' id='darkThemeSubtext'>Toggle the theme of the website</h2>
-        </div>
+<body class='bg-lightRed py-24 md:py-40 px-4 md:px-8 lg:px-36 m-0 font-Alata'>
+
+    <div id='devDiv' class='hidden text-[0px]'>
+        <button id='themeButton' class='inp mr-3' onclick='changeTheme()'>theme: none</button>
     </div>
 
-    <ul id='navBar'>
+    <ul class='flex absolute top-0 left-0 list-none overflow-hidden w-full p-0 m-0'>
 
-        <li class='navItem' id='titleItem'>
-            <div id='titleDiv'>
-                <h1 id='title'><a onclick='location.reload();'>Cerebric</a></h1>
-                <!-- Compete against yourself in a memorization game to quickly memorize text -->
-            </div>
+        <li class='flex md:flex-1 h-min float-left text-white p-4 md:p-6 no-underline m-0' id='titleItem'>
+            <h1 class='text-4xl md:text-5xl font-bold text-red-100 pt-1 m-0 cursor-default font-Righteous'>
+                <a onclick='location.reload()'>Cerebric</a>
+            </h1>
+            <!-- Compete against yourself in a memorization game to quickly memorize text -->
         </li>
 
-        <li class='navItem' id='rightItem'>
+        <li class='flex flex-1 h-min float-left justify-end text-white p-4 md:p-6 no-underline m-0' id='rightItem'>
 
             <!-- <div id='howToUseDiv'>
-                <button class='navButton' id='howToUse' onclick='howToUse();'><i
-                        class='fas fa-circle-question'></i>How to Use</button>
+                <button class='inp inline-block text-base text-white bg-transparent border-gray-600 border-[2.5px] rounded-lg ml-auto mr-2 hover:enabled:text-red-300 hover:enabled:bg-gray-300 transition-all' id='howToUse' onclick='howToUse()'><i
+                        class='fas fa-circle-question mr-3'></i>How to Use</button>
             </div> -->
 
-            <div id='fullOptionsDiv'>
-                <button class='options navButton' id='showOptions' onclick='showOps();' onmouseover='onOps();'
-                    onmouseout='offOps();'><i class='fas fa-ellipsis-vertical' aria-hidden=true></i>Options</button>
+            <div id='fullOptionsDiv' class='flex flex-col relative top-0 right-0'>
+                <button
+                    class='options inp inline-block text-base md:text-lg text-gray-100 bg-transparent border-gray-200 border-[2.5px] rounded-lg ml-auto hover:enabled:text-red-300 hover:bg-gray-200 hover:border-gray-200 transition-all'
+                    id='showOptions' onclick='showOps()' onmouseover='onOps()' onmouseout='offOps()'><i
+                        class='fas fa-ellipsis-vertical mr-2' aria-hidden=true></i>Options</button>
 
-                <div id='optionsDiv'>
+                <div id='optionsDiv'
+                    class='hidden bg-gray-100 border-gray-300 border-[2.5px] min-w-full box-border md:max-w-xs flex-col z-10 shadow-lg rounded-lg rounded-tr-none p-3'>
 
-                    <button class='options setting' id='ignorePuncDiv' onclick='toggleIgPunc();'>
-                        <h1 class='optionTitle' id='ignorePunc'>Ignore Punctuation: On</h1>
-                        <h2 class='optionSubtext' id='ignorePuncSubtext'>Ignore punctuation when entering text</h2>
+                    <button
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-300'
+                        id='ignorePuncDiv' onclick='toggleIgPunc()'>
+                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='ignorePunc'>Ignore Punctuation: On
+                        </h1>
+                        <h2 class='text-sm text-gray-600 text-right m-0'>Ignore punctuation when entering text</h2>
                     </button>
 
-                    <button class='options setting' id='autoSetGoalDiv' onclick='toggleAutoGoal();'>
-                        <h1 class='optionTitle' id='autoSetGoal'>Auto Set Goal: Off</h1>
-                        <h2 class='optionSubtext' id='autoSetGoalSubtext'>Automatically set a goal based on
-                            your past records
-                        </h2>
+                    <button
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        id='autoSetGoalDiv' onclick='toggleAutoGoal()'>
+                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='autoSetGoal'>Auto Set Goal: Off</h1>
+                        <h2 class='text-sm text-gray-600 text-right m-0'>Automatically set a goal based on your past
+                            records</h2>
                     </button>
 
-                    <button class='options subSetting' id='changeDiffDiv' onclick='changeGoalDiff();'>
-                        <h1 class='subOptionTitle' id='changeDiff'>Goal Difficulty: Normal</h1>
-                        <!-- <h2 class='subOptionSubtext' id='changeDiffSubtext'>Change the difficulty of automatically-
+                    <button
+                        class='options subSetting inp border-none hidden text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-300'
+                        id='changeDiffDiv' onclick='changeGoalDiff()'>
+                        <h1 class='text-base text-gray-700 m-0' id='changeDiff'>Goal Difficulty: Normal</h1>
+                        <!-- <h2 class='text-sm text-gray-700 text-right m-0' id='changeDiffSubtext'>Change the difficulty of automatically-
                             set goals</h2> -->
                     </button>
 
-                    <button class='options setting' id='practiceButtonDiv' onclick='togglePractice();'>
-                        <h1 class='optionTitle' id='practiceButton'>Practice Mode:
-                            Off</h1>
-                        <h2 class='optionSubtext' id='practiceButtonSubtext'>Disable setting goals and adding
-                            times and reached goals to your records</h2>
+                    <button
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        id='practiceButtonDiv' onclick='togglePractice()'>
+                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='practiceButton'>Practice Mode: Off
+                        </h1>
+                        <h2 class='text-sm text-gray-600 text-right m-0'>Disable setting goals and adding times and
+                            reached goals to your records</h2>
                     </button>
 
-                    <button class='options setting' id='incorrectLimitDiv' onclick='changeIncLim();'>
-                        <h1 class='optionTitle' id='incorrectLimit'>Incorrect Limit: 2</h1>
-                        <h2 class='optionSubtext' id='incorrectLimitSubtext'>Change the limit of incorrect answers
-                            you can enter before being able
-                            to show the text</h2>
+                    <button
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        id='incorrectLimitDiv' onclick='changeIncLim()'>
+                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='incorrectLimit'>Incorrect Limit: 2
+                        </h1>
+                        <h2 class='text-sm text-gray-600 text-right m-0'>Change the limit of incorrect answers you can
+                            enter before being able to show the text</h2>
                     </button>
 
                 </div>
@@ -83,114 +94,128 @@
 
     </ul>
 
-    <div id='bigGameBox' class='bigBox'>
+    <div class='block lg:flex'>
 
-        <div id='gameBox' class='box'>
+        <div
+            class='bg-gray-300 flex-[5] relative border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 m-0 lg:mr-4'>
 
-            <i class='fas fa-lightbulb' id='practiceIndicator' aria-label='Practice mode enabled'
-                title='Practice mode enabled' onclick='alert("Practice mode is enabled");'></i>
+            <i class='fas fa-lightbulb hidden text-gray-900 text-2xl absolute border-none top-6 right-6 p-0 m-0'
+                id='practiceIndicator' aria-label='Practice mode enabled' title='Practice mode enabled'
+                onclick='alert("Practice mode is enabled");'></i>
 
             <div id='enterMemDiv'>
-                <input id='memInput' type='text' placeholder='Enter text to memorize'
-                    aria-label='Enter text to memorize' autocomplete='off' spellcheck='true'></input>
-                <!-- oninput='count(); -->
+                <input id='memInput' class='inp w-full outline-none focus:bg-gray-200' type='text'
+                    placeholder='Enter text to memorize' aria-label='Enter text to memorize' autocomplete='off'
+                    spellcheck='true'></input>
+                <!-- oninput='count() -->
                 <!-- TO PREVENT COPYING: onCopy='return false' onDrag='return false' -->
                 <!-- TO PREVENT PASTING: onPaste='return false' onDrop='return false' -->
                 <!-- <div id='countDiv'>
                     <h2 id='wordCount' class='count'>0 words</h2>
                     <h2 id='letterCount' class='count'>0 letters</h2>
                 </div> -->
-                <h3 id='warning' class='subtext'></h3>
+                <h3 id='warning' class='text-xl font-bold mt-5 mb-0'></h3>
             </div>
 
-            <div id='tryMemDiv'>
+            <div id='tryMemDiv' class='hidden'>
 
                 <!-- <h2 id='step'></h2> -->
-                <h1 id='directions'></h1>
+                <h1 id='directions' class='text-3xl font-bold text-gray-900 m-0 mb-7'></h1>
 
-                <div id='memTextDiv'>
-                    <h2 class='memText' id='memText'></h2>
-                    <input placeholder='Enter text to edit' aria-label='Enter text to edit' class='memText'
+                <div id='memTextDiv' class='hidden bg-slate-100/50 border-b-[2.5px] rounded-lg p-1 pb-0 mb-4'>
+                    <h2 class='text-xl text-gray-900 flex flex-1 items-center px-4 m-0' id='memText'></h2>
+
+                    <input placeholder='Enter text to edit' aria-label='Enter text to edit'
+                        class='inp hidden border-none text-lg text-gray-900 flex-1 items-center outline-none hover:bg-transparent focus:bg-transparent px-4 m-0'
                         id='memEditText'></input>
 
-                    <button class='changeText' id='editMemText' onclick='editText();'><i class='fas fa-pen'
-                            aria-label='Edit text'></i></button>
-                    <button class='changeText' id='saveMemText' onclick='saveText();'><i class='fas fa-check'
+                    <button
+                        class='inp flex text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 hover:bg-transparent hover:text-gray-500'
+                        id='editMemText' onclick='editText()'><i class='fas fa-pen' aria-label='Edit text'></i></button>
+                    <button
+                        class='inp hidden text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-green-700'
+                        id='saveMemText' onclick='saveText()'><i class='fas fa-check'
                             aria-label='Save text'></i></button>
-                    <button class='changeText' id='closeMemText' onclick='closeText();'><i class='fas fa-xmark'
+                    <button
+                        class='inp hidden text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-red-700'
+                        id='closeMemText' onclick='closeText()'><i class='fas fa-xmark'
                             aria-label="Don't save text"></i></button>
                 </div>
 
-                <button id='speakText' onclick='speak();'>Speak<i class='fas fa-volume-high'
+                <button id='speakText' class='inp hidden' onclick='speak()'>Speak<i class='fas fa-volume-high ml-2'
                         aria-hidden=true></i></button>
 
-                <button id='goalButton' onclick='setGoal();'><i class='fas fa-bullseye' aria-hidden=true></i>Set
-                    Goal</button>
+                <button id='goalButton'
+                    class='inp hidden text-lg top-2 right-2 border-0 rounded-tl-none rounded-br-none p-0 mx-2 mb-2 hover:enabled:bg-transparent hover:enabled:underline hover:enabled:decoration-2'
+                    onclick='setGoal()'><i class='fas fa-bullseye mr-1' aria-hidden=true></i>Set Goal</button>
 
-                <div id='fullEnterTryMem'>
-                    <input id='tryMemInput' type='text' placeholder='Type the text again'
-                        aria-label='Type the text again' oninput='start();' autocomplete='off'
-                        spellcheck='true'></input>
-                    <button id='enterTry' onclick='enterTry();'>Enter</button>
-                    <button id='resetTime' onclick='reset();'>Reset<i class='fas fa-arrow-rotate-right'></i></button>
-                    <button id='showText' onclick='showText();'><i class='fas fa-eye' aria-hidden=true></i>Show
-                        Text</button>
+                <div id='fullEnterTryMem' class='block md:flex'>
+                    <input id='tryMemInput'
+                        class='inp w-full md:border-r-0 md:rounded-r-none flex-1 outline-none focus:bg-gray-200 mb-2 md:mb-0'
+                        type='text' placeholder='Type the text again' aria-label='Type the text again' oninput='start()'
+                        autocomplete='off' spellcheck='true'></input>
+                    <button id='enterTry' class='inp md:rounded-l-none' onclick='enterTry()'>Enter</button>
+                    <button id='resetTime' class='inp hidden md:rounded-l-none border-red-700 hover:enabled:bg-red-300'
+                        onclick='reset()'>Reset<i class='fas fa-arrow-rotate-right ml-2'></i></button>
+                    <button id='showText' class='inp hidden ml-2' onclick='showText()'><i class='fas fa-eye mr-2'
+                            aria-hidden=true></i>Show Text</button>
                 </div>
 
-                <div id='timeDiv'><i class='fas fa-stopwatch' id='timeIcon' aria-label='Pause/unpause time'
-                        onclick='pauseUnpause();'></i>
-                    <h3 id='time' class='subtext'></h3>
+                <div id='timeDiv' class='hidden text-xl text-gray-900 font-bold items-center mt-5 mb-0'>
+                    <i class='fas fa-stopwatch mr-1 hover:text-gray-500 transition-all' id='timeIcon'
+                        aria-label='Pause/unpause time' onclick='pauseUnpause()'></i>
+                    <h3 id='time'></h3>
                 </div>
-                <h3 id='status' class='subtext'></h3>
+
+                <h3 id='status' class='hidden text-xl font-bold mt-5 mb-0'></h3>
             </div>
 
-            <div id='advanceStepDiv'>
-                <div id='nextStepDiv'>
-                    <button id='nextStep' class='advanceStep' onclick='nextStep();'>Next<i
-                            class='fas fa-arrow-right'></i></button>
+            <div id='advanceStepDiv' class='mt-14'>
+                <div id='nextStepDiv' class='mt-15'>
+                    <button id='nextStep'
+                        class='inp bg-gray-500 hover:enabled:bg-gray-600 hover:enabled:border-gray-600 text-gray-200'
+                        onclick='nextStep()'>Next<i class='fas fa-arrow-right ml-2'></i></button>
                 </div>
 
-                <div id='skipStepDiv'>
-                    <button id='skipStep' class='advanceStep' onclick='nextStep();'>Skip Step<i
-                            class='fas fa-angles-right'></i></button>
+                <div id='skipStepDiv' class='hidden mt-15'>
+                    <button id='skipStep'
+                        class='inp bg-gray-500 hover:enabled:bg-gray-600 hover:enabled:border-gray-600 text-gray-200'
+                        onclick='nextStep()'>Skip<i class='fas fa-angles-right ml-2'></i></button>
                 </div>
             </div>
 
         </div>
 
-        <div id='statsDiv'>
+        <div id='statsDiv' class='hidden flex-[2.2]'>
 
-            <div id='timesBox' class='box'>
+            <div class='bg-gray-300 border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 lg:mt-0 mb-0'>
 
-                <div id='timesTitleDiv'>
-                    <h2 id='timesTitle'><i class='fas fa-scroll' aria-hidden=true></i>Records</h2>
+                <div>
+                    <h2 id='timesTitle' class='text-2xl font-bold text-gray-900 m-0 mb-5'>Records</h2>
                 </div>
 
-                <div id='timesSubtextDiv'>
-                    <h2 id='timesSubtextEl' class='timesSubtext'>None</h2>
-                    <h2 id='timesRecord' class='timesSubtext'></h2>
-                    <h2 id='timesAverage' class='timesSubtext'></h2>
+                <div>
+                    <h2 id='timesSubtextEl' class='text-lg text-gray-900 m-0'>None</h2>
+                    <h2 id='timesRecord' class='hidden text-xl text-lightRed m-0 mb-4'></h2>
+                    <h2 id='timesAverage' class='hidden text-xl text-gray-900 m-0 mb-4'></h2>
                 </div>
 
-                <div id='timesListDiv'>
-                    <ul id='timesList'>
+                <div>
+                    <ul id='timesList' class='p-0 m-0'>
                     </ul>
                 </div>
 
             </div>
 
-            <div id='goalsBox' class='box'>
+            <div class='bg-gray-300 border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 mb-0'>
 
-                <div id='goalsTitleDiv'>
-                    <h2 id='goalsTitle'><i class='fas fa-scroll' aria-hidden=true></i>Reached Goals</h2>
+                <div>
+                    <h2 id='goalsTitle' class='text-2xl font-bold text-gray-900 m-0 mb-5'>Reached Goals</h2>
+                    <h2 id='goalsSubtext' class='text-lg text-gray-900 m-0'>None</h2>
                 </div>
 
-                <div id='goalsSubtextDiv'>
-                    <h2 id='goalsSubtext' class='timesSubtext'>None</h2>
-                </div>
-
-                <div id='goalsListDiv'>
-                    <ul id='goalsList'>
+                <div>
+                    <ul id='goalsList' class='list-none overflow-hidden p-0 m-0'>
                     </ul>
                 </div>
 
