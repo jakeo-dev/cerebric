@@ -1,6 +1,3 @@
-//console.log('v1.2.2');
-console.log('whats new: \n • Added indicator to show when practice mode is enabled \n • Style changes \n • Auto set goal improvements \n • Accessibility improvements');
-
 // inputs
 let memText;
 let currentInput;
