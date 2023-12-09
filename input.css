@@ -4,7 +4,7 @@
 
 @layer components {
   .inp {
-    @apply text-lg bg-transparent hover:enabled:bg-gray-200 text-gray-900 box-border border-gray-500 border-[2.5px] rounded-lg px-5 py-3 m-0 transition-all;
+    @apply text-base md:text-lg bg-transparent hover:enabled:bg-gray-200 text-gray-900 box-border border-gray-500 border-2 md:border-[2.5px] rounded-lg px-4 py-2 md:px-5 md:py-2.5 m-0 transition-all;
   }
 
   .disabled {

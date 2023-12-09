@@ -9,9 +9,11 @@
     <link href='cerebric-logo-inverted.ico' rel='shortcut icon' type='image/ico'>
     <link href='style.css' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css2?family=Alata&family=Righteous&display=swap' rel='stylesheet'>
-    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/tota11y/0.1.6/tota11y.min.js' crossorigin='anonymous'
-        referrerpolicy='no-referrer'></script> -->
-    <script async src='https://cdn.splitbee.io/sb.js'></script>
+
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src='/_vercel/insights/script.js'></script>
 </head>
 
 <body class='bg-lightRed py-24 md:py-40 px-4 md:px-8 lg:px-36 m-0 font-Alata'>
@@ -32,37 +34,39 @@
         <li class='flex flex-1 h-min float-left justify-end text-white p-4 md:p-6 no-underline m-0' id='rightItem'>
 
             <!-- <div id='howToUseDiv'>
-                <button class='inp inline-block text-base text-white bg-transparent border-gray-600 border-[2.5px] rounded-lg ml-auto mr-2 hover:enabled:text-red-300 hover:enabled:bg-gray-300 transition-all' id='howToUse' onclick='howToUse()'><i
+                <button class='inp inline-block text-base text-white bg-transparent border-gray-600 border-2 md:border-[2.5px] rounded-lg ml-auto mr-2 hover:enabled:text-red-300 hover:enabled:bg-gray-300 transition-all' id='howToUse' onclick='howToUse()'><i
                         class='fas fa-circle-question mr-3'></i>How to Use</button>
             </div> -->
 
             <div id='fullOptionsDiv' class='flex flex-col relative top-0 right-0'>
                 <button
-                    class='options inp inline-block text-base md:text-lg text-gray-100 bg-transparent border-gray-200 border-[2.5px] rounded-lg ml-auto hover:enabled:text-red-300 hover:bg-gray-200 hover:border-gray-200 transition-all'
+                    class='options inp inline-block text-base md:text-lg text-gray-100 bg-transparent border-gray-200 border-2 md:border-[2.5px] rounded-lg ml-auto hover:enabled:text-red-300 hover:bg-gray-200 hover:border-gray-200 transition-all'
                     id='showOptions' onclick='showOps()' onmouseover='onOps()' onmouseout='offOps()'><i
                         class='fas fa-ellipsis-vertical mr-2' aria-hidden=true></i>Options</button>
 
                 <div id='optionsDiv'
-                    class='hidden bg-gray-100 border-gray-300 border-[2.5px] min-w-full box-border md:max-w-xs flex-col z-10 shadow-lg rounded-lg rounded-tr-none p-3'>
+                    class='hidden bg-gray-100 border-gray-300 border-2 md:border-[2.5px] box-border min-w-full md:max-w-xs flex-col z-10 shadow-lg rounded-lg rounded-tr-none p-3'>
 
                     <button
-                        class='options setting inp border-none text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-300'
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-200 active:enabled:bg-gray-300'
                         id='ignorePuncDiv' onclick='toggleIgPunc()'>
-                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='ignorePunc'>Ignore Punctuation: On
+                        <h1 class='optionTitle text-base md:text-lg text-gray-900 m-0 mb-1' id='ignorePunc'>Ignore
+                            Punctuation: On
                         </h1>
                         <h2 class='text-sm text-gray-600 text-right m-0'>Ignore punctuation when entering text</h2>
                     </button>
 
                     <button
-                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-200 active:enabled:bg-gray-300'
                         id='autoSetGoalDiv' onclick='toggleAutoGoal()'>
-                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='autoSetGoal'>Auto Set Goal: Off</h1>
+                        <h1 class='optionTitle text-base md:text-lg text-gray-900 m-0 mb-1' id='autoSetGoal'>Auto Set
+                            Goal: Off</h1>
                         <h2 class='text-sm text-gray-600 text-right m-0'>Automatically set a goal based on your past
                             records</h2>
                     </button>
 
                     <button
-                        class='options subSetting inp border-none hidden text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-300'
+                        class='options subSetting inp border-none hidden text-right rounded-lg px-4 py-3 hover:enabled:bg-gray-200 active:enabled:bg-gray-300'
                         id='changeDiffDiv' onclick='changeGoalDiff()'>
                         <h1 class='text-base text-gray-700 m-0' id='changeDiff'>Goal Difficulty: Normal</h1>
                         <!-- <h2 class='text-sm text-gray-700 text-right m-0' id='changeDiffSubtext'>Change the difficulty of automatically-
@@ -70,18 +74,20 @@
                     </button>
 
                     <button
-                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-200 active:enabled:bg-gray-300'
                         id='practiceButtonDiv' onclick='togglePractice()'>
-                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='practiceButton'>Practice Mode: Off
+                        <h1 class='optionTitle text-base md:text-lg text-gray-900 m-0 mb-1' id='practiceButton'>Practice
+                            Mode: Off
                         </h1>
                         <h2 class='text-sm text-gray-600 text-right m-0'>Disable setting goals and adding times and
                             reached goals to your records</h2>
                     </button>
 
                     <button
-                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-300'
+                        class='options setting inp border-none text-right rounded-lg px-4 py-3 mt-3 hover:enabled:bg-gray-200 active:enabled:bg-gray-300'
                         id='incorrectLimitDiv' onclick='changeIncLim()'>
-                        <h1 class='optionTitle text-lg text-gray-900 m-0 mb-1' id='incorrectLimit'>Incorrect Limit: 2
+                        <h1 class='optionTitle text-base md:text-lg text-gray-900 m-0 mb-1' id='incorrectLimit'>
+                            Incorrect Limit: 2
                         </h1>
                         <h2 class='text-sm text-gray-600 text-right m-0'>Change the limit of incorrect answers you can
                             enter before being able to show the text</h2>
@@ -97,7 +103,7 @@
     <div class='block lg:flex'>
 
         <div
-            class='bg-gray-300 flex-[5] relative border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 m-0 lg:mr-4'>
+            class='bg-gray-300 flex-[5] relative border-gray-400 border-2 md:border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 m-0 lg:mr-4'>
 
             <i class='fas fa-lightbulb hidden text-gray-900 text-2xl absolute border-none top-6 right-6 p-0 m-0'
                 id='practiceIndicator' aria-label='Practice mode enabled' title='Practice mode enabled'
@@ -130,14 +136,14 @@
                         id='memEditText'></input>
 
                     <button
-                        class='inp flex text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 hover:bg-transparent hover:text-gray-500'
+                        class='inp flex text-gray-900 text-lg border-none justify-center items-center p-0 m-4 mr-5 hover:bg-transparent hover:text-gray-500 active:text-gray-600'
                         id='editMemText' onclick='editText()'><i class='fas fa-pen' aria-label='Edit text'></i></button>
                     <button
-                        class='inp hidden text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-green-700'
+                        class='inp hidden text-gray-900 text-lg border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-green-600 active:text-green-700'
                         id='saveMemText' onclick='saveText()'><i class='fas fa-check'
                             aria-label='Save text'></i></button>
                     <button
-                        class='inp hidden text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-red-700'
+                        class='inp hidden text-gray-900 border-none justify-center items-center p-0 m-4 mr-5 ml-0 hover:bg-transparent hover:text-red-600 active:text-red-700'
                         id='closeMemText' onclick='closeText()'><i class='fas fa-xmark'
                             aria-label="Don't save text"></i></button>
                 </div>
@@ -146,7 +152,7 @@
                         aria-hidden=true></i></button>
 
                 <button id='goalButton'
-                    class='inp hidden text-lg top-2 right-2 border-0 rounded-tl-none rounded-br-none p-0 mx-2 mb-2 hover:enabled:bg-transparent hover:enabled:underline hover:enabled:decoration-2'
+                    class='inp hidden text-lg top-2 right-2 border-0 rounded-tl-none rounded-br-none p-0 ml-2 mb-2 hover:enabled:bg-transparent hover:enabled:underline hover:enabled:decoration-2'
                     onclick='setGoal()'><i class='fas fa-bullseye mr-1' aria-hidden=true></i>Set Goal</button>
 
                 <div id='fullEnterTryMem' class='block md:flex'>
@@ -173,13 +179,13 @@
             <div id='advanceStepDiv' class='mt-14'>
                 <div id='nextStepDiv' class='mt-15'>
                     <button id='nextStep'
-                        class='inp bg-gray-500 hover:enabled:bg-gray-600 hover:enabled:border-gray-600 text-gray-200'
+                        class='inp bg-gray-500 hover:enabled:bg-gray-600 active:enabled:bg-gray-700 border-transparent text-gray-200'
                         onclick='nextStep()'>Next<i class='fas fa-arrow-right ml-2'></i></button>
                 </div>
 
                 <div id='skipStepDiv' class='hidden mt-15'>
                     <button id='skipStep'
-                        class='inp bg-gray-500 hover:enabled:bg-gray-600 hover:enabled:border-gray-600 text-gray-200'
+                        class='inp bg-gray-500 hover:enabled:bg-gray-600 active:enabled:bg-gray-700 border-transparent text-gray-200'
                         onclick='nextStep()'>Skip<i class='fas fa-angles-right ml-2'></i></button>
                 </div>
             </div>
@@ -188,7 +194,8 @@
 
         <div id='statsDiv' class='hidden flex-[2.2]'>
 
-            <div class='bg-gray-300 border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 lg:mt-0 mb-0'>
+            <div
+                class='bg-gray-300 border-gray-400 border-2 md:border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 lg:mt-0 mb-0'>
 
                 <div>
                     <h2 id='timesTitle' class='text-2xl font-bold text-gray-900 m-0 mb-5'>Records</h2>
@@ -196,8 +203,8 @@
 
                 <div>
                     <h2 id='timesSubtextEl' class='text-xl text-gray-900 m-0'>None</h2>
-                    <h2 id='timesRecord' class='hidden text-xl text-lightRed m-0 mb-4'></h2>
-                    <h2 id='timesAverage' class='hidden text-xl text-gray-900 m-0 mb-4'></h2>
+                    <h2 id='timesRecord' class='hidden text-xl text-lightRed m-0 mb-3'></h2>
+                    <h2 id='timesAverage' class='hidden text-xl text-gray-900 m-0 mb-3'></h2>
                 </div>
 
                 <div>
@@ -207,7 +214,8 @@
 
             </div>
 
-            <div class='bg-gray-300 border-gray-400 border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 mb-0'>
+            <div
+                class='bg-gray-300 border-gray-400 border-2 md:border-[2.5px] rounded-lg shadow-lg p-8 lg:p-12 mt-4 mb-0'>
 
                 <div>
                     <h2 id='goalsTitle' class='text-2xl font-bold text-gray-900 m-0 mb-5'>Reached Goals</h2>
